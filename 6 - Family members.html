@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Family Members</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;500;600;700;800&amp;family=Nunito:wght@400;600;700;800&amp;display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+
+    .family-card {
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      cursor: pointer;
+    }
+    .family-card:hover {
+      transform: translateY(-6px) scale(1.03);
+    }
+    .family-card.flipped .card-front { opacity: 0; transform: rotateY(180deg); }
+    .family-card.flipped .card-back { opacity: 1; transform: rotateY(0deg); }
+    .card-front, .card-back {
+      transition: all 0.5s ease;
+      backface-visibility: hidden;
+    }
+    .card-back { opacity: 0; transform: rotateY(-180deg); }
+
+    .memory-card {
+      perspective: 800px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .memory-card:hover { transform: scale(1.05); }
+    .memory-card.revealed .mem-front { transform: rotateY(180deg); }
+    .memory-card.revealed .mem-back { transform: rotateY(0deg); }
+    .memory-card.matched { opacity: 0.5; pointer-events: none; }
+    .mem-front, .mem-back {
+      transition: transform 0.5s;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .mem-back { transform: rotateY(180deg); }
+
+    .quiz-option {
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+    .quiz-option:hover { transform: scale(1.04); }
+    .quiz-option.correct { animation: correctPulse 0.6s ease; }
+    .quiz-option.wrong { animation: wrongShake 0.5s ease; }
+
+    @keyframes correctPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+    @keyframes wrongShake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-8px); }
+      75% { transform: translateX(8px); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes bounceIn {
+      0% { opacity: 0; transform: scale(0.5); }
+      60% { transform: scale(1.1); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+    @keyframes starBurst {
+      0% { transform: scale(0) rotate(0deg); opacity: 1; }
+      100% { transform: scale(1.5) rotate(180deg); opacity: 0; }
+    }
+    .animate-fade-in-up { animation: fadeInUp 0.5s ease forwards; }
+    .animate-bounce-in { animation: bounceIn 0.6s ease forwards; }
+
+    .nav-btn {
+      transition: all 0.2s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .nav-btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.15);
+      transform: translateX(-100%);
+      transition: transform 0.3s;
+    }
+    .nav-btn:hover::after { transform: translateX(0); }
+    .nav-btn:hover { transform: translateY(-2px); }
+
+    .progress-fill {
+      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .emoji-person {
+      font-size: 3.5rem;
+      line-height: 1;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+    }
+
+    .tab-active {
+      border-bottom: 3px solid;
+      font-weight: 700;
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/element_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full overflow-auto" style="font-family: 'Nunito', sans-serif;">
+  <div id="app" class="w-full h-full" style="background: linear-gradient(135deg, #FFF7ED 0%, #FEF3C7 30%, #ECFDF5 70%, #EFF6FF 100%);">
+   <!-- HEADER -->
+   <header class="w-full px-4 py-3 text-center" style="background: linear-gradient(135deg, #F97316, #FB923C);">
+    <div class="flex items-center justify-center gap-2 mb-1"><span class="inline-block px-2 py-1 rounded-full text-xs font-extrabold text-white" style="background: rgba(255,255,255,0.25);">📚 4to Grado</span>
+    </div>
+    <h1 id="mainTitle" style="font-family: 'Baloo 2', cursive; font-size: 1.8rem; color: #FFFFFF; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">👨‍👩‍👧‍👦 Family Members</h1>
+    <p id="schoolName" style="color: #FFF7ED; font-size: 0.8rem; font-weight: 600;">I.E. Nº 31664 Santa Rosa de Carpapata</p>
+   </header><!-- NAVIGATION TABS -->
+   <nav class="w-full flex justify-center gap-1 px-2 py-2 flex-wrap" style="background: #FFFBEB;">
+    <button onclick="showSection('vocab')" id="tab-vocab" class="nav-btn tab-active px-3 py-1.5 rounded-full text-xs font-bold" style="background: #F97316; color: #fff; border-bottom-color: #C2410C;">📖 Vocabulario</button> <button onclick="showSection('memory')" id="tab-memory" class="nav-btn px-3 py-1.5 rounded-full text-xs font-bold" style="background: #60A5FA; color: #fff;">🧠 Memoria</button> <button onclick="showSection('quiz')" id="tab-quiz" class="nav-btn px-3 py-1.5 rounded-full text-xs font-bold" style="background: #A78BFA; color: #fff;">🎯 Quiz</button> <button onclick="showSection('commands')" id="tab-commands" class="nav-btn px-3 py-1.5 rounded-full text-xs font-bold" style="background: #F472B6; color: #fff;">🎲 Juegos</button>
+   </nav><!-- SECTIONS CONTAINER -->
+   <main class="w-full px-4 py-4 pb-8">
+    <!-- VOCABULARIO + ESTRUCTURAS -->
+    <section id="sec-vocab" class="max-w-2xl mx-auto">
+     <div class="flex justify-between items-center mb-3">
+      <button onclick="cardPrev()" class="px-3 py-2 rounded-full font-bold text-white" style="background: #F97316;">⬅️ Anterior</button> <span id="cardCounter" class="font-bold" style="color: #C2410C;"></span> <button onclick="cardNext()" class="px-3 py-2 rounded-full font-bold text-white" style="background: #F97316;">Siguiente ➡️</button>
+     </div>
+     <div id="mainCard" class="rounded-2xl p-6 sm:p-8 shadow-lg text-center" style="background: white; border: 2px solid #FED7AA; min-height: 320px; sm:min-height: 360px; display: flex; flex-direction: column; justify-content: center;">
+      <div id="cardContent"></div>
+     </div>
+    </section><!-- MEMORY GAME -->
+    <section id="sec-memory" class="max-w-3xl mx-auto hidden">
+     <h2 style="font-family: 'Baloo 2', cursive; font-size: 1.4rem; color: #2563EB;" class="text-center mb-2">🧠 Memory Game</h2>
+     <div class="flex justify-between items-center mb-3">
+      <div>
+       <p id="memoryScore" class="text-sm font-bold" style="color: #1E40AF;">Parejas: 0/8</p>
+       <p id="memoryFlips" class="text-sm font-bold" style="color: #1E40AF;">Volteos: 0</p>
+      </div><button onclick="initMemory()" class="px-3 py-1 rounded-full text-xs font-bold text-white" style="background: #60A5FA;">🔄 Reiniciar</button>
+     </div>
+     <div id="memoryGrid" class="grid grid-cols-4 gap-2"></div>
+     <div id="memoryWin" class="hidden text-center mt-4 animate-bounce-in">
+      <p class="text-3xl">🎉🏆🎉</p>
+      <p class="font-extrabold text-xl mt-1" style="color: #2563EB;">¡Excelente! ¡Ganaste!</p>
+      <p id="memoryWinFlips" class="text-lg font-bold mt-2" style="color: #1E40AF;"></p>
+     </div>
+    </section><!-- QUIZ -->
+    <section id="sec-quiz" class="max-w-2xl mx-auto hidden">
+     <h2 style="font-family: 'Baloo 2', cursive; font-size: 1.4rem; color: #7C3AED;" class="text-center mb-2">🎯 Quiz — Who is this?</h2>
+     <div class="mb-3">
+      <div class="flex justify-between text-xs font-bold mb-1" style="color: #7C3AED;">
+       <span id="quizProgress">Pregunta 1/8</span> <span id="quizScore">⭐ 0</span>
+      </div>
+      <div class="w-full h-2 rounded-full" style="background: #E9D5FF;">
+       <div id="quizBar" class="progress-fill h-2 rounded-full" style="background: #A78BFA; width: 12.5%;"></div>
+      </div>
+     </div>
+     <div id="quizCard" class="rounded-2xl p-6 sm:p-8 shadow-lg text-center" style="background: white; border: 2px solid #C4B5FD;">
+      <div id="quizEmoji" class="emoji-person mb-3"></div>
+      <p id="quizQuestion" class="font-extrabold text-xl sm:text-2xl mb-4" style="color: #5B21B6;"></p>
+      <div id="quizOptions" class="grid grid-cols-2 gap-2 sm:gap-3"></div>
+     </div>
+     <div id="quizResult" class="hidden text-center mt-4 animate-bounce-in">
+      <p class="text-3xl" id="quizResultEmoji"></p>
+      <p class="font-extrabold text-xl mt-1" id="quizResultText" style="color: #7C3AED;"></p><button onclick="initQuiz()" class="mt-3 px-4 py-2 rounded-full text-sm font-bold text-white" style="background: #A78BFA;">🔄 Jugar de nuevo</button>
+     </div>
+    </section><!-- COMMANDS GAME -->
+    <section id="sec-commands" class="max-w-2xl mx-auto hidden">
+     <h2 style="font-family: 'Baloo 2', cursive; font-size: 1.4rem; color: #DB2777;" class="text-center mb-3">🎲 La Familia Loca</h2>
+     <p class="text-center text-sm mb-4" style="color: #6B7280;">¡Presiona el botón para recibir una orden divertida!</p>
+     <div class="rounded-2xl p-6 sm:p-8 shadow-lg text-center" style="background: white; border: 2px solid #F9A8D4;">
+      <div id="commandEmoji" class="text-5xl sm:text-6xl mb-3">
+       👨‍👩‍👧‍👦
+      </div>
+      <p id="commandText" class="font-extrabold text-2xl sm:text-3xl mb-1" style="color: #BE185D; font-family: 'Baloo 2', cursive;"></p>
+      <p id="commandTranslation" class="text-base sm:text-lg mb-4" style="color: #9CA3AF;"></p><button onclick="generateCommand()" class="px-6 py-3 rounded-full font-bold text-white text-lg shadow-lg" style="background: linear-gradient(135deg, #EC4899, #F472B6); transition: transform 0.2s;" onmouseenter="this.style.transform='scale(1.05)'" onmouseleave="this.style.transform='scale(1)'"> 🎲 ¡Nueva Orden! </button>
+     </div>
+    </section>
+   </main>
+  </div>
+  <script>
+  // === DATA ===
+  const familyData = [
+    { en: 'Grandfather', es: 'Abuelo', emoji: '👴', pronoun: 'He' },
+    { en: 'Grandmother', es: 'Abuela', emoji: '👵', pronoun: 'She' },
+    { en: 'Father', es: 'Padre', emoji: '👨', pronoun: 'He' },
+    { en: 'Mother', es: 'Madre', emoji: '👩', pronoun: 'She' },
+    { en: 'Son', es: 'Hijo', emoji: '👦', pronoun: 'He' },
+    { en: 'Daughter', es: 'Hija', emoji: '👧', pronoun: 'She' },
+    { en: 'Brother', es: 'Hermano', emoji: '🧒', pronoun: 'He' },
+    { en: 'Sister', es: 'Hermana', emoji: '👧', pronoun: 'She' },
+    { en: 'Uncle', es: 'Tío', emoji: '🧔', pronoun: 'He' },
+    { en: 'Aunt', es: 'Tía', emoji: '👩‍🦰', pronoun: 'She' },
+    { en: 'Cousin', es: 'Primo/Prima', emoji: '👤', pronoun: 'He' },
+    { en: 'Baby', es: 'Bebé', emoji: '👶', pronoun: 'He' }
+  ];
+
+  const actions = [
+    { en: 'jump!', es: '¡salta!', emoji: '🦘' },
+    { en: 'clap!', es: '¡aplaude!', emoji: '👏' },
+    { en: 'dance!', es: '¡baila!', emoji: '💃' },
+    { en: 'sing!', es: '¡canta!', emoji: '🎤' },
+    { en: 'run!', es: '¡corre!', emoji: '🏃' },
+    { en: 'spin!', es: '¡gira!', emoji: '🌀' },
+    { en: 'wave!', es: '¡saluda!', emoji: '👋' },
+    { en: 'sit down!', es: '¡siéntate!', emoji: '🪑' },
+    { en: 'stand up!', es: '¡levántate!', emoji: '🧍' },
+    { en: 'touch your nose!', es: '¡toca tu nariz!', emoji: '👃' },
+  ];
+
+  // === DEFAULT CONFIG ===
+  const defaultConfig = {
+    main_title: '👨‍👩‍👧‍👦 Family Members',
+    school_name: 'I.E. Nº 31664 Santa Rosa de Carpapata',
+    background_color: '#FFF7ED',
+    header_color: '#F97316',
+    text_color: '#1F2937',
+    primary_action_color: '#F97316',
+    secondary_action_color: '#34D399',
+    font_family: 'Baloo 2',
+    font_size: 16
+  };
+
+  // === SIMPLE CONFIG INITIALIZATION ===
+  let config = { ...defaultConfig };
+  
+  function updateUI() {
+    const c = config;
+    const font = c.font_family || defaultConfig.font_family;
+    const base = c.font_size || defaultConfig.font_size;
+
+    document.getElementById('mainTitle').textContent = c.main_title;
+    document.getElementById('mainTitle').style.fontFamily = `${font}, cursive, sans-serif`;
+    document.getElementById('mainTitle').style.fontSize = `${base * 1.8 / 16}rem`;
+
+    document.getElementById('schoolName').textContent = c.school_name;
+    document.getElementById('schoolName').style.fontFamily = `${font}, Nunito, sans-serif`;
+
+    const header = document.querySelector('header');
+    header.style.background = `linear-gradient(135deg, ${c.header_color}, ${c.secondary_action_color})`;
+
+    document.getElementById('app').style.background = `linear-gradient(135deg, ${c.background_color} 0%, #FEF3C7 30%, #ECFDF5 70%, #EFF6FF 100%)`;
+
+    document.querySelectorAll('h2').forEach(h => {
+      h.style.fontFamily = `${font}, cursive, sans-serif`;
+    });
+
+    document.body.style.fontFamily = `Nunito, ${font}, sans-serif`;
+    document.body.style.fontSize = `${base}px`;
+    document.body.style.color = c.text_color;
+  }
+
+  // Initialize UI on load
+  document.addEventListener('DOMContentLoaded', updateUI);
+
+  // === NAVIGATION ===
+  function showSection(name) {
+    ['vocab','memory','quiz','commands'].forEach(s => {
+      document.getElementById('sec-' + s).classList.add('hidden');
+      const tab = document.getElementById('tab-' + s);
+      tab.classList.remove('tab-active');
+    });
+    document.getElementById('sec-' + name).classList.remove('hidden');
+    document.getElementById('tab-' + name).classList.add('tab-active');
+    if (name === 'memory') initMemory();
+    if (name === 'quiz') initQuiz();
+  }
+
+  // === CARD MODE (Vocab + Structures) ===
+  let currentCardMode = 'vocab';
+  let vocabCurrentIndex = 0;
+
+  function switchCardMode(mode) {
+    currentCardMode = mode;
+  }
+
+  function showVocabCard(index) {
+    if (index < 0 || index >= familyData.length) return;
+    vocabCurrentIndex = index;
+    const item = familyData[index];
+    const struct = structures[index];
+
+    const content = document.getElementById('cardContent');
+    content.innerHTML = `
+      <div class="emoji-person mb-4">${item.emoji}</div>
+      <p class="font-extrabold text-3xl sm:text-4xl mb-2" style="color: #C2410C; font-family: 'Baloo 2', cursive;">${item.en}</p>
+      <p class="font-bold text-xl sm:text-2xl" style="color: #9CA3AF;">${item.es}</p>
+      <p class="text-base sm:text-lg mt-4 font-bold" style="color: #059669;">${item.pronoun === 'He' ? 'He is my ' : 'She is my '}${item.en.toLowerCase()}</p>
+      <div style="border-top: 2px solid #D1FAE5; padding-top: 1.5rem; margin-top: 1.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+       <div style="text-align: center;">
+        <p class="font-extrabold text-lg sm:text-xl mb-1" style="color: #059669; font-family: 'Baloo 2', cursive;">${struct.enQ}</p>
+        <p class="font-bold text-base sm:text-lg" style="color: #9CA3AF;">${struct.esQ}</p>
+       </div>
+       <div style="text-align: center;">
+        <p class="font-extrabold text-base sm:text-lg mb-1" style="color: #059669; font-family: 'Baloo 2', cursive;">${struct.enA}</p>
+        <p class="font-bold text-sm sm:text-base" style="color: #9CA3AF;">${struct.esA}</p>
+       </div>
+      </div>
+    `;
+
+    const card = document.getElementById('mainCard');
+    card.style.animation = 'none';
+    card.offsetHeight;
+    card.style.animation = 'fadeInUp 0.5s ease';
+
+    document.getElementById('cardCounter').textContent = `${index + 1}/${familyData.length}`;
+  }
+
+  function cardNext() {
+    if (vocabCurrentIndex < familyData.length - 1) {
+      showVocabCard(vocabCurrentIndex + 1);
+    }
+  }
+
+  function cardPrev() {
+    if (vocabCurrentIndex > 0) {
+      showVocabCard(vocabCurrentIndex - 1);
+    }
+  }
+
+  // === MEMORY GAME ===
+  let memoryCards = [], flippedCards = [], memMatches = 0, memLocked = false, memFlips = 0;
+
+  function initMemory() {
+    memMatches = 0; flippedCards = []; memLocked = false; memFlips = 0;
+    document.getElementById('memoryWin').classList.add('hidden');
+    document.getElementById('memoryScore').textContent = 'Parejas: 0/8';
+    document.getElementById('memoryFlips').textContent = 'Volteos: 0';
+
+    const items = familyData.map(f => [
+      { type: 'spanish', value: f.es, match: f.en, display: f.es },
+      { type: 'english', value: f.en, match: f.en, display: f.en }
+    ]).flat();
+
+    memoryCards = items.sort(() => Math.random() - 0.5);
+    const grid = document.getElementById('memoryGrid');
+    grid.innerHTML = '';
+
+    memoryCards.forEach((card, i) => {
+      const el = document.createElement('div');
+      el.className = 'memory-card aspect-square rounded-xl';
+      el.dataset.index = i;
+      el.innerHTML = `
+        <div class="relative w-full h-full">
+          <div class="mem-front absolute inset-0 rounded-xl flex items-center justify-center" style="background: linear-gradient(135deg, #3B82F6, #60A5FA);">
+            <span class="text-2xl text-white font-bold">?</span>
+          </div>
+          <div class="mem-back absolute inset-0 rounded-xl flex items-center justify-center p-2" style="background: white; border: 2px solid #93C5FD;">
+            <span class="text-lg sm:text-2xl font-extrabold" style="color: #1E40AF; font-family: 'Baloo 2', cursive; text-align: center; line-height: 1.2;">${card.display}</span>
+          </div>
+        </div>
+      `;
+      el.onclick = () => flipMemCard(el, i);
+      grid.appendChild(el);
+    });
+  }
+
+  function flipMemCard(el, idx) {
+    if (memLocked || el.classList.contains('revealed') || el.classList.contains('matched')) return;
+    el.classList.add('revealed');
+    flippedCards.push({ el, idx, data: memoryCards[idx] });
+
+    if (flippedCards.length === 2) {
+      memLocked = true;
+      memFlips++;
+      document.getElementById('memoryFlips').textContent = `Volteos: ${memFlips}`;
+      const [a, b] = flippedCards;
+      if (a.data.match === b.data.match && a.data.type !== b.data.type) {
+        setTimeout(() => {
+          a.el.classList.add('matched');
+          b.el.classList.add('matched');
+          memMatches++;
+          document.getElementById('memoryScore').textContent = `Parejas: ${memMatches}/8`;
+          flippedCards = []; memLocked = false;
+          if (memMatches === 8) {
+            document.getElementById('memoryWin').classList.remove('hidden');
+            document.getElementById('memoryWinFlips').textContent = `Total de volteos: ${memFlips}`;
+          }
+        }, 500);
+      } else {
+        setTimeout(() => {
+          a.el.classList.remove('revealed');
+          b.el.classList.remove('revealed');
+          flippedCards = []; memLocked = false;
+        }, 800);
+      }
+    }
+  }
+
+  // === QUIZ ===
+  let quizQuestions = [], quizIdx = 0, quizPoints = 0;
+
+  function initQuiz() {
+    quizIdx = 0; quizPoints = 0;
+    quizQuestions = [...familyData].sort(() => Math.random() - 0.5);
+    document.getElementById('quizResult').classList.add('hidden');
+    document.getElementById('quizCard').classList.remove('hidden');
+    showQuizQuestion();
+  }
+
+  function showQuizQuestion() {
+    if (quizIdx >= quizQuestions.length) {
+      document.getElementById('quizCard').classList.add('hidden');
+      const res = document.getElementById('quizResult');
+      res.classList.remove('hidden');
+      const pct = quizPoints / quizQuestions.length;
+      document.getElementById('quizResultEmoji').textContent = pct >= 0.75 ? '🏆🎉🌟' : pct >= 0.5 ? '👍😊' : '💪📚';
+      document.getElementById('quizResultText').textContent = `${quizPoints}/${quizQuestions.length} correctas — ${pct >= 0.75 ? '¡Excelente!' : pct >= 0.5 ? '¡Bien hecho!' : '¡Sigue practicando!'}`;
+      return;
+    }
+
+    const q = quizQuestions[quizIdx];
+    document.getElementById('quizEmoji').textContent = q.emoji;
+    document.getElementById('quizQuestion').textContent = `${q.pronoun === 'He' ? 'Who is he?' : 'Who is she?'}`;
+    document.getElementById('quizProgress').textContent = `Pregunta ${quizIdx + 1}/${quizQuestions.length}`;
+    document.getElementById('quizScore').textContent = `⭐ ${quizPoints}`;
+    document.getElementById('quizBar').style.width = `${((quizIdx + 1) / quizQuestions.length) * 100}%`;
+
+    const correct = `${q.pronoun} is my ${q.en.toLowerCase()}`;
+    const wrongs = familyData.filter(f => f.en !== q.en).sort(() => Math.random() - 0.5).slice(0, 3).map(f => `${f.pronoun} is my ${f.en.toLowerCase()}`);
+    const options = [correct, ...wrongs].sort(() => Math.random() - 0.5);
+
+    const container = document.getElementById('quizOptions');
+    container.innerHTML = '';
+    options.forEach(opt => {
+      const btn = document.createElement('button');
+      btn.className = 'quiz-option p-2 sm:p-3 rounded-xl text-xs sm:text-sm font-bold text-left';
+      btn.style.background = '#F5F3FF';
+      btn.style.border = '2px solid #DDD6FE';
+      btn.style.color = '#5B21B6';
+      btn.textContent = opt;
+      btn.onclick = () => answerQuiz(btn, opt === correct);
+      container.appendChild(btn);
+    });
+  }
+
+  function answerQuiz(btn, isCorrect) {
+    const options = document.querySelectorAll('.quiz-option');
+    options.forEach(o => o.onclick = null);
+
+    if (isCorrect) {
+      quizPoints++;
+      btn.classList.add('correct');
+      btn.style.background = '#D1FAE5';
+      btn.style.borderColor = '#34D399';
+      btn.style.color = '#065F46';
+    } else {
+      btn.classList.add('wrong');
+      btn.style.background = '#FEE2E2';
+      btn.style.borderColor = '#F87171';
+      btn.style.color = '#991B1B';
+      options.forEach(o => {
+        const q = quizQuestions[quizIdx];
+        if (o.textContent === `${q.pronoun} is my ${q.en.toLowerCase()}`) {
+          o.style.background = '#D1FAE5';
+          o.style.borderColor = '#34D399';
+        }
+      });
+    }
+
+    setTimeout(() => { quizIdx++; showQuizQuestion(); }, 1200);
+  }
+
+  // === STRUCTURES ===
+  const structures = [
+    { enQ: 'Who is he?', esQ: '¿Quién es él?', enA: 'He is my grandfather.', esA: 'Él es mi abuelo.' },
+    { enQ: 'Who is she?', esQ: '¿Quién es ella?', enA: 'She is my grandmother.', esA: 'Ella es mi abuela.' },
+    { enQ: 'Who is he?', esQ: '¿Quién es él?', enA: 'He is my father.', esA: 'Él es mi padre.' },
+    { enQ: 'Who is she?', esQ: '¿Quién es ella?', enA: 'She is my mother.', esA: 'Ella es mi madre.' },
+    { enQ: 'Who is he?', esQ: '¿Quién es él?', enA: 'He is my brother.', esA: 'Él es mi hermano.' },
+    { enQ: 'Who is she?', esQ: '¿Quién es ella?', enA: 'She is my sister.', esA: 'Ella es mi hermana.' },
+    { enQ: 'Who is he?', esQ: '¿Quién es él?', enA: 'He is my son.', esA: 'Él es mi hijo.' },
+    { enQ: 'Who is she?', esQ: '¿Quién es ella?', enA: 'She is my daughter.', esA: 'Ella es mi hija.' },
+    { enQ: 'Who is he?', esQ: '¿Quién es él?', enA: 'He is my uncle.', esA: 'Él es mi tío.' },
+    { enQ: 'Who is she?', esQ: '¿Quién es ella?', enA: 'She is my aunt.', esA: 'Ella es mi tía.' },
+    { enQ: 'Who is he?', esQ: '¿Quién es él?', enA: 'He is my cousin.', esA: 'Él es mi primo.' },
+    { enQ: 'Who is he?', esQ: '¿Quién es él?', enA: 'He is my baby.', esA: 'Él es mi bebé.' }
+  ];
+
+  // === COMMANDS GAME ===
+  function generateCommand() {
+    const member = familyData[Math.floor(Math.random() * familyData.length)];
+    const action = actions[Math.floor(Math.random() * actions.length)];
+    document.getElementById('commandEmoji').textContent = `${member.emoji} ${action.emoji}`;
+    document.getElementById('commandText').textContent = `${member.en}, ${action.en}`;
+    document.getElementById('commandTranslation').textContent = `${member.es}, ${action.es}`;
+
+    const el = document.getElementById('commandText');
+    el.style.animation = 'none';
+    el.offsetHeight;
+    el.style.animation = 'bounceIn 0.6s ease';
+  }
+
+  // === INIT ===
+  switchCardMode('vocab');
+  initMemory();
+  lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e85c8496253952e',t:'MTc3NTUzMDgzMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
