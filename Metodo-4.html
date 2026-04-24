@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animals English Lesson</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&amp;family=Patrick+Hand&amp;display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Fredoka', sans-serif; margin: 0; }
+
+    .animal-card { transition: transform 0.2s, box-shadow 0.2s; cursor: pointer; }
+    .animal-card:hover { transform: translateY(-4px); box-shadow: 0 8px 25px rgba(0,0,0,0.15); }
+    .animal-card:active { transform: scale(0.96); }
+
+    .section-card { animation: fadeUp 0.5s ease both; }
+    .section-card:nth-child(2) { animation-delay: 0.08s; }
+    .section-card:nth-child(3) { animation-delay: 0.16s; }
+    .section-card:nth-child(4) { animation-delay: 0.24s; }
+    .section-card:nth-child(5) { animation-delay: 0.32s; }
+    .section-card:nth-child(6) { animation-delay: 0.40s; }
+    .section-card:nth-child(7) { animation-delay: 0.48s; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes bounce-in {
+      0% { transform: scale(0); }
+      50% { transform: scale(1.15); }
+      100% { transform: scale(1); }
+    }
+    .bounce-in { animation: bounce-in 0.4s ease; }
+
+    .fill-blank-btn { transition: all 0.15s; }
+    .fill-blank-btn:hover { transform: scale(1.05); }
+    .fill-blank-btn.correct { background: #22c55e !important; color: white !important; }
+    .fill-blank-btn.wrong { background: #ef4444 !important; color: white !important; animation: shake 0.4s; }
+
+    @keyframes shake {
+      0%,100% { transform: translateX(0); }
+      25% { transform: translateX(-6px); }
+      75% { transform: translateX(6px); }
+    }
+
+    .drawing-canvas { border: 3px dashed #c4b5fd; border-radius: 16px; cursor: crosshair; touch-action: none; }
+
+    .pulse-ring {
+      animation: pulse-ring 1.5s ease infinite;
+    }
+    @keyframes pulse-ring {
+      0% { box-shadow: 0 0 0 0 rgba(251,191,36,0.4); }
+      70% { box-shadow: 0 0 0 12px rgba(251,191,36,0); }
+      100% { box-shadow: 0 0 0 0 rgba(251,191,36,0); }
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app" class="h-full w-full overflow-auto" style="background: linear-gradient(135deg, #fef9c3 0%, #fbcfe8 50%, #c4b5fd 100%);">
+   <!-- Header -->
+   <header class="text-center pt-8 pb-4 px-4">
+    <div class="inline-block mb-2 text-5xl">
+     🐾
+    </div>
+    <h1 id="pageTitle" class="text-3xl md:text-4xl font-bold text-purple-800 mb-1">Animals English Lesson</h1>
+    <p id="subtitle" class="text-lg text-purple-600 font-medium">📘 3rd Grade</p>
+   </header>
+   <main class="max-w-2xl mx-auto px-4 pb-12 space-y-6">
+    <!-- Section 1: Listen & Repeat -->
+    <section class="section-card bg-white/80 backdrop-blur rounded-2xl p-5 shadow-md">
+     <h2 class="text-xl font-bold text-amber-600 mb-3">🔁 1. Listen and Repeat</h2>
+     <p class="text-sm text-gray-500 mb-4">Tap an animal to hear it! Repeat 3 times 🎯</p>
+     <div id="animalGrid" class="grid grid-cols-3 sm:grid-cols-5 gap-3"></div>
+    </section><!-- Section 2: Repeat Sentences -->
+    <section class="section-card bg-white/80 backdrop-blur rounded-2xl p-5 shadow-md">
+     <h2 class="text-xl font-bold text-emerald-600 mb-3">🔁 2. Repeat Sentences</h2>
+     <p class="text-sm text-gray-500 mb-3">Tap to hear, then say it loud! 🗣️</p>
+     <div id="sentenceList" class="space-y-2"></div>
+    </section><!-- Section 3: Complete -->
+    <section class="section-card bg-white/80 backdrop-blur rounded-2xl p-5 shadow-md">
+     <h2 class="text-xl font-bold text-blue-600 mb-3">🔁 3. Complete</h2>
+     <p class="text-sm text-gray-500 mb-4">Pick the correct word!</p>
+     <div id="quizArea" class="space-y-4"></div>
+    </section><!-- Section 4: Fast Drill -->
+    <section class="section-card bg-white/80 backdrop-blur rounded-2xl p-5 shadow-md">
+     <h2 class="text-xl font-bold text-red-500 mb-3">⚡ 4. Fast Drill</h2>
+     <p class="text-sm text-gray-500 mb-3">Tap the button — repeat the word as fast as you can!</p>
+     <div class="text-center">
+      <button id="drillBtn" class="pulse-ring bg-amber-400 hover:bg-amber-500 text-amber-900 font-bold text-xl px-8 py-4 rounded-full shadow-lg transition"> ▶ Start Drill </button>
+      <div id="drillWord" class="mt-4 text-4xl font-bold text-purple-700 h-14"></div>
+     </div>
+    </section><!-- Section 5: Change -->
+    <section class="section-card bg-white/80 backdrop-blur rounded-2xl p-5 shadow-md">
+     <h2 class="text-xl font-bold text-violet-600 mb-3">🔄 5. Change</h2>
+     <p class="text-sm text-gray-500 mb-3">I say the word, you make a sentence!</p>
+     <div class="text-center">
+      <button id="changeBtn" class="bg-violet-500 hover:bg-violet-600 text-white font-bold text-lg px-8 py-3 rounded-full shadow transition"> Show a word </button>
+      <div id="changeWord" class="mt-3 text-2xl font-bold text-violet-800 h-10"></div>
+      <div id="changeHint" class="mt-1 text-gray-400 text-sm h-6"></div>
+     </div>
+    </section><!-- Section 6: Write -->
+    <section class="section-card bg-white/80 backdrop-blur rounded-2xl p-5 shadow-md">
+     <h2 class="text-xl font-bold text-teal-600 mb-3">✍️ 6. Write</h2>
+     <p class="text-sm text-gray-500 mb-3">Type each sentence 3 times!</p>
+     <div id="writeArea" class="space-y-3"></div>
+    </section><!-- Section 7: Draw & Say -->
+    <section class="section-card bg-white/80 backdrop-blur rounded-2xl p-5 shadow-md">
+     <h2 class="text-xl font-bold text-pink-600 mb-3">🎨 7. Draw and Say</h2>
+     <p class="text-sm text-gray-500 mb-3">Draw an animal, then say "This is a ______"</p>
+     <canvas id="drawCanvas" class="drawing-canvas w-full bg-white" width="600" height="300"></canvas>
+     <div class="flex gap-3 mt-3 justify-center flex-wrap">
+      <button onclick="clearCanvas()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium px-4 py-2 rounded-full text-sm transition">🗑️ Clear</button> <button onclick="changeColor('black')" class="w-8 h-8 rounded-full bg-gray-800 border-2 border-white shadow"></button> <button onclick="changeColor('#ef4444')" class="w-8 h-8 rounded-full bg-red-500 border-2 border-white shadow"></button> <button onclick="changeColor('#3b82f6')" class="w-8 h-8 rounded-full bg-blue-500 border-2 border-white shadow"></button> <button onclick="changeColor('#22c55e')" class="w-8 h-8 rounded-full bg-green-500 border-2 border-white shadow"></button> <button onclick="changeColor('#f59e0b')" class="w-8 h-8 rounded-full bg-amber-500 border-2 border-white shadow"></button>
+     </div>
+    </section><!-- Remember -->
+    <section class="section-card bg-purple-100/80 backdrop-blur rounded-2xl p-5 shadow-md text-center">
+     <h2 class="text-xl font-bold text-purple-700 mb-2">🧠 Remember</h2>
+     <p class="text-lg text-purple-600">👂 Listen &nbsp; 🔁 Repeat &nbsp; 🗣️ Practice</p>
+    </section>
+   </main><!-- Footer -->
+   <footer class="text-center py-4 px-4 bg-white/40 backdrop-blur border-t border-white/50">
+    <p class="text-xs md:text-sm text-gray-600">© Aaron Sixto Callupe Llallico</p>
+   </footer>
+  </div>
+  <script>
+const animals = [
+  { name: 'Dog', emoji: '🐶', article: 'a' },
+  { name: 'Cat', emoji: '🐱', article: 'a' },
+  { name: 'Bird', emoji: '🐦', article: 'a' },
+  { name: 'Lion', emoji: '🦁', article: 'a' },
+  { name: 'Elephant', emoji: '🐘', article: 'an' }
+];
+
+const quizzes = [
+  { answer: 'dog', options: ['dog', 'cat'], article: 'a' },
+  { answer: 'bird', options: ['lion', 'bird'], article: 'a' },
+  { answer: 'elephant', options: ['elephant', 'cat'], article: 'an' }
+];
+
+// Speech helper
+function speak(text) {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang = 'en-US'; u.rate = 0.85;
+    window.speechSynthesis.speak(u);
+  }
+}
+
+// Section 1: Animal Grid
+const grid = document.getElementById('animalGrid');
+animals.forEach(a => {
+  const div = document.createElement('div');
+  div.className = 'animal-card bg-white rounded-xl p-3 text-center shadow-sm';
+  div.innerHTML = `<div class="text-4xl mb-1">${a.emoji}</div><div class="font-semibold text-purple-800 text-sm">${a.name}</div>`;
+  div.addEventListener('click', () => { speak(a.name); div.querySelector('div').classList.add('bounce-in'); setTimeout(() => div.querySelector('div').classList.remove('bounce-in'), 400); });
+  grid.appendChild(div);
+});
+
+// Section 2: Sentences
+const sentenceList = document.getElementById('sentenceList');
+animals.forEach(a => {
+  const sentence = `This is ${a.article} ${a.name.toLowerCase()}`;
+  const div = document.createElement('div');
+  div.className = 'flex items-center gap-3 bg-emerald-50 rounded-xl px-4 py-3 cursor-pointer hover:bg-emerald-100 transition';
+  div.innerHTML = `<span class="text-2xl">${a.emoji}</span><span class="font-medium text-gray-700 flex-1">${sentence}</span><span class="text-emerald-500"><i data-lucide="volume-2" style="width:20px;height:20px"></i></span>`;
+  div.addEventListener('click', () => speak(sentence));
+  sentenceList.appendChild(div);
+});
+
+// Section 3: Quiz
+const quizArea = document.getElementById('quizArea');
+quizzes.forEach((q, qi) => {
+  const div = document.createElement('div');
+  div.className = 'bg-blue-50 rounded-xl p-4';
+  div.innerHTML = `<p class="font-medium text-gray-700 mb-2">This is ${q.article} ______</p><div class="flex gap-2" id="quiz-${qi}"></div>`;
+  quizArea.appendChild(div);
+  const btnContainer = div.querySelector(`#quiz-${qi}`);
+  q.options.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'fill-blank-btn bg-white border-2 border-blue-300 text-blue-700 font-bold px-5 py-2 rounded-full';
+    btn.textContent = opt;
+    btn.addEventListener('click', () => {
+      if (btn.classList.contains('correct')) return;
+      if (opt === q.answer) {
+        btn.classList.add('correct');
+        speak(`This is ${q.article} ${q.answer}`);
+      } else {
+        btn.classList.add('wrong');
+        setTimeout(() => btn.classList.remove('wrong'), 500);
+      }
+    });
+    btnContainer.appendChild(btn);
+  });
+});
+
+// Section 4: Fast Drill
+let drillInterval = null;
+const drillBtn = document.getElementById('drillBtn');
+const drillWord = document.getElementById('drillWord');
+drillBtn.addEventListener('click', () => {
+  if (drillInterval) { clearInterval(drillInterval); drillInterval = null; drillBtn.textContent = '▶ Start Drill'; drillWord.textContent = ''; return; }
+  drillBtn.textContent = '⏹ Stop';
+  let i = 0;
+  const go = () => { const a = animals[i % animals.length]; drillWord.textContent = `${a.emoji} ${a.name}`; speak(a.name); i++; };
+  go();
+  drillInterval = setInterval(go, 2500);
+});
+
+// Section 5: Change
+const changeBtn = document.getElementById('changeBtn');
+const changeWordEl = document.getElementById('changeWord');
+const changeHint = document.getElementById('changeHint');
+changeBtn.addEventListener('click', () => {
+  const a = animals[Math.floor(Math.random() * animals.length)];
+  changeWordEl.textContent = `${a.emoji} ${a.name}`;
+  changeHint.textContent = `Say: "This is ${a.article} ${a.name.toLowerCase()}"`;
+  speak(a.name);
+});
+
+// Section 6: Write
+const writeArea = document.getElementById('writeArea');
+['This is a dog', 'This is a cat'].forEach(sentence => {
+  const div = document.createElement('div');
+  div.innerHTML = `<p class="font-medium text-teal-700 mb-1">${sentence}</p>`;
+  for (let i = 0; i < 3; i++) {
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.placeholder = `Type: ${sentence}`;
+    input.className = 'w-full border-2 border-teal-200 rounded-lg px-3 py-2 text-sm mb-1 focus:outline-none focus:border-teal-500 transition';
+    input.addEventListener('input', () => {
+      if (input.value.trim().toLowerCase() === sentence.toLowerCase()) {
+        input.style.borderColor = '#22c55e'; input.style.background = '#f0fdf4';
+      } else {
+        input.style.borderColor = ''; input.style.background = '';
+      }
+    });
+    div.appendChild(input);
+  }
+  writeArea.appendChild(div);
+});
+
+// Section 7: Drawing Canvas
+const canvas = document.getElementById('drawCanvas');
+const ctx = canvas.getContext('2d');
+let drawing = false, penColor = 'black';
+
+function resizeCanvas() {
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width - 40;
+  canvas.height = 250;
+}
+resizeCanvas();
+
+function getPos(e) {
+  const r = canvas.getBoundingClientRect();
+  const t = e.touches ? e.touches[0] : e;
+  return { x: t.clientX - r.left, y: t.clientY - r.top };
+}
+canvas.addEventListener('mousedown', e => { drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); });
+canvas.addEventListener('mousemove', e => { if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.strokeStyle = penColor; ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.stroke(); });
+canvas.addEventListener('mouseup', () => drawing = false);
+canvas.addEventListener('mouseleave', () => drawing = false);
+canvas.addEventListener('touchstart', e => { e.preventDefault(); drawing = true; const p = getPos(e); ctx.beginPath(); ctx.moveTo(p.x, p.y); }, { passive: false });
+canvas.addEventListener('touchmove', e => { e.preventDefault(); if (!drawing) return; const p = getPos(e); ctx.lineTo(p.x, p.y); ctx.strokeStyle = penColor; ctx.lineWidth = 3; ctx.lineCap = 'round'; ctx.stroke(); }, { passive: false });
+canvas.addEventListener('touchend', () => drawing = false);
+
+function clearCanvas() { ctx.clearRect(0, 0, canvas.width, canvas.height); }
+function changeColor(c) { penColor = c; }
+
+// Element SDK
+const defaultConfig = {
+  page_title: 'Animals English Lesson',
+  subtitle: '📘 3rd Grade',
+  background_color: '#fef9c3',
+  surface_color: '#ffffff',
+  text_color: '#6b21a8',
+  primary_action: '#f59e0b',
+  secondary_action: '#8b5cf6',
+  font_family: 'Fredoka',
+  font_size: 16
+};
+
+function applyConfig(config) {
+  const c = { ...defaultConfig, ...config };
+  document.getElementById('pageTitle').textContent = c.page_title;
+  document.getElementById('subtitle').textContent = c.subtitle;
+
+  const app = document.getElementById('app');
+  app.style.background = `linear-gradient(135deg, ${c.background_color} 0%, #fbcfe8 50%, #c4b5fd 100%)`;
+
+  document.querySelectorAll('.section-card, .animal-card').forEach(el => {
+    el.style.backgroundColor = c.surface_color + 'cc';
+  });
+
+  document.getElementById('pageTitle').style.color = c.text_color;
+  document.getElementById('subtitle').style.color = c.text_color + 'bb';
+
+  const drillB = document.getElementById('drillBtn');
+  drillB.style.backgroundColor = c.primary_action;
+
+  const changeB = document.getElementById('changeBtn');
+  changeB.style.backgroundColor = c.secondary_action;
+
+  const font = c.font_family + ', Fredoka, sans-serif';
+  document.body.style.fontFamily = font;
+
+  const base = c.font_size;
+  document.getElementById('pageTitle').style.fontSize = `${base * 2}px`;
+  document.getElementById('subtitle').style.fontSize = `${base * 1.1}px`;
+}
+
+window.elementSdk.init({
+  defaultConfig,
+  onConfigChange: async (config) => applyConfig(config),
+  mapToCapabilities: (config) => ({
+    recolorables: [
+      { get: () => config.background_color || defaultConfig.background_color, set: v => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+      { get: () => config.surface_color || defaultConfig.surface_color, set: v => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+      { get: () => config.text_color || defaultConfig.text_color, set: v => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+      { get: () => config.primary_action || defaultConfig.primary_action, set: v => { config.primary_action = v; window.elementSdk.setConfig({ primary_action: v }); } },
+      { get: () => config.secondary_action || defaultConfig.secondary_action, set: v => { config.secondary_action = v; window.elementSdk.setConfig({ secondary_action: v }); } }
+    ],
+    borderables: [],
+    fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: v => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+    fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: v => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+  }),
+  mapToEditPanelValues: (config) => new Map([
+    ['page_title', config.page_title || defaultConfig.page_title],
+    ['subtitle', config.subtitle || defaultConfig.subtitle]
+  ])
+});
+
+lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9f127029069e56b3',t:'MTc3NzAwNTcxMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

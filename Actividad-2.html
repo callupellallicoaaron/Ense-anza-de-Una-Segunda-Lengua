@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="es">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Impacto Emocional en el Aprendizaje de una Segunda Lengua</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+
+        body {
+            box-sizing: border-box;
+            font-family: 'Georgia', serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            overflow-auto;
+        }
+
+        .portada {
+            background: white;
+            border-bottom: 4px solid #cc0000;
+            padding: 40px 20px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 35px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .portada-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 35px;
+        }
+
+        .logo {
+            width: 110px;
+            height: 110px;
+            background: linear-gradient(135deg, #cc0000 0%, #990000 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 22px;
+            border-radius: 10px;
+            flex-shrink: 0;
+        }
+
+        .info-institucional {
+            flex: 1;
+        }
+
+        .info-institucional h2 {
+            margin: 0 0 15px 0;
+            color: #1a1a1a;
+            font-size: 26px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .info-institucional p {
+            margin: 8px 0;
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .info-estudiante {
+            text-align: right;
+            flex-shrink: 0;
+        }
+
+        .info-estudiante p {
+            margin: 8px 0;
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .info-estudiante p strong {
+            color: #cc0000;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .portada-container {
+                flex-direction: column;
+                text-align: center;
+                gap: 25px;
+            }
+            
+            .info-estudiante {
+                text-align: center;
+            }
+            
+            .info-institucional h2 {
+                font-size: 22px;
+            }
+            
+            .info-institucional p,
+            .info-estudiante p {
+                font-size: 15px;
+            }
+            
+            .logo {
+                width: 90px;
+                height: 90px;
+                font-size: 20px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .portada {
+                padding: 20px 15px;
+            }
+            
+            .portada-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .info-institucional h2 {
+                font-size: 18px;
+            }
+            
+            .info-institucional p,
+            .info-estudiante p {
+                font-size: 13px;
+            }
+            
+            .logo {
+                width: 80px;
+                height: 80px;
+                font-size: 18px;
+            }
+        }
+        
+        .content-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            padding: 40px 20px;
+        }
+
+        .section-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .section-subtitle {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 40px;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .intro-text {
+            font-size: 16px;
+            color: #333;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #f9f9f9;
+            border-left: 4px solid #cc0000;
+            border-radius: 4px;
+        }
+
+        .questions-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+            margin-bottom: 40px;
+            perspective: 1000px;
+        }
+
+        @media (max-width: 1024px) {
+            .questions-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .questions-container {
+                grid-template-columns: 1fr;
+                gap: 18px;
+            }
+        }
+
+        .question-card {
+            position: relative;
+            width: 100%;
+            height: 280px;
+            cursor: pointer;
+            transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform-style: preserve-3d;
+        }
+
+        .question-card.flipped {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #cc0000 0%, #990000 100%);
+            color: white;
+            padding: 30px 25px;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            border-left: 5px solid #8b0000;
+        }
+
+        .card-back {
+            background: white;
+            color: #333;
+            padding: 25px;
+            transform: rotateY(180deg);
+            overflow-y: auto;
+            border-left: 5px solid #cc0000;
+            border: 1px solid #e5e5e5;
+            border-left: 5px solid #cc0000;
+        }
+
+        .question-number {
+            background: rgba(255, 255, 255, 0.25);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 24px;
+            margin-bottom: 15px;
+            backdrop-filter: blur(4px);
+        }
+
+        .question-text {
+            font-size: 17px;
+            font-weight: 600;
+            line-height: 1.5;
+            word-wrap: break-word;
+        }
+
+        .answer-body {
+            width: 100%;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        .answer-paragraph {
+            margin-bottom: 12px;
+        }
+
+        .answer-paragraph:last-child {
+            margin-bottom: 0;
+        }
+
+        .answer-list {
+            margin: 12px 0;
+            padding-left: 20px;
+        }
+
+        .answer-list li {
+            margin-bottom: 8px;
+            list-style-type: none;
+            position: relative;
+            padding-left: 15px;
+        }
+
+        .answer-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #cc0000;
+            font-weight: bold;
+        }
+
+        .flip-hint {
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 22px;
+            }
+
+            .question-header {
+                padding: 20px;
+            }
+
+            .question-text {
+                font-size: 16px;
+            }
+
+            .answer-body {
+                padding: 20px 15px;
+                font-size: 15px;
+            }
+        }
+    </style>
+  <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js" type="text/javascript"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="portada">
+   <div class="portada-container"><img src="https://proveedoresutp.utp.edu.pe/img/logo-utp.d277c146.png" alt="Logo UTP" loading="lazy" onerror="console.error('Logo failed to load:', this.src); this.outerHTML='<div class=\'logo\'>UTP</div>';" style="width: 110px; height: 110px; object-fit: contain; flex-shrink: 0;">
+    <div class="info-institucional">
+     <h2 id="university-name">Universidad Tecnológica del Perú</h2>
+     <p id="faculty">Facultad de Educación</p>
+     <p id="course">Enseñanza de Una Segunda Lengua</p>
+     <p id="section">Sección 43823</p>
+    </div>
+    <div class="info-estudiante">
+
+     <p><strong id="student-name">Aaron Sixto Callupe Llallico</strong></p>
+     <p><strong id="student-name">Giuliana Patricia Huaman Cajachagua</strong></p>
+     <p id="student-career">Estudiantes de Educación Primaria</p>
+     <p id="activity">Semana 2 - Actividad 1</p>
+    </div>
+   </div>
+  </div>
+  <div class="content-section" id="main-content">
+   <h1 class="section-title">Impacto Emocional en el Aprendizaje de una Segunda Lengua</h1>
+   <p class="section-subtitle">Actividad 1</p>
+   <p class="intro-text">Lee con mucha atención el texto "La afectividad en el aprendizaje del idioma inglés como segunda lengua" (Zárate, 2021), luego analiza el tema y responde las siguientes preguntas:</p>
+   <div class="questions-container"><!-- Pregunta 1 -->
+    <div class="question-card" onclick="toggleFlip(this)">
+     <div class="card-face card-front">
+      <div class="question-number">
+       1
+      </div>
+      <div class="question-text">
+       ¿De qué manera los factores afectivos (como la motivación, la ansiedad y la autoestima) influyen en la adquisición del inglés como segunda lengua, y cómo interactúan entre sí durante el proceso de aprendizaje?
+      </div>
+      <div class="flip-hint">
+       Toca para ver la respuesta
+      </div>
+     </div>
+     <div class="card-face card-back">
+      <div class="answer-body">
+       <p class="answer-paragraph">Los factores afectivos como la motivación, la ansiedad y la autoestima influyen directamente en el aprendizaje del inglés como segunda lengua. La motivación impulsa al estudiante a aprender y mantenerse constante; la autoestima le da seguridad para participar; mientras que la ansiedad puede bloquear su desempeño. Estos factores interactúan entre sí: una alta motivación puede reducir la ansiedad y fortalecer la autoestima, favoreciendo el aprendizaje; en cambio, emociones negativas generan desinterés e inseguridad.</p>
+      </div>
+     </div>
+    </div><!-- Pregunta 2 -->
+    <div class="question-card" onclick="toggleFlip(this)">
+     <div class="card-face card-front">
+      <div class="question-number">
+       2
+      </div>
+      <div class="question-text">
+       Según el planteamiento de Zárate (2021), ¿cómo puede el entorno emocional del aula favorecer o limitar el desarrollo de habilidades comunicativas en una segunda lengua? Analiza el papel del docente en este proceso.
+      </div>
+      <div class="flip-hint">
+       Toca para ver la respuesta
+      </div>
+     </div>
+     <div class="card-face card-back">
+      <div class="answer-body">
+       <p class="answer-paragraph">El entorno emocional del aula puede favorecer o limitar el desarrollo de habilidades comunicativas. Un ambiente positivo, basado en la confianza y el respeto, permite que los estudiantes participen y se expresen con mayor fluidez. Por el contrario, un clima negativo genera miedo, inhibición y poca participación. En este proceso, el docente cumple un rol fundamental, ya que debe crear un ambiente seguro, motivar a los estudiantes, aplicar estrategias dinámicas y respetar sus ritmos de aprendizaje.</p>
+      </div>
+     </div>
+    </div><!-- Pregunta 3 -->
+    <div class="question-card" onclick="toggleFlip(this)">
+     <div class="card-face card-front">
+      <div class="question-number">
+       3
+      </div>
+      <div class="question-text">
+       ¿En qué medida la ansiedad lingüística puede actuar como un obstáculo en el aprendizaje del inglés, y qué estrategias pedagógicas podrían implementarse para reducir su impacto en los estudiantes?
+      </div>
+      <div class="flip-hint">
+       Toca para ver la respuesta
+      </div>
+     </div>
+     <div class="card-face card-back">
+      <div class="answer-body">
+       <p class="answer-paragraph">La ansiedad lingüística es un obstáculo importante porque provoca miedo al error, inseguridad y bloqueo en la participación, especialmente en actividades orales. Esto afecta el rendimiento y la adquisición del idioma. Para reducir su impacto, es necesario aplicar estrategias como generar un ambiente de confianza, evitar críticas, fomentar la participación progresiva, utilizar actividades dinámicas y reconocer los logros del estudiante.</p>
+      </div>
+     </div>
+    </div><!-- Pregunta 4 -->
+    <div class="question-card" onclick="toggleFlip(this)">
+     <div class="card-face card-front">
+      <div class="question-number">
+       4
+      </div>
+      <div class="question-text">
+       Analiza la relación entre motivación intrínseca, motivación extrínseca y rendimiento en el aprendizaje de una segunda lengua, considerando la dimensión afectiva del estudiante.
+      </div>
+      <div class="flip-hint">
+       Toca para ver la respuesta
+      </div>
+     </div>
+     <div class="card-face card-back">
+      <div class="answer-body">
+       <p class="answer-paragraph">La motivación intrínseca se relaciona con el interés personal y el deseo de aprender, lo que genera mayor compromiso y aprendizajes significativos. La motivación extrínseca, basada en recompensas o estímulos externos, refuerza el proceso. Ambas influyen en el rendimiento, pero la intrínseca tiene un impacto más duradero. Un equilibrio entre ambas permite mejorar la actitud, el esfuerzo y los resultados del estudiante.</p>
+      </div>
+     </div>
+    </div><!-- Pregunta 5 -->
+    <div class="question-card" onclick="toggleFlip(this)">
+     <div class="card-face card-front">
+      <div class="question-number">
+       5
+      </div>
+      <div class="question-text">
+       ¿Cómo contribuye el desarrollo de un clima afectivo positivo en el aula a la participación activa y a la confianza del estudiante al usar el inglés como segunda lengua? Fundamenta tu respuesta desde la perspectiva del texto.
+      </div>
+      <div class="flip-hint">
+       Toca para ver la respuesta
+      </div>
+     </div>
+     <div class="card-face card-back">
+      <div class="answer-body">
+       <p class="answer-paragraph">Un clima afectivo positivo contribuye al desarrollo de la confianza y la participación activa del estudiante. Cuando se siente seguro, valorado y sin miedo al error, aumenta su autoestima y su disposición para interactuar en el idioma. Esto favorece la práctica constante, mejora las habilidades comunicativas y fortalece tanto el aprendizaje académico como el desarrollo personal.</p>
+      </div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+        const defaultConfig = {
+            university_name: 'Universidad Tecnológica del Perú',
+            faculty: 'Facultad de Educación',
+            course: 'Enseñanza de Una Segunda Lengua',
+            section: 'Sección 43823',
+            student_name: 'Aaron Sixto Callupe Llallico',
+            student_career: 'Estudiantes de Educación Primaria',
+            activity: 'Semana 2 - Actividad 1'
+        };
+
+        let config = { ...defaultConfig };
+
+        const element = {
+            defaultConfig,
+            onConfigChange: async (newConfig) => {
+                config = { ...newConfig };
+                
+                document.getElementById('university-name').textContent = config.university_name || defaultConfig.university_name;
+                document.getElementById('faculty').textContent = config.faculty || defaultConfig.faculty;
+                document.getElementById('course').textContent = config.course || defaultConfig.course;
+                document.getElementById('section').textContent = config.section || defaultConfig.section;
+                document.getElementById('student-name').textContent = config.student_name || defaultConfig.student_name;
+                document.getElementById('student-career').textContent = config.student_career || defaultConfig.student_career;
+                document.getElementById('activity').textContent = config.activity || defaultConfig.activity;
+            },
+            mapToCapabilities: () => ({
+                recolorables: [],
+                borderables: [],
+                fontEditable: undefined,
+                fontSizeable: undefined
+            }),
+            mapToEditPanelValues: (cfg) => new Map([
+                ['university_name', cfg.university_name || defaultConfig.university_name],
+                ['faculty', cfg.faculty || defaultConfig.faculty],
+                ['course', cfg.course || defaultConfig.course],
+                ['section', cfg.section || defaultConfig.section],
+                ['student_name', cfg.student_name || defaultConfig.student_name],
+                ['student_career', cfg.student_career || defaultConfig.student_career],
+                ['activity', cfg.activity || defaultConfig.activity]
+            ])
+        };
+
+        if (window.elementSdk) {
+            window.elementSdk.init(element);
+        }
+
+        function toggleFlip(card) {
+            card.classList.toggle('flipped');
+        }
+    </script>
+  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e2aba732124c2ce',t:'MTc3NDU3NjA1OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9e8639ce6294952e',t:'MTc3NTUzNTQ4MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

@@ -1,0 +1,1012 @@
+<!doctype html>
+<html lang="es">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teaching Lab: Mini clases con métodos reales</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+    html, body {
+      height: 100%;
+      width: 100%;
+    }
+
+    body {
+      box-sizing: border-box;
+      font-family: 'Georgia', serif;
+      background: #f5f5f5;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      overflow-auto;
+    }
+
+    .portada {
+      background: white;
+      border-bottom: 4px solid #cc0000;
+      padding: 40px 20px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 35px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    .portada-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 35px;
+    }
+
+    .logo {
+      width: 110px;
+      height: 110px;
+      background: linear-gradient(135deg, #cc0000 0%, #990000 100%);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 22px;
+      border-radius: 10px;
+      flex-shrink: 0;
+    }
+
+    .info-institucional {
+      flex: 1;
+    }
+
+    .info-institucional h2 {
+      margin: 0 0 15px 0;
+      color: #1a1a1a;
+      font-size: 26px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+
+    .info-institucional p {
+      margin: 8px 0;
+      color: #333;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .info-estudiante {
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .info-estudiante p {
+      margin: 8px 0;
+      color: #333;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    .info-estudiante p strong {
+      color: #cc0000;
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .portada-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 25px;
+      }
+      
+      .info-estudiante {
+        text-align: center;
+      }
+      
+      .info-institucional h2 {
+        font-size: 22px;
+      }
+      
+      .info-institucional p,
+      .info-estudiante p {
+        font-size: 15px;
+      }
+      
+      .logo {
+        width: 90px;
+        height: 90px;
+        font-size: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .portada {
+        padding: 20px 15px;
+      }
+      
+      .portada-container {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .info-institucional h2 {
+        font-size: 18px;
+      }
+      
+      .info-institucional p,
+      .info-estudiante p {
+        font-size: 13px;
+      }
+      
+      .logo {
+        width: 80px;
+        height: 80px;
+        font-size: 18px;
+      }
+    }
+    
+    .content-section {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 40px 20px;
+    }
+
+    .teaching-lab-container {
+      background: white;
+      border-radius: 12px;
+      padding: 40px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+    }
+
+    .teaching-lab-title {
+      font-size: 32px;
+      font-weight: bold;
+      color: #1a1a1a;
+      margin: 0 0 15px 0;
+      text-align: center;
+      letter-spacing: 0.5px;
+    }
+
+    .teaching-lab-subtitle {
+      font-size: 18px;
+      color: #cc0000;
+      text-align: center;
+      margin: 0 0 35px 0;
+      font-weight: 500;
+    }
+
+    .teaching-lab-subtitle strong {
+      color: #cc0000;
+      font-weight: 700;
+    }
+
+    .methods-buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 15px;
+      margin-bottom: 40px;
+    }
+
+    .method-btn {
+      background: linear-gradient(135deg, #cc0000 0%, #990000 100%);
+      color: white;
+      border: none;
+      padding: 16px 20px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 12px rgba(204, 0, 0, 0.3);
+      font-family: 'Georgia', serif;
+    }
+
+    .method-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(204, 0, 0, 0.4);
+      background: linear-gradient(135deg, #e60000 0%, #b30000 100%);
+    }
+
+    .method-btn:active {
+      transform: translateY(0);
+    }
+
+    .method-btn.active {
+      background: linear-gradient(135deg, #1a1a1a 0%, #333 100%);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .method-content {
+      background: #f9f9f9;
+      border-radius: 8px;
+      padding: 30px;
+      border-left: 4px solid #cc0000;
+      min-height: 200px;
+    }
+
+    @media (max-width: 768px) {
+      .teaching-lab-container {
+        padding: 25px;
+      }
+
+      .teaching-lab-title {
+        font-size: 24px;
+      }
+
+      .teaching-lab-subtitle {
+        font-size: 16px;
+      }
+
+      .methods-buttons {
+        grid-template-columns: 1fr;
+      }
+
+      .method-btn {
+        padding: 14px 16px;
+        font-size: 15px;
+      }
+
+      .method-content {
+        padding: 20px;
+      }
+    }
+  </style>
+  <script src="https://cdn.tailwindcss.com/3.4.17" type="text/javascript"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js" type="text/javascript"></script>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="portada">
+   <div class="portada-container">
+    <img src="https://proveedoresutp.utp.edu.pe/img/logo-utp.d277c146.png" alt="Logo UTP" loading="lazy" style="width: 110px; height: 110px; object-fit: contain; flex-shrink: 0;">
+    <div class="info-institucional">
+     <h2 id="university-name">Universidad Tecnológica del Perú</h2>
+     <p id="faculty">Facultad de Educación</p>
+     <p id="course">Enseñanza de Una Segunda Lengua</p>
+     <p id="section">Sección 43823</p>
+    </div>
+    <div class="info-estudiante">
+     <p><strong id="student-name">Aaron Sixto Callupe Llallico</strong></p>
+     <p><strong id="student-name">Giuliana Patricia Huaman Cajachagua</strong></p>
+     <p id="student-career">Estudiantes de Educación Primaria</p>
+     <p id="activity">Semana 5 - Actividad 1</p>
+    </div>
+   </div>
+  </div>
+  <div class="content-section" id="main-content">
+   <div class="teaching-lab-container">
+    <h1 class="teaching-lab-title">Teaching Lab: Mini clases con métodos reales</h1>
+    <p class="teaching-lab-subtitle">Tema: <strong>ANIMALS</strong></p>
+    <div class="methods-buttons"><button class="method-btn" data-method="grammar-translation"> <span class="btn-text">Grammar - Translation</span> </button> <button class="method-btn" data-method="direct-method"> <span class="btn-text">Direct Method</span> </button> <button class="method-btn" data-method="reading-method"> <span class="btn-text">Reading Method</span> </button> <button class="method-btn" data-method="audio-lingual"> <span class="btn-text">Audio - Lingual Method</span> </button> <button class="method-btn" data-method="silent-way"> <span class="btn-text">The Silent Way</span> </button>
+    </div>
+    <div id="method-content" class="method-content"><!-- El contenido de cada método se mostrará aquí -->
+    </div>
+    <div style="text-align: center; margin-top: 30px;"><button id="view-material-btn" class="method-btn" style="display: none; background: linear-gradient(135deg, #0066cc 0%, #004499 100%); box-shadow: 0 4px 12px rgba(0, 102, 204, 0.3);"> 📘 Ver Material </button>
+    </div>
+   </div>
+  </div>
+  <script>
+    const defaultConfig = {
+      university_name: 'Universidad Tecnológica del Perú',
+      faculty: 'Facultad de Educación',
+      course: 'Didáctica A Través del Juego para Primaria',
+      section: 'Sección 43872',
+      student_name: 'Aaron Sixto Callupe Llallico',
+      student_career: 'Estudiantes de Educación Primaria',
+      activity: 'Semana 2 - Actividad 1'
+    };
+
+    let config = { ...defaultConfig };
+
+    const element = {
+      defaultConfig,
+      onConfigChange: async (newConfig) => {
+        config = { ...newConfig };
+        
+        document.getElementById('university-name').textContent = config.university_name || defaultConfig.university_name;
+        document.getElementById('faculty').textContent = config.faculty || defaultConfig.faculty;
+        document.getElementById('course').textContent = config.course || defaultConfig.course;
+        document.getElementById('section').textContent = config.section || defaultConfig.section;
+        document.getElementById('student-name').textContent = config.student_name || defaultConfig.student_name;
+        document.getElementById('student-career').textContent = config.student_career || defaultConfig.student_career;
+        document.getElementById('activity').textContent = config.activity || defaultConfig.activity;
+      },
+      mapToCapabilities: () => ({
+        recolorables: [],
+        borderables: [],
+        fontEditable: undefined,
+        fontSizeable: undefined
+      }),
+      mapToEditPanelValues: (cfg) => new Map([
+        ['university_name', cfg.university_name || defaultConfig.university_name],
+        ['faculty', cfg.faculty || defaultConfig.faculty],
+        ['course', cfg.course || defaultConfig.course],
+        ['section', cfg.section || defaultConfig.section],
+        ['student_name', cfg.student_name || defaultConfig.student_name],
+        ['student_career', cfg.student_career || defaultConfig.student_career],
+        ['activity', cfg.activity || defaultConfig.activity]
+      ])
+    };
+
+    if (window.elementSdk) {
+      window.elementSdk.init(element);
+    }
+
+    // Mapeo de métodos a archivos HTML
+    const methodsFiles = {
+      'grammar-translation': 'Metodo-1.html',
+      'direct-method': 'Metodo-2.html',
+      'reading-method': 'Metodo-3.html',
+      'audio-lingual': 'Metodo-4.html',
+      'silent-way': 'Metodo-5.html'
+    };
+
+    // Funcionalidad de botones de métodos
+    function initializeEventListeners() {
+      const methodButtons = document.querySelectorAll('.method-btn[data-method]');
+      const methodContent = document.getElementById('method-content');
+      const viewMaterialBtn = document.getElementById('view-material-btn');
+      const materialModal = document.getElementById('material-modal');
+      const closeMaterialBtns = document.querySelectorAll('#close-material-btn, #close-material-btn2');
+
+      let currentMethod = null;
+
+      methodButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+          e.preventDefault();
+          // Remover clase activa de todos los botones de método
+          methodButtons.forEach(btn => btn.classList.remove('active'));
+          
+          // Agregar clase activa al botón clickeado
+          this.classList.add('active');
+          
+          // Obtener el método seleccionado
+          currentMethod = this.dataset.method;
+          
+          // Mostrar contenido específico según el método
+          const methodContents = {
+            'grammar-translation': `
+              <div style="padding: 20px;">
+                <h3 style="color: #cc0000; font-size: 22px; margin-bottom: 20px; text-align: center;">🧠 CLASE: ANIMALS</h3>
+                
+                <div style="background: #fff9f9; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #cc0000;">
+                  <p style="margin: 0; color: #cc0000; font-weight: 600; font-size: 16px;">🔴 Método: Grammar - Translation</p>
+                  <p style="margin: 8px 0 0 0; color: #666; font-size: 15px;">🎯 Enfoque: Traducción + explicación en español</p>
+                </div>
+
+                <div style="background: #e8f4f8; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #0066cc;">
+                  <h4 style="margin: 0 0 15px 0; color: #0066cc; font-size: 18px;">🔹 INICIO (5 minutos)</h4>
+                  <div style="background: white; padding: 15px; border-radius: 6px;">
+                    <p style="margin: 0 0 10px 0; font-weight: 600; color: #333;">👨‍🏫 Motivación</p>
+                    <p style="margin: 0 0 10px 0; color: #666;">Docente dice:</p>
+                    <p style="margin: 0 0 15px 0; color: #333; font-style: italic; padding-left: 15px;">👉 "Hoy vamos a aprender animales en inglés, pero usando la traducción para entender mejor."</p>
+                    <p style="margin: 0 0 10px 0; font-weight: 600; color: #333;">Pregunta:</p>
+                    <p style="margin: 0 0 10px 0; color: #333; font-style: italic; padding-left: 15px;">👉 "¿Qué animales conocen en español?"</p>
+                    <p style="margin: 0; color: #666;">Escribes algunos en la pizarra:</p>
+                    <ul style="margin: 10px 0 0 30px; color: #666;">
+                      <li>perro</li>
+                      <li>gato</li>
+                      <li>león</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div style="background: #f9f0ff; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #9933cc;">
+                  <h4 style="margin: 0 0 15px 0; color: #9933cc; font-size: 18px;">🔹 DESARROLLO (20 minutos)</h4>
+                  <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 10px 0; font-weight: 600; color: #333;">🧾 Presentación del vocabulario</p>
+                    <p style="margin: 0 0 15px 0; color: #666; font-size: 14px;">Escribes en la pizarra:</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-family: monospace; font-size: 15px; line-height: 1.8;">
+                      Dog = perro<br>
+                      Cat = gato<br>
+                      Bird = pájaro<br>
+                      Lion = león<br>
+                      Elephant = elefante
+                    </div>
+                  </div>
+
+                  <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 10px 0; font-weight: 600; color: #333;">👨‍🏫 Explicación</p>
+                    <p style="margin: 0 0 10px 0; color: #666;">Pronuncias cada palabra:</p>
+                    <ul style="margin: 10px 0 15px 30px; color: #666;">
+                      <li>👉 "Dog = perro"</li>
+                      <li>👉 "Cat = gato"</li>
+                    </ul>
+                    <p style="margin: 0 0 10px 0; color: #666;">Los estudiantes repiten contigo.</p>
+                    <p style="margin: 0 0 10px 0; color: #666;">Explicas:</p>
+                    <p style="margin: 0 0 15px 0; color: #333; font-style: italic; padding-left: 15px;">👉 "En este método usamos la traducción para entender el significado."</p>
+                  </div>
+
+                  <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 10px 0; font-weight: 600; color: #333;">✍️ Actividad 1: Traducción directa</p>
+                    <p style="margin: 0 0 10px 0; color: #666; font-size: 14px;">Los estudiantes copian y completan:</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      Dog → __________<br>
+                      Cat → __________<br>
+                      Bird → __________<br>
+                      León → __________<br>
+                      Elefante → __________
+                    </div>
+                  </div>
+
+                  <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 10px 0; font-weight: 600; color: #333;">✍️ Actividad 2: Traducción de oraciones</p>
+                    <p style="margin: 0 0 10px 0; color: #666; font-size: 14px;">Escribes:</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8; margin-bottom: 15px;">
+                      The dog is big → __________<br>
+                      The cat is small → __________
+                    </div>
+                    <p style="margin: 0 0 10px 0; color: #666;">Explicas:</p>
+                    <p style="margin: 0 0 15px 0; color: #333; font-style: italic; padding-left: 15px;">👉 "Traducimos palabra por palabra."</p>
+                    <p style="margin: 0 0 10px 0; font-weight: 600; color: #333;">Ejemplo guiado:</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; margin-bottom: 10px;">
+                      The dog is big<br>
+                      👉 El perro es grande
+                    </div>
+                  </div>
+
+                  <div style="background: white; padding: 15px; border-radius: 6px;">
+                    <p style="margin: 0 0 10px 0; font-weight: 600; color: #333;">👨‍🏫 Práctica guiada</p>
+                    <p style="margin: 0 0 10px 0; color: #666;">Tú dices:</p>
+                    <p style="margin: 0 0 10px 0; color: #333; font-style: italic; padding-left: 15px;">👉 "Lion"</p>
+                    <p style="margin: 0 0 10px 0; color: #666;">Ellos responden:</p>
+                    <p style="margin: 0 0 15px 0; color: #333; font-style: italic; padding-left: 15px;">👉 "León"</p>
+                    <p style="margin: 0 0 10px 0; color: #666;">Luego al revés:</p>
+                    <p style="margin: 0 0 5px 0; color: #333; font-style: italic; padding-left: 15px;">👉 "Gato"</p>
+                    <p style="margin: 0; color: #333; font-style: italic; padding-left: 15px;">👉 "Cat"</p>
+                  </div>
+                </div>
+
+                <div style="background: #fffacd; padding: 20px; border-radius: 8px; border-left: 4px solid #ff9900;">
+                  <h4 style="margin: 0 0 15px 0; color: #ff6b00; font-size: 18px;">🔹 CIERRE (5 minutos)</h4>
+                  <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 10px 0; font-weight: 600; color: #333;">🧠 Reflexión</p>
+                    <p style="margin: 0 0 10px 0; color: #666;">Preguntas:</p>
+                    <ul style="margin: 10px 0 0 30px; color: #666;">
+                      <li>¿Cómo aprendimos hoy? 👉 (Traducción)</li>
+                      <li>¿Fue fácil entender las palabras?</li>
+                      <li>¿Para qué sirve traducir?</li>
+                    </ul>
+                  </div>
+                  <div style="background: white; padding: 15px; border-radius: 6px;">
+                    <p style="margin: 0 0 10px 0; font-weight: 600; color: #333;">🔥 Refuerzo final</p>
+                    <p style="margin: 0; color: #333; font-style: italic; padding-left: 15px;">👉 "Hoy aprendimos animales en inglés usando la traducción. Esto nos ayuda a entender rápidamente el significado en nuestro idioma."</p>
+                  </div>
+                </div>
+              </div>
+            `,
+            'direct-method': `
+              <div style="padding: 20px;">
+                <h3 style="color: #cc0000; font-size: 22px; margin-bottom: 20px; text-align: center;">🧠 CLASS: ANIMALS</h3>
+                
+                <div style="background: #f0f8ff; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #0066cc;">
+                  <p style="margin: 0; color: #0066cc; font-weight: 600; font-size: 16px;">🔵 Method: Direct Method</p>
+                  <p style="margin: 8px 0 0 0; color: #333; font-size: 15px;">🎯 Focus: Only English + visual learning</p>
+                </div>
+
+                <div style="background: #e8f4f8; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #0066cc;">
+                  <h4 style="margin: 0 0 15px 0; color: #0066cc; font-size: 18px;">🔹 WARM-UP (5 minutes)</h4>
+                  <div style="background: white; padding: 15px; border-radius: 6px;">
+                    <p style="margin: 0 0 10px 0; font-weight: 600; color: #333;">👨‍🏫 Teacher says (ONLY ENGLISH):</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8; margin-bottom: 15px;">
+                      "Hello children!" 👋<br>
+                      "How are you?"<br>
+                      "Today we learn… animals!" 🐾
+                    </div>
+                    <p style="margin: 0 0 5px 0; color: #666; font-size: 14px;">💡 Usa gestos y entusiasmo</p>
+                  </div>
+                </div>
+
+                <div style="background: #f9f0ff; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #9933cc;">
+                  <h4 style="margin: 0 0 15px 0; color: #9933cc; font-size: 18px;">🔹 DEVELOPMENT (20 minutes)</h4>
+                  
+                  <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">🧾 Vocabulary Presentation</p>
+                    <p style="margin: 0 0 10px 0; color: #666; font-size: 14px;">Muestras imágenes una por una:</p>
+                    
+                    <div style="background: #f5f5f5; padding: 15px; border-radius: 4px; margin-bottom: 15px;">
+                      <div style="margin-bottom: 15px;">
+                        <p style="margin: 0 0 8px 0; font-size: 28px;">🐶</p>
+                        <p style="margin: 0 0 5px 0; color: #333; font-style: italic;">👉 "This is a dog"</p>
+                        <p style="margin: 0; color: #666; font-size: 14px;">👉 Students repeat: "dog"</p>
+                      </div>
+                      <div style="margin-bottom: 15px;">
+                        <p style="margin: 0 0 8px 0; font-size: 28px;">🐱</p>
+                        <p style="margin: 0 0 5px 0; color: #333; font-style: italic;">👉 "This is a cat"</p>
+                        <p style="margin: 0; color: #666; font-size: 14px;">👉 Students repeat: "cat"</p>
+                      </div>
+                      <div style="margin-bottom: 15px;">
+                        <p style="margin: 0 0 8px 0; font-size: 28px;">🐦</p>
+                        <p style="margin: 0 0 5px 0; color: #333; font-style: italic;">👉 "This is a bird"</p>
+                        <p style="margin: 0; color: #666; font-size: 14px;">👉 Students repeat: "bird"</p>
+                      </div>
+                      <div style="margin-bottom: 15px;">
+                        <p style="margin: 0 0 8px 0; font-size: 28px;">🦁</p>
+                        <p style="margin: 0 0 5px 0; color: #333; font-style: italic;">👉 "This is a lion"</p>
+                        <p style="margin: 0; color: #666; font-size: 14px;">👉 Students repeat: "lion"</p>
+                      </div>
+                      <div>
+                        <p style="margin: 0 0 8px 0; font-size: 28px;">🐘</p>
+                        <p style="margin: 0 0 5px 0; color: #333; font-style: italic;">👉 "This is an elephant"</p>
+                        <p style="margin: 0; color: #666; font-size: 14px;">👉 Students repeat: "elephant"</p>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">🔁 Repetition (Pronunciation practice)</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8; margin-bottom: 10px;">
+                      Teacher: "Dog"<br>
+                      Students: "Dog"<br>
+                      <span style="color: #666; font-size: 14px;">(3 veces, con energía)</span>
+                    </div>
+                    <p style="margin: 0 0 5px 0; color: #666; font-size: 14px;">Repetir con todos los animales</p>
+                  </div>
+
+                  <div style="background: white; padding: 15px; border-radius: 6px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">❓ Question & Answer</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      <p style="margin: 0 0 10px 0;">(Muestras imagen)</p>
+                      <p style="margin: 0 0 5px 0;">👉 Teacher: "What is this?"</p>
+                      <p style="margin: 0 0 10px 0;">👉 Students: "Dog"</p>
+                      <p style="margin: 0; color: #666; font-size: 14px;">(Repetir con todos)</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="background: #fff0e6; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #ff6b00;">
+                  <h4 style="margin: 0 0 15px 0; color: #ff6b00; font-size: 18px;">🔹 ACTIVITY (Juego dinámico – 10 minutos)</h4>
+                  
+                  <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">🎯 "FAST ANIMALS GAME"</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      <p style="margin: 0 0 10px 0;">Muestras imágenes rápido</p>
+                      <p style="margin: 0 0 10px 0;">Preguntas:</p>
+                      <p style="margin: 0 0 10px 0; color: #333; font-style: italic;">👉 "What is this?"</p>
+                      <p style="margin: 0 0 10px 0; color: #666;">Los estudiantes responden rápido:</p>
+                      <p style="margin: 0; color: #333; font-style: italic;">👉 "Dog!" / "Cat!" / "Lion!"</p>
+                    </div>
+                  </div>
+
+                  <div style="background: white; padding: 15px; border-radius: 6px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">🔥 Variante divertida</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      <p style="margin: 0 0 10px 0;">Divide la clase en 2 grupos</p>
+                      <p style="margin: 0; color: #333; font-weight: 600;">Gana el grupo que responde más rápido 🏆</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="background: #fffacd; padding: 20px; border-radius: 8px; border-left: 4px solid #ff9900;">
+                  <h4 style="margin: 0 0 15px 0; color: #ff6b00; font-size: 18px;">🔹 CLOSING (5 minutes)</h4>
+                  
+                  <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">🧠 Review</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      <p style="margin: 0 0 10px 0;">Teacher shows images again:</p>
+                      <p style="margin: 0 0 10px 0; color: #333; font-style: italic;">👉 "What is this?"</p>
+                      <p style="margin: 0; color: #666;">Students answer</p>
+                    </div>
+                  </div>
+
+                  <div style="background: white; padding: 15px; border-radius: 6px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">💬 Final message</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      <p style="margin: 0 0 5px 0; color: #333; font-style: italic;">👉 "Great job!"</p>
+                      <p style="margin: 0; color: #333; font-style: italic;">👉 "Today we learned animals in English!"</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `,
+            'reading-method': `
+              <div style="padding: 20px;">
+                <h3 style="color: #cc0000; font-size: 22px; margin-bottom: 20px; text-align: center;">🧠 CLASS: ANIMALS</h3>
+                
+                <div style="background: #f0f8e8; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #22a447;">
+                  <p style="margin: 0; color: #22a447; font-weight: 600; font-size: 16px;">🟢 Method: Reading Method</p>
+                  <p style="margin: 8px 0 0 0; color: #333; font-size: 15px;">🎯 Focus: Reading comprehension</p>
+                </div>
+
+                <div style="background: #e8f4e8; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #22a447;">
+                  <h4 style="margin: 0 0 15px 0; color: #22a447; font-size: 18px;">🔹 WARM-UP (5 minutes)</h4>
+                  <div style="background: white; padding: 15px; border-radius: 6px;">
+                    <p style="margin: 0 0 10px 0; font-weight: 600; color: #333;">👨‍🏫 Teacher (puede usar apoyo en español si es necesario)</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8; margin-bottom: 15px;">
+                      "Hoy vamos a aprender animales en inglés, pero leyendo." 📖<br>
+                      "Vamos a entender un pequeño texto."
+                    </div>
+                    <p style="margin: 0 0 10px 0; font-weight: 600; color: #333;">👉 Puedes activar conocimientos previos:</p>
+                    <p style="margin: 0 0 10px 0; color: #333; font-style: italic;">"¿Qué animales conocen?"</p>
+                  </div>
+                </div>
+
+                <div style="background: #f9f0ff; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #9933cc;">
+                  <h4 style="margin: 0 0 15px 0; color: #9933cc; font-size: 18px;">🔹 DEVELOPMENT (20 minutes)</h4>
+                  
+                  <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">📖 Reading (Lectura guiada)</p>
+                    <p style="margin: 0 0 10px 0; color: #666; font-size: 14px;">Escribes o entregas el texto:</p>
+                    <div style="background: #f5f5f5; padding: 15px; border-radius: 4px; font-size: 16px; line-height: 2; margin-bottom: 10px; font-family: monospace;">
+                      The dog is big.<br>
+                      The cat is small.<br>
+                      The lion is strong.
+                    </div>
+                  </div>
+
+                  <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">👀 Paso 1: Lectura silenciosa</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      <p style="margin: 0 0 10px 0; color: #333; font-style: italic;">👉 "Read silently" (Lee en silencio)</p>
+                      <p style="margin: 0; color: #666;">Los estudiantes leen el texto 2 veces.</p>
+                    </div>
+                  </div>
+
+                  <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">🔊 Paso 2: Lectura en voz alta</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      <p style="margin: 0 0 10px 0; color: #666;">El docente lee primero:</p>
+                      <p style="margin: 0 0 10px 0; color: #333; font-style: italic;">👉 "The dog is big"</p>
+                      <p style="margin: 0; color: #666;">Los estudiantes repiten.</p>
+                    </div>
+                  </div>
+
+                  <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">✏️ Paso 3: Identificación</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      <p style="margin: 0 0 10px 0; color: #333; font-style: italic;">👉 "Underline the animals"</p>
+                      <p style="margin: 0 0 10px 0; color: #666;">Los estudiantes subrayan:</p>
+                      <ul style="margin: 0 0 0 30px; color: #666;">
+                        <li>dog</li>
+                        <li>cat</li>
+                        <li>lion</li>
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div style="background: white; padding: 15px; border-radius: 6px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">🧠 Paso 4: Comprensión</p>
+                    <p style="margin: 0 0 10px 0; color: #666;">Explicas brevemente:</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      big = grande<br>
+                      small = pequeño<br>
+                      strong = fuerte
+                    </div>
+                  </div>
+                </div>
+
+                <div style="background: #fff0e6; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #ff6b00;">
+                  <h4 style="margin: 0 0 15px 0; color: #ff6b00; font-size: 18px;">🔹 ACTIVITY (10 minutes)</h4>
+                  
+                  <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">❓ Comprensión lectora</p>
+                    <p style="margin: 0 0 10px 0; color: #666; font-size: 14px;">Los estudiantes responden:</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      <p style="margin: 0 0 10px 0;">What animal is big?</p>
+                      <p style="margin: 0 0 10px 0; color: #333;">👉 __________________</p>
+                      <p style="margin: 0 0 10px 0;">What animal is small?</p>
+                      <p style="margin: 0 0 10px 0; color: #333;">👉 __________________</p>
+                      <p style="margin: 0 0 10px 0;">What animal is strong?</p>
+                      <p style="margin: 0; color: #333;">👉 __________________</p>
+                    </div>
+                  </div>
+
+                  <div style="background: white; padding: 15px; border-radius: 6px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">✍️ Actividad adicional</p>
+                    <p style="margin: 0 0 10px 0; color: #666; font-size: 14px;">Completa:</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      <p style="margin: 0 0 10px 0;">The ______ is big.</p>
+                      <p style="margin: 0 0 10px 0;">The ______ is small.</p>
+                      <p style="margin: 0;">The ______ is strong.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="background: #fffacd; padding: 20px; border-radius: 8px; border-left: 4px solid #ff9900;">
+                  <h4 style="margin: 0 0 15px 0; color: #ff6b00; font-size: 18px;">🔹 CLOSING (5 minutes)</h4>
+                  
+                  <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">🧠 Reflexión</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      <p style="margin: 0 0 10px 0; color: #333; font-style: italic;">"¿Qué hicimos hoy?"</p>
+                      <p style="margin: 0 0 15px 0; color: #666;">👉 Leer</p>
+                      <p style="margin: 0 0 10px 0; color: #333; font-style: italic;">"¿Qué aprendimos?"</p>
+                      <p style="margin: 0; color: #666;">👉 Animales en inglés</p>
+                    </div>
+                  </div>
+
+                  <div style="background: white; padding: 15px; border-radius: 6px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">💬 Mensaje final</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      <p style="margin: 0; color: #333; font-style: italic;">👉 "Reading helps us understand English."</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `,
+            'audio-lingual': `
+              <div style="padding: 20px;">
+                <h3 style="color: #cc0000; font-size: 22px; margin-bottom: 20px; text-align: center;">🧠 CLASS: ANIMALS</h3>
+                
+                <div style="background: #fff3cd; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #ffc107;">
+                  <p style="margin: 0; color: #ff9800; font-weight: 600; font-size: 16px;">🟡 Method: Audio-Lingual Method</p>
+                  <p style="margin: 8px 0 0 0; color: #333; font-size: 15px;">🎯 Focus: Repetition (drills)</p>
+                </div>
+
+                <div style="background: #fef5e7; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #ff9800;">
+                  <h4 style="margin: 0 0 15px 0; color: #ff9800; font-size: 18px;">🔹 WARM-UP (5 minutes)</h4>
+                  <div style="background: white; padding: 15px; border-radius: 6px;">
+                    <p style="margin: 0 0 10px 0; font-weight: 600; color: #333;">👨‍🏫 Teacher (energético)</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8; margin-bottom: 15px;">
+                      "Hello children!" 👋<br>
+                      "Today we learn animals!" 🐾
+                    </div>
+                    <p style="margin: 0 0 10px 0; font-weight: 600; color: #333;">👉 Usa voz y ritmo (muy importante en este método)</p>
+                  </div>
+                </div>
+
+                <div style="background: #f9f0ff; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #9933cc;">
+                  <h4 style="margin: 0 0 15px 0; color: #9933cc; font-size: 18px;">🔹 DEVELOPMENT (20 minutes)</h4>
+                  
+                  <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">🔁 Drill 1: Repetition (repetición básica)</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      <p style="margin: 0 0 10px 0; color: #333; font-style: italic;">👉 Teacher: "Dog"</p>
+                      <p style="margin: 0 0 10px 0; color: #666;">👉 Students: "Dog"</p>
+                      <p style="margin: 0 0 15px 0; color: #999; font-size: 14px;">(3 veces, con ritmo)</p>
+                      
+                      <p style="margin: 0 0 10px 0; color: #333; font-style: italic;">👉 Teacher: "Cat"</p>
+                      <p style="margin: 0 0 10px 0; color: #666;">👉 Students: "Cat"</p>
+                      
+                      <p style="margin: 0 0 10px 0; color: #333; font-style: italic;">👉 Teacher: "Bird"</p>
+                      <p style="margin: 0 0 10px 0; color: #666;">👉 Students: "Bird"</p>
+                      
+                      <p style="margin: 0 0 10px 0; color: #333; font-style: italic;">👉 Teacher: "Lion"</p>
+                      <p style="margin: 0 0 10px 0; color: #666;">👉 Students: "Lion"</p>
+                      
+                      <p style="margin: 0 0 10px 0; color: #333; font-style: italic;">👉 Teacher: "Elephant"</p>
+                      <p style="margin: 0; color: #666;">👉 Students: "Elephant"</p>
+                    </div>
+                  </div>
+
+                  <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">🔁 Drill 2: Repetition with structure</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      <p style="margin: 0 0 10px 0; color: #333; font-style: italic;">👉 Teacher: "This is a dog"</p>
+                      <p style="margin: 0 0 10px 0; color: #666;">👉 Students: "This is a dog"</p>
+                      <p style="margin: 0 0 15px 0; color: #999; font-size: 14px;">(3 veces)</p>
+                      
+                      <p style="margin: 0; color: #666; font-size: 14px;">(Repetir con todos los animales)</p>
+                    </div>
+                  </div>
+
+                  <div style="background: white; padding: 15px; border-radius: 6px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">🔁 Drill 3: Substitution (sustitución)</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      <p style="margin: 0 0 10px 0; color: #333; font-style: italic;">👉 Teacher: "Dog"</p>
+                      <p style="margin: 0 0 10px 0; color: #666;">👉 Students: "This is a dog"</p>
+                      
+                      <p style="margin: 0 0 10px 0; color: #333; font-style: italic;">👉 Teacher: "Cat"</p>
+                      <p style="margin: 0 0 10px 0; color: #666;">👉 Students: "This is a cat"</p>
+                      
+                      <p style="margin: 0 0 10px 0; color: #333; font-style: italic;">👉 Teacher: "Lion"</p>
+                      <p style="margin: 0; color: #666;">👉 Students: "This is a lion"</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="background: #fff0e6; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #ff6b00;">
+                  <h4 style="margin: 0 0 15px 0; color: #ff6b00; font-size: 18px;">🔹 ACTIVITY (10 minutes)</h4>
+                  
+                  <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">🎯 Drill Game</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      <p style="margin: 0 0 10px 0; color: #333; font-style: italic;">👉 Teacher: "Cat"</p>
+                      <p style="margin: 0 0 10px 0; color: #666;">👉 Students: "Cat"</p>
+                      
+                      <p style="margin: 0 0 10px 0; color: #333; font-style: italic;">👉 Teacher: "Dog"</p>
+                      <p style="margin: 0 0 10px 0; color: #666;">👉 Students: "Dog"</p>
+                      
+                      <p style="margin: 0; color: #999; font-size: 14px;">(Rápido, como juego de reacción)</p>
+                    </div>
+                  </div>
+
+                  <div style="background: white; padding: 15px; border-radius: 6px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">✍️ Completa (oral o escrito)</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      <p style="margin: 0 0 10px 0; color: #333; font-style: italic;">👉 Teacher: "This is a…"</p>
+                      <p style="margin: 0 0 10px 0; color: #666;">👉 Students: "dog"</p>
+                      
+                      <p style="margin: 0 0 10px 0; color: #333; font-style: italic;">👉 Teacher: "This is a…"</p>
+                      <p style="margin: 0; color: #666;">👉 Students: "cat"</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="background: #fffacd; padding: 20px; border-radius: 8px; border-left: 4px solid #ff9900;">
+                  <h4 style="margin: 0 0 15px 0; color: #ff6b00; font-size: 18px;">🔹 CLOSING (5 minutes)</h4>
+                  
+                  <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">🔁 Final repetition</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      <p style="margin: 0 0 10px 0; color: #666;">Toda la clase repite:</p>
+                      <p style="margin: 0 0 8px 0; color: #333; font-style: italic;">👉 "This is a dog"</p>
+                      <p style="margin: 0 0 8px 0; color: #333; font-style: italic;">👉 "This is a cat"</p>
+                      <p style="margin: 0; color: #333; font-style: italic;">👉 "This is a lion"</p>
+                    </div>
+                  </div>
+
+                  <div style="background: white; padding: 15px; border-radius: 6px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">💬 Mensaje final</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      <p style="margin: 0 0 8px 0; color: #333; font-style: italic;">👉 "Good job!"</p>
+                      <p style="margin: 0; color: #333; font-style: italic;">👉 "Repeat helps us learn English!"</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `,
+            'silent-way': `
+              <div style="padding: 20px;">
+                <h3 style="color: #cc0000; font-size: 22px; margin-bottom: 20px; text-align: center;">🧠 CLASS: ANIMALS</h3>
+                
+                <div style="background: #f3e5f5; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #7c3aed;">
+                  <p style="margin: 0; color: #7c3aed; font-weight: 600; font-size: 16px;">🟣 Method: The Silent Way</p>
+                  <p style="margin: 8px 0 0 0; color: #333; font-size: 15px;">🎯 Focus: Discovery learning (aprenden solos)</p>
+                </div>
+
+                <div style="background: #ede9fe; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #7c3aed;">
+                  <h4 style="margin: 0 0 15px 0; color: #7c3aed; font-size: 18px;">🔹 WARM-UP (5 minutes)</h4>
+                  <div style="background: white; padding: 15px; border-radius: 6px;">
+                    <p style="margin: 0 0 10px 0; font-weight: 600; color: #333;">👨‍🏫 Docente</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8; margin-bottom: 15px;">
+                      Saludas brevemente:<br>
+                      <span style="color: #333; font-style: italic;">👉 "Hello"</span>
+                    </div>
+                    <div style="background: #fff3cd; padding: 12px; border-radius: 4px; font-size: 14px; color: #7c3aed;">
+                      <p style="margin: 0 0 8px 0; font-weight: 600;">⚠️ Desde aquí, hablas lo mínimo posible ❗</p>
+                      <p style="margin: 0; color: #333;">Usa gestos, mirada y señales.</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="background: #f9f0ff; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #9933cc;">
+                  <h4 style="margin: 0 0 15px 0; color: #9933cc; font-size: 18px;">🔹 DEVELOPMENT (20 minutes)</h4>
+                  
+                  <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">👀 Presentación (sin explicación)</p>
+                    <div style="background: #f5f5f5; padding: 15px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      <p style="margin: 0 0 10px 0; color: #666;">(Muestras una imagen)</p>
+                      <p style="margin: 0 0 15px 0; font-size: 32px; text-align: center;">🐶</p>
+                      <div style="background: white; padding: 10px; border-radius: 4px; border-left: 3px solid #7c3aed;">
+                        <p style="margin: 0 0 8px 0; color: #333; font-style: italic;">👉 Señalas la imagen</p>
+                        <p style="margin: 0 0 8px 0; color: #333; font-style: italic;">👉 Miras a los estudiantes… (esperas)</p>
+                      </div>
+                      <p style="margin: 15px 0 0 0; color: #666; font-size: 14px;">👧👦 Estudiantes: "Dog" (o intentan decirlo)</p>
+                      <p style="margin: 8px 0 0 0; color: #333; font-style: italic;">👉 Tú: 👍 (si es correcto)</p>
+                      <p style="margin: 8px 0 0 0; color: #333; font-style: italic;">👉 Tú: 👂 + señalas boca (si deben repetir mejor)</p>
+                    </div>
+                  </div>
+
+                  <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333; font-size: 14px;">(Repetir con cada animal)</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 2;">
+                      <p style="margin: 0;">🐱 → Cat</p>
+                      <p style="margin: 0;">🐦 → Bird</p>
+                      <p style="margin: 0;">🦁 → Lion</p>
+                      <p style="margin: 0;">🐘 → Elephant</p>
+                    </div>
+                  </div>
+
+                  <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">🔁 Descubrimiento guiado</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      <p style="margin: 0 0 10px 0; color: #666;">Muestras dos imágenes:</p>
+                      <p style="margin: 0 0 15px 0; font-size: 28px; letter-spacing: 10px;">🐶 🐱</p>
+                      <p style="margin: 0 0 10px 0; color: #333; font-style: italic;">👉 Señalas uno</p>
+                      <p style="margin: 0 0 10px 0; color: #666;">👉 Estudiantes dicen: "Dog"</p>
+                      <p style="margin: 0 0 10px 0; color: #333; font-style: italic;">👉 Señalas otro</p>
+                      <p style="margin: 0; color: #666;">👉 Estudiantes dicen: "Cat"</p>
+                    </div>
+                  </div>
+
+                  <div style="background: white; padding: 15px; border-radius: 6px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">🧠 Construcción sin hablar</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      <p style="margin: 0 0 10px 0; color: #666;">(Escribes en la pizarra:)</p>
+                      <p style="margin: 0 0 15px 0; color: #333; font-weight: 600; font-family: monospace;">👉 "This is a ______"</p>
+                      <p style="margin: 0 0 10px 0; color: #666;">Señalas 🐶</p>
+                      <p style="margin: 0 0 10px 0; color: #333; font-style: italic;">👉 Estudiantes: "dog"</p>
+                      <p style="margin: 0 0 15px 0; color: #666;">👉 Completan:</p>
+                      <p style="margin: 0 0 10px 0; color: #333; font-weight: 600; font-family: monospace;">👉 "This is a dog"</p>
+                      <p style="margin: 0; color: #999; font-size: 14px;">(Tú solo guías con gestos)</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="background: #fff0e6; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #ff6b00;">
+                  <h4 style="margin: 0 0 15px 0; color: #ff6b00; font-size: 18px;">🔹 ACTIVITY (10 minutes)</h4>
+                  
+                  <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">🎯 "Guess and Say"</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      <p style="margin: 0 0 10px 0; color: #666;">Muestras una imagen rápidamente</p>
+                      <p style="margin: 0 0 10px 0; color: #666;">No dices nada</p>
+                      <p style="margin: 0 0 10px 0; color: #333; font-style: italic;">👉 Estudiantes dicen:</p>
+                      <p style="margin: 0; color: #333; font-weight: 600;">"Lion!" / "Elephant!"</p>
+                    </div>
+                  </div>
+
+                  <div style="background: white; padding: 15px; border-radius: 6px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">🔄 Trabajo en pares</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      <p style="margin: 0 0 10px 0; color: #666;">Un estudiante muestra tarjeta</p>
+                      <p style="margin: 0 0 10px 0; color: #666;">El otro dice la palabra</p>
+                      <p style="margin: 0; color: #999; font-size: 14px;">👉 Sin intervención del docente (solo observas)</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="background: #fffacd; padding: 20px; border-radius: 8px; border-left: 4px solid #ff9900;">
+                  <h4 style="margin: 0 0 15px 0; color: #ff6b00; font-size: 18px;">🔹 CLOSING (5 minutes)</h4>
+                  
+                  <div style="background: white; padding: 15px; border-radius: 6px; margin-bottom: 15px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">🧠 Reflexión (puedes hablar un poco aquí)</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      <p style="margin: 0 0 10px 0; color: #333; font-style: italic;">"¿Cómo aprendimos hoy?"</p>
+                      <p style="margin: 0 0 15px 0; color: #666;">👉 Solos / observando</p>
+                      <p style="margin: 0 0 10px 0; color: #333; font-style: italic;">"¿El profesor habló mucho?"</p>
+                      <p style="margin: 0; color: #666;">👉 No</p>
+                    </div>
+                  </div>
+
+                  <div style="background: white; padding: 15px; border-radius: 6px;">
+                    <p style="margin: 0 0 15px 0; font-weight: 600; color: #333;">💬 Mensaje final</p>
+                    <div style="background: #f5f5f5; padding: 12px; border-radius: 4px; font-size: 15px; line-height: 1.8;">
+                      <p style="margin: 0; color: #333; font-style: italic;">👉 "You can learn by yourself!"</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `
+          };
+          
+          // Mostrar contenido del método
+          methodContent.innerHTML = methodContents[currentMethod] || `
+            <div style="text-align: center; padding: 40px 20px;">
+              <h3 style="color: #cc0000; font-size: 20px; margin-bottom: 10px;">
+                ${this.querySelector('.btn-text').textContent}
+              </h3>
+              <p style="color: #666; font-size: 16px;">
+                Contenido disponible...
+              </p>
+            </div>
+          `;
+          viewMaterialBtn.style.display = 'inline-block';
+        });
+      });
+
+      // Funcionalidad del botón Ver Material
+      viewMaterialBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        if (currentMethod && methodsFiles[currentMethod]) {
+          const filePath = methodsFiles[currentMethod];
+          
+          // Abrir el archivo en la misma pestaña
+          window.location.href = filePath;
+        }
+      });
+    }
+
+
+
+    // Inicializar cuando el DOM esté listo
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initializeEventListeners);
+    } else {
+      initializeEventListeners();
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9f126be6464b56b3',t:'MTc3NzAwNTUzOC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

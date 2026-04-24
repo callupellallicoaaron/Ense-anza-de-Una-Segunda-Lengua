@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="es" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Animals – English 3º Primary</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script><!-- Element SDK only loads in Canva environment, gracefully skipped elsewhere -->
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&amp;family=Fredoka+One&amp;display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: 'Nunito', sans-serif; }
+    .fredoka { font-family: 'Fredoka One', cursive; }
+    
+    @keyframes bounceIn {
+      0% { transform: scale(0.3); opacity: 0; }
+      50% { transform: scale(1.05); }
+      70% { transform: scale(0.9); }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    @keyframes wiggle {
+      0%,100% { transform: rotate(0deg); }
+      25% { transform: rotate(-5deg); }
+      75% { transform: rotate(5deg); }
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes confetti {
+      0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(-80px) rotate(360deg); opacity: 0; }
+    }
+    .anim-bounce { animation: bounceIn 0.5s ease-out forwards; }
+    .anim-wiggle:hover { animation: wiggle 0.4s ease; }
+    .anim-fade { animation: fadeUp 0.4s ease-out forwards; }
+    
+    .correct-flash { animation: bounceIn 0.3s ease; background: #d1fae5 !important; border-color: #10b981 !important; }
+    .wrong-flash { animation: wiggle 0.3s ease; background: #fee2e2 !important; border-color: #ef4444 !important; }
+    
+    .vocab-card {
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .vocab-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    
+    .section-card {
+      opacity: 0;
+      animation: fadeUp 0.5s ease-out forwards;
+    }
+    
+    .progress-fill {
+      transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    input[type="text"]:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+    }
+
+    .match-item {
+      cursor: grab;
+      transition: transform 0.15s, box-shadow 0.15s;
+      user-select: none;
+    }
+    .match-item:hover { transform: scale(1.05); }
+    .match-item.selected { box-shadow: 0 0 0 3px #6366f1; transform: scale(1.08); }
+    .match-item.matched { opacity: 0.5; pointer-events: none; }
+
+    .confetti-piece {
+      position: absolute;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      animation: confetti 0.8s ease-out forwards;
+    }
+
+    .tab-btn { transition: all 0.2s; }
+    .tab-btn.active { transform: translateY(-2px); }
+
+    /* Responsive adjustments */
+    @media (max-width: 640px) {
+      body { font-size: 14px; }
+      #header { padding: 1rem; }
+      #main-title { font-size: 1.5rem !important; }
+      #topic-title { font-size: 1rem !important; }
+      nav { gap: 0.5rem; padding: 0.75rem; }
+      .tab-btn { padding: 0.5rem 0.75rem !important; font-size: 0.75rem !important; }
+      .vocab-card { padding: 1rem !important; }
+      .vocab-card p { font-size: 0.9rem; }
+      .vocab-card .text-4xl { font-size: 2.5rem !important; }
+      main { padding-left: 0.75rem; padding-right: 0.75rem; }
+      .rounded-2xl { border-radius: 1rem; }
+      .p-5 { padding: 1rem; }
+      .section-card h3 { font-size: 1rem !important; }
+      .section-card p { font-size: 0.875rem; }
+      #p1-items, #p2-items, #p3-items { gap: 0.75rem; }
+      .flex-col input { font-size: 1rem; padding: 0.5rem; }
+      #match-words, #match-emojis { gap: 0.5rem; }
+      .match-item { padding: 0.75rem 1rem !important; font-size: 0.9rem !important; }
+      .match-item.text-3xl { font-size: 2rem !important; }
+      button[onclick*="pickAnimal"] { padding: 0.75rem !important; font-size: 2.5rem !important; }
+      #bonus-result { font-size: 1.5rem; min-height: 50px; padding: 1rem; }
+      .space-y-3 > div { gap: 0.75rem; }
+      .space-y-3 > div span:first-child { min-width: 2rem; }
+      .space-y-3 > div input { padding: 0.5rem; font-size: 1rem; }
+    }
+
+    @media (max-width: 480px) {
+      body { font-size: 13px; }
+      #header { padding: 0.75rem; }
+      #main-title { font-size: 1.25rem !important; }
+      #topic-title { font-size: 0.9rem !important; }
+      nav { gap: 0.25rem; flex-wrap: wrap; }
+      .tab-btn { padding: 0.4rem 0.6rem !important; font-size: 0.65rem !important; }
+      .grid { gap: 0.5rem !important; }
+      .vocab-card { padding: 0.75rem !important; }
+      .vocab-card .text-4xl { font-size: 2rem !important; }
+      .vocab-card p:first-of-type { font-size: 0.9rem; }
+      .vocab-card p:nth-of-type(2) { font-size: 0.75rem; }
+      .p-5 { padding: 0.75rem; }
+      .rounded-2xl { border-radius: 0.75rem; }
+      .section-card h3 { font-size: 0.9rem !important; }
+      input[type="text"] { font-size: 0.95rem !important; padding: 0.4rem !important; }
+      button { font-size: 0.9rem !important; padding: 0.6rem !important; }
+      .flex.items-center.gap-3 { gap: 0.5rem; }
+      .space-y-3 > div span:first-child { min-width: 1.75rem; font-size: 1.5rem; }
+    }
+
+    @media (min-width: 1024px) {
+      main { max-width: 900px; }
+      .grid { gap: 1rem; }
+      .vocab-card { padding: 1.5rem; }
+    }
+  </style>
+  <style>body { box-sizing: border-box; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div id="app" class="h-full w-full overflow-auto" style="background: #fef9f0;">
+   <!-- Header -->
+   <header id="header" class="text-center py-6 px-4" style="background: linear-gradient(135deg, #6366f1, #8b5cf6, #a855f7);">
+    <div class="anim-bounce">
+     <p class="text-white/80 text-sm font-bold tracking-widest mb-1">🧠 MATERIAL DEL ESTUDIANTE</p>
+     <h1 id="main-title" class="fredoka text-3xl md:text-4xl text-white drop-shadow-lg">📘 ENGLISH – 3º PRIMARY</h1>
+     <h2 id="topic-title" class="fredoka text-xl md:text-2xl mt-2 drop-shadow" style="color: #fde68a;">🐾 TOPIC: ANIMALS</h2>
+    </div><!-- Progress -->
+    <div class="max-w-md mx-auto mt-4 bg-white/20 rounded-full h-3 overflow-hidden">
+     <div id="progress-bar" class="progress-fill h-full rounded-full" style="width:0%; background: #fde68a;"></div>
+    </div>
+    <p id="progress-text" class="text-white/70 text-xs mt-1 font-semibold">0 / 20 puntos</p>
+   </header><!-- Navigation Tabs -->
+   <nav class="flex justify-center gap-2 px-4 py-3 flex-wrap" style="background: #f5f0e8;">
+    <button onclick="showSection('vocab')" class="tab-btn active px-4 py-2 rounded-full text-sm font-bold text-white" style="background:#6366f1;" data-tab="vocab">📖 Vocabulario</button> <button onclick="showSection('p1')" class="tab-btn px-4 py-2 rounded-full text-sm font-bold" style="background:#e5e7eb; color:#6b7280;" data-tab="p1">✍️ Práctica 1</button> <button onclick="showSection('p2')" class="tab-btn px-4 py-2 rounded-full text-sm font-bold" style="background:#e5e7eb; color:#6b7280;" data-tab="p2">✍️ Práctica 2</button> <button onclick="showSection('p3')" class="tab-btn px-4 py-2 rounded-full text-sm font-bold" style="background:#e5e7eb; color:#6b7280;" data-tab="p3">✍️ Práctica 3</button> <button onclick="showSection('match')" class="tab-btn px-4 py-2 rounded-full text-sm font-bold" style="background:#e5e7eb; color:#6b7280;" data-tab="match">🎯 Unir</button> <button onclick="showSection('bonus')" class="tab-btn px-4 py-2 rounded-full text-sm font-bold" style="background:#e5e7eb; color:#6b7280;" data-tab="bonus">🎨 Bonus</button>
+   </nav>
+   <main class="max-w-2xl mx-auto px-4 pb-10">
+    <!-- SECTION: Vocabulary -->
+    <section id="sec-vocab" class="section-card mt-6">
+     <div class="rounded-2xl p-5 shadow-md" style="background: white; border: 3px solid #c7d2fe;">
+      <h3 class="fredoka text-xl mb-1" style="color:#4f46e5;">✏️ 1. VOCABULARY</h3>
+      <p class="text-sm mb-4" style="color:#6b7280;">Observa, escucha y repite en voz alta 🔊</p>
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+       <div class="vocab-card rounded-xl p-4 text-center cursor-pointer anim-wiggle" style="background:#eef2ff; border:2px solid #c7d2fe;" onclick="speakWord('dog')">
+        <span class="text-4xl block mb-2">🐶</span>
+        <p class="font-extrabold text-lg" style="color:#4338ca;">Dog</p>
+        <p class="text-sm" style="color:#6b7280;">perro</p><span class="text-xs mt-1 inline-block px-2 py-0.5 rounded-full" style="background:#c7d2fe; color:#4338ca;">🔊 Click</span>
+       </div>
+       <div class="vocab-card rounded-xl p-4 text-center cursor-pointer anim-wiggle" style="background:#fef3c7; border:2px solid #fcd34d;" onclick="speakWord('cat')">
+        <span class="text-4xl block mb-2">🐱</span>
+        <p class="font-extrabold text-lg" style="color:#b45309;">Cat</p>
+        <p class="text-sm" style="color:#6b7280;">gato</p><span class="text-xs mt-1 inline-block px-2 py-0.5 rounded-full" style="background:#fcd34d; color:#92400e;">🔊 Click</span>
+       </div>
+       <div class="vocab-card rounded-xl p-4 text-center cursor-pointer anim-wiggle" style="background:#d1fae5; border:2px solid #6ee7b7;" onclick="speakWord('bird')">
+        <span class="text-4xl block mb-2">🐦</span>
+        <p class="font-extrabold text-lg" style="color:#047857;">Bird</p>
+        <p class="text-sm" style="color:#6b7280;">pájaro</p><span class="text-xs mt-1 inline-block px-2 py-0.5 rounded-full" style="background:#6ee7b7; color:#047857;">🔊 Click</span>
+       </div>
+       <div class="vocab-card rounded-xl p-4 text-center cursor-pointer anim-wiggle" style="background:#fee2e2; border:2px solid #fca5a5;" onclick="speakWord('lion')">
+        <span class="text-4xl block mb-2">🦁</span>
+        <p class="font-extrabold text-lg" style="color:#dc2626;">Lion</p>
+        <p class="text-sm" style="color:#6b7280;">león</p><span class="text-xs mt-1 inline-block px-2 py-0.5 rounded-full" style="background:#fca5a5; color:#dc2626;">🔊 Click</span>
+       </div>
+       <div class="vocab-card rounded-xl p-4 text-center cursor-pointer anim-wiggle" style="background:#e5e7eb; border:2px solid #9ca3af;" onclick="speakWord('elephant')">
+        <span class="text-4xl block mb-2">🐘</span>
+        <p class="font-extrabold text-lg" style="color:#374151;">Elephant</p>
+        <p class="text-sm" style="color:#6b7280;">elefante</p><span class="text-xs mt-1 inline-block px-2 py-0.5 rounded-full" style="background:#9ca3af; color:#374151;">🔊 Click</span>
+       </div>
+      </div>
+     </div>
+    </section><!-- SECTION: Practice 1 – English to Spanish -->
+    <section id="sec-p1" class="section-card mt-6" style="display:none;">
+     <div class="rounded-2xl p-5 shadow-md" style="background: white; border: 3px solid #fcd34d;">
+      <h3 class="fredoka text-xl mb-1" style="color:#b45309;">✍️ 2. PRACTICE 1 – Traduce al español</h3>
+      <p class="text-sm mb-4" style="color:#6b7280;">Escribe la traducción correcta</p>
+      <div id="p1-items" class="space-y-3"></div><button onclick="checkP1()" class="mt-4 w-full py-3 rounded-xl font-bold text-white text-lg" style="background: linear-gradient(135deg, #f59e0b, #d97706);">✅ Comprobar respuestas</button>
+      <div id="p1-feedback" class="mt-3 text-center font-bold text-lg"></div>
+     </div>
+    </section><!-- SECTION: Practice 2 – Spanish to English -->
+    <section id="sec-p2" class="section-card mt-6" style="display:none;">
+     <div class="rounded-2xl p-5 shadow-md" style="background: white; border: 3px solid #6ee7b7;">
+      <h3 class="fredoka text-xl mb-1" style="color:#047857;">✍️ 3. PRACTICE 2 – Traduce al inglés</h3>
+      <p class="text-sm mb-4" style="color:#6b7280;">Escribe la traducción correcta</p>
+      <div id="p2-items" class="space-y-3"></div><button onclick="checkP2()" class="mt-4 w-full py-3 rounded-xl font-bold text-white text-lg" style="background: linear-gradient(135deg, #10b981, #047857);">✅ Comprobar respuestas</button>
+      <div id="p2-feedback" class="mt-3 text-center font-bold text-lg"></div>
+     </div>
+    </section><!-- SECTION: Practice 3 – Sentences -->
+    <section id="sec-p3" class="section-card mt-6" style="display:none;">
+     <div class="rounded-2xl p-5 shadow-md" style="background: white; border: 3px solid #c7d2fe;">
+      <h3 class="fredoka text-xl mb-1" style="color:#4f46e5;">✍️ 4. PRACTICE 3 – Traduce las oraciones</h3>
+      <p class="text-sm mb-4" style="color:#6b7280;">Traduce al español</p>
+      <div id="p3-items" class="space-y-3"></div><button onclick="checkP3()" class="mt-4 w-full py-3 rounded-xl font-bold text-white text-lg" style="background: linear-gradient(135deg, #6366f1, #4f46e5);">✅ Comprobar respuestas</button>
+      <div id="p3-feedback" class="mt-3 text-center font-bold text-lg"></div>
+     </div>
+    </section><!-- SECTION: Match -->
+    <section id="sec-match" class="section-card mt-6" style="display:none;">
+     <div class="rounded-2xl p-5 shadow-md" style="background: white; border: 3px solid #fca5a5;">
+      <h3 class="fredoka text-xl mb-1" style="color:#dc2626;">🎯 5. EXTRA – Une palabra con emoji</h3>
+      <p class="text-sm mb-4" style="color:#6b7280;">Toca una palabra, luego toca el emoji correcto</p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+       <div id="match-words" class="flex flex-col gap-2"></div>
+       <div id="match-emojis" class="flex flex-col gap-2"></div>
+      </div>
+      <div id="match-feedback" class="mt-4 text-center font-bold text-lg"></div><button onclick="resetMatch()" class="mt-3 w-full py-2 rounded-xl font-bold text-sm" style="background:#fee2e2; color:#dc2626;">🔄 Reiniciar</button>
+     </div>
+    </section><!-- SECTION: Bonus -->
+    <section id="sec-bonus" class="section-card mt-6" style="display:none;">
+     <div class="rounded-2xl p-5 shadow-md" style="background: white; border: 3px solid #a78bfa;">
+      <h3 class="fredoka text-xl mb-1" style="color:#7c3aed;">🎨 BONUS – Elige tu animal favorito</h3>
+      <p class="text-sm mb-4" style="color:#6b7280;">Selecciona un animal y completa la oración</p>
+      <div class="flex justify-center gap-3 mb-4 flex-wrap">
+       <button onclick="pickAnimal('🐶','dog')" class="text-4xl p-3 rounded-xl vocab-card" style="background:#eef2ff; border:2px solid #c7d2fe;">🐶</button> <button onclick="pickAnimal('🐱','cat')" class="text-4xl p-3 rounded-xl vocab-card" style="background:#fef3c7; border:2px solid #fcd34d;">🐱</button> <button onclick="pickAnimal('🐦','bird')" class="text-4xl p-3 rounded-xl vocab-card" style="background:#d1fae5; border:2px solid #6ee7b7;">🐦</button> <button onclick="pickAnimal('🦁','lion')" class="text-4xl p-3 rounded-xl vocab-card" style="background:#fee2e2; border:2px solid #fca5a5;">🦁</button> <button onclick="pickAnimal('🐘','elephant')" class="text-4xl p-3 rounded-xl vocab-card" style="background:#e5e7eb; border:2px solid #9ca3af;">🐘</button>
+      </div>
+      <div id="bonus-result" class="text-center text-2xl font-extrabold p-4 rounded-xl" style="background:#f5f3ff; color:#5b21b6; min-height:60px;"></div>
+     </div><!-- Remember -->
+     <div class="rounded-2xl p-5 shadow-md mt-5" style="background: linear-gradient(135deg, #fef3c7, #fde68a); border: 3px solid #f59e0b;">
+      <h3 class="fredoka text-lg" style="color:#92400e;">🧠 REMEMBER / RECUERDA</h3>
+      <p class="mt-2 font-semibold" style="color:#78350f;">👉 Aprendemos usando la traducción para entender mejor el inglés. ¡Practica todos los días!</p>
+     </div>
+    </section>
+   </main>
+   <footer class="text-center py-4 px-4 text-sm" style="background:#f5f0e8; color:#6b7280; border-top:2px solid #e5e7eb;">
+    <p class="font-semibold">© Aaron Sixto Callupe Llallico</p>
+   </footer><!-- Score Toast -->
+   <div id="toast" class="fixed bottom-4 left-1/2 -translate-x-1/2 px-6 py-3 rounded-full font-bold text-white shadow-xl" style="background:#10b981; display:none; z-index:50;"></div>
+  </div>
+  <script>
+  // State
+  const vocab = [
+    { en: 'dog', es: 'perro', emoji: '🐶' },
+    { en: 'cat', es: 'gato', emoji: '🐱' },
+    { en: 'bird', es: 'pájaro', emoji: '🐦' },
+    { en: 'lion', es: 'león', emoji: '🦁' },
+    { en: 'elephant', es: 'elefante', emoji: '🐘' }
+  ];
+  const sentences = [
+    { en: 'The dog is big', es: 'El perro es grande' },
+    { en: 'The cat is small', es: 'El gato es pequeño' }
+  ];
+
+  let score = 0;
+  const maxScore = 20;
+  let matchSelected = null;
+  let matchPairs = {};
+
+  // Init practices
+  function initP1() {
+    const c = document.getElementById('p1-items');
+    c.innerHTML = vocab.map((v, i) => `
+      <div class="flex items-center gap-3" id="p1-row-${i}">
+        <span class="text-2xl">${v.emoji}</span>
+        <span class="font-bold text-lg" style="color:#374151; min-width:80px;">${v.en.charAt(0).toUpperCase()+v.en.slice(1)}</span>
+        <span style="color:#9ca3af;">→</span>
+        <label for="p1-input-${i}" class="sr-only">Traducción de ${v.en}</label>
+        <input type="text" id="p1-input-${i}" class="flex-1 px-3 py-2 rounded-lg border-2 font-semibold text-lg" style="border-color:#fcd34d;" placeholder="español...">
+      </div>
+    `).join('');
+  }
+
+  function initP2() {
+    const c = document.getElementById('p2-items');
+    c.innerHTML = vocab.map((v, i) => `
+      <div class="flex items-center gap-3" id="p2-row-${i}">
+        <span class="text-2xl">${v.emoji}</span>
+        <span class="font-bold text-lg" style="color:#374151; min-width:80px;">${v.es.charAt(0).toUpperCase()+v.es.slice(1)}</span>
+        <span style="color:#9ca3af;">→</span>
+        <label for="p2-input-${i}" class="sr-only">Traducción de ${v.es}</label>
+        <input type="text" id="p2-input-${i}" class="flex-1 px-3 py-2 rounded-lg border-2 font-semibold text-lg" style="border-color:#6ee7b7;" placeholder="English...">
+      </div>
+    `).join('');
+  }
+
+  function initP3() {
+    const c = document.getElementById('p3-items');
+    c.innerHTML = sentences.map((s, i) => `
+      <div class="p-3 rounded-xl" style="background:#eef2ff;" id="p3-row-${i}">
+        <p class="font-bold mb-2" style="color:#4338ca;">"${s.en}"</p>
+        <label for="p3-input-${i}" class="sr-only">Traducción de ${s.en}</label>
+        <input type="text" id="p3-input-${i}" class="w-full px-3 py-2 rounded-lg border-2 font-semibold" style="border-color:#c7d2fe;" placeholder="Traduce al español...">
+      </div>
+    `).join('');
+  }
+
+  function initMatch() {
+    matchPairs = {};
+    matchSelected = null;
+    const words = [...vocab].sort(() => Math.random() - 0.5);
+    const emojis = [...vocab].sort(() => Math.random() - 0.5);
+    document.getElementById('match-words').innerHTML = words.map(v =>
+      `<button class="match-item px-5 py-3 rounded-xl font-bold text-lg" style="background:#fee2e2; border:2px solid #fca5a5; color:#dc2626;" data-type="word" data-key="${v.en}" onclick="selectMatch(this)">${v.en.charAt(0).toUpperCase()+v.en.slice(1)}</button>`
+    ).join('');
+    document.getElementById('match-emojis').innerHTML = emojis.map(v =>
+      `<button class="match-item px-5 py-3 rounded-xl text-3xl" style="background:#fef3c7; border:2px solid #fcd34d;" data-type="emoji" data-key="${v.en}" onclick="selectMatch(this)">${v.emoji}</button>`
+    ).join('');
+    document.getElementById('match-feedback').textContent = '';
+  }
+
+  // Check functions
+  function normalize(s) { return s.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''); }
+
+  function flashRow(el, correct) {
+    el.classList.add(correct ? 'correct-flash' : 'wrong-flash');
+    setTimeout(() => el.classList.remove('correct-flash', 'wrong-flash'), 600);
+  }
+
+  function checkP1() {
+    let pts = 0;
+    vocab.forEach((v, i) => {
+      const input = document.getElementById(`p1-input-${i}`);
+      const row = document.getElementById(`p1-row-${i}`);
+      const correct = normalize(input.value) === normalize(v.es);
+      if (correct) pts++;
+      flashRow(row, correct);
+      input.style.borderColor = correct ? '#10b981' : '#ef4444';
+    });
+    addScore(pts);
+    document.getElementById('p1-feedback').innerHTML = pts === 5 ? '🎉 ¡Perfecto! 5/5' : `${pts}/5 correctas. ¡Sigue intentando!`;
+  }
+
+  function checkP2() {
+    let pts = 0;
+    vocab.forEach((v, i) => {
+      const input = document.getElementById(`p2-input-${i}`);
+      const row = document.getElementById(`p2-row-${i}`);
+      const correct = normalize(input.value) === normalize(v.en);
+      if (correct) pts++;
+      flashRow(row, correct);
+      input.style.borderColor = correct ? '#10b981' : '#ef4444';
+    });
+    addScore(pts);
+    document.getElementById('p2-feedback').innerHTML = pts === 5 ? '🎉 ¡Perfecto! 5/5' : `${pts}/5 correctas. ¡Sigue intentando!`;
+  }
+
+  function checkP3() {
+    let pts = 0;
+    sentences.forEach((s, i) => {
+      const input = document.getElementById(`p3-input-${i}`);
+      const row = document.getElementById(`p3-row-${i}`);
+      const correct = normalize(input.value) === normalize(s.es);
+      if (correct) pts++;
+      flashRow(row, correct);
+      input.style.borderColor = correct ? '#10b981' : '#ef4444';
+    });
+    addScore(pts);
+    document.getElementById('p3-feedback').innerHTML = pts === 2 ? '🎉 ¡Excelente! 2/2' : `${pts}/2 correctas`;
+  }
+
+  // Match game
+  function selectMatch(el) {
+    if (el.classList.contains('matched')) return;
+    if (!matchSelected) {
+      matchSelected = el;
+      el.classList.add('selected');
+    } else {
+      if (matchSelected === el) { el.classList.remove('selected'); matchSelected = null; return; }
+      if (matchSelected.dataset.type === el.dataset.type) {
+        matchSelected.classList.remove('selected');
+        matchSelected = el;
+        el.classList.add('selected');
+        return;
+      }
+      const correct = matchSelected.dataset.key === el.dataset.key;
+      if (correct) {
+        matchSelected.classList.add('matched');
+        el.classList.add('matched');
+        matchSelected.classList.remove('selected');
+        addScore(1);
+        spawnConfetti(el);
+        const done = document.querySelectorAll('#sec-match .matched').length;
+        if (done === 10) document.getElementById('match-feedback').innerHTML = '🎉 ¡Todas correctas!';
+      } else {
+        matchSelected.classList.remove('selected');
+        flashRow(matchSelected, false);
+        flashRow(el, false);
+      }
+      matchSelected = null;
+    }
+  }
+
+  function resetMatch() { initMatch(); }
+
+  // Bonus
+  function pickAnimal(emoji, name) {
+    document.getElementById('bonus-result').innerHTML = `<span class="anim-bounce inline-block">${emoji} It is a ${name}!</span>`;
+    addScore(3);
+  }
+
+  // Score
+  function addScore(pts) {
+    score = Math.min(score + pts, maxScore);
+    document.getElementById('progress-bar').style.width = (score / maxScore * 100) + '%';
+    document.getElementById('progress-text').textContent = `${score} / ${maxScore} puntos`;
+    if (pts > 0) showToast(`+${pts} punto${pts > 1 ? 's' : ''} ⭐`);
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.display = 'block';
+    t.classList.add('anim-bounce');
+    setTimeout(() => { t.style.display = 'none'; t.classList.remove('anim-bounce'); }, 1500);
+  }
+
+  function spawnConfetti(el) {
+    const rect = el.getBoundingClientRect();
+    const colors = ['#f59e0b', '#10b981', '#6366f1', '#ef4444', '#ec4899'];
+    for (let i = 0; i < 6; i++) {
+      const piece = document.createElement('div');
+      piece.className = 'confetti-piece';
+      piece.style.left = (rect.left + rect.width / 2 + (Math.random() - 0.5) * 40) + 'px';
+      piece.style.top = (rect.top + window.scrollY) + 'px';
+      piece.style.background = colors[Math.floor(Math.random() * colors.length)];
+      document.body.appendChild(piece);
+      setTimeout(() => piece.remove(), 900);
+    }
+  }
+
+  // Navigation
+  function showSection(id) {
+    ['vocab','p1','p2','p3','match','bonus'].forEach(s => {
+      document.getElementById('sec-' + s).style.display = s === id ? 'block' : 'none';
+      if (s === id) {
+        document.getElementById('sec-' + s).style.animation = 'none';
+        document.getElementById('sec-' + s).offsetHeight;
+        document.getElementById('sec-' + s).style.animation = 'fadeUp 0.4s ease-out forwards';
+      }
+    });
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      const isActive = btn.dataset.tab === id;
+      btn.classList.toggle('active', isActive);
+      btn.style.background = isActive ? '#6366f1' : '#e5e7eb';
+      btn.style.color = isActive ? '#fff' : '#6b7280';
+    });
+  }
+
+  // Speech
+  function speakWord(word) {
+    if ('speechSynthesis' in window) {
+      const u = new SpeechSynthesisUtterance(word);
+      u.lang = 'en-US'; u.rate = 0.8;
+      speechSynthesis.speak(u);
+    }
+  }
+
+  // Configuration with sensible defaults
+  const defaultConfig = {
+    main_title: '📘 ENGLISH – 3º PRIMARY',
+    topic_title: '🐾 TOPIC: ANIMALS',
+    background_color: '#fef9f0',
+    header_color: '#6366f1',
+    text_color: '#374151',
+    accent_color: '#f59e0b',
+    surface_color: '#ffffff',
+    font_family: 'Nunito',
+    font_size: 16
+  };
+
+  let appConfig = { ...defaultConfig };
+
+  function applyConfig(config) {
+    const c = { ...defaultConfig, ...config };
+    document.getElementById('main-title').textContent = c.main_title;
+    document.getElementById('topic-title').textContent = c.topic_title;
+    document.getElementById('app').style.background = c.background_color;
+    document.getElementById('header').style.background = `linear-gradient(135deg, ${c.header_color}, ${c.header_color}dd, ${c.header_color}bb)`;
+    document.querySelectorAll('.fredoka, h3').forEach(el => el.style.fontFamily = `'Fredoka One', ${c.font_family}, cursive`);
+    document.body.style.fontFamily = `${c.font_family}, sans-serif`;
+    const base = c.font_size || 16;
+    document.body.style.fontSize = base + 'px';
+  }
+
+  // Initialize with Element SDK if available (Canva environment)
+  if (window.elementSdk) {
+    window.elementSdk.init({
+      defaultConfig,
+      onConfigChange: async (config) => applyConfig(config),
+      mapToCapabilities: (config) => ({
+        recolorables: [
+          { get: () => config.background_color || defaultConfig.background_color, set: v => { config.background_color = v; window.elementSdk.setConfig({ background_color: v }); } },
+          { get: () => config.surface_color || defaultConfig.surface_color, set: v => { config.surface_color = v; window.elementSdk.setConfig({ surface_color: v }); } },
+          { get: () => config.text_color || defaultConfig.text_color, set: v => { config.text_color = v; window.elementSdk.setConfig({ text_color: v }); } },
+          { get: () => config.header_color || defaultConfig.header_color, set: v => { config.header_color = v; window.elementSdk.setConfig({ header_color: v }); } },
+          { get: () => config.accent_color || defaultConfig.accent_color, set: v => { config.accent_color = v; window.elementSdk.setConfig({ accent_color: v }); } }
+        ],
+        borderables: [],
+        fontEditable: { get: () => config.font_family || defaultConfig.font_family, set: v => { config.font_family = v; window.elementSdk.setConfig({ font_family: v }); } },
+        fontSizeable: { get: () => config.font_size || defaultConfig.font_size, set: v => { config.font_size = v; window.elementSdk.setConfig({ font_size: v }); } }
+      }),
+      mapToEditPanelValues: (config) => new Map([
+        ['main_title', config.main_title || defaultConfig.main_title],
+        ['topic_title', config.topic_title || defaultConfig.topic_title]
+      ])
+    });
+  } else {
+    // Apply default config when Element SDK is not available (standalone HTML)
+    applyConfig(defaultConfig);
+  }
+
+  // Init all sections
+  initP1();
+  initP2();
+  initP3();
+  initMatch();
+  lucide.createIcons();
+</script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9f1262ca83b456b3',t:'MTc3NzAwNTE2NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
