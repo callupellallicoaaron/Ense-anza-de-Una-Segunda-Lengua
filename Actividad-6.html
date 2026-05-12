@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metodología TPR - James Asher</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #0f172a;
+            --accent: #f59e0b;
+            --bg: #f8fafc;
+            --white: #ffffff;
+            --text: #334155;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--white);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        }
+
+        header {
+            text-align: center;
+            border-bottom: 4px solid var(--primary);
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+        }
+
+        h1 {
+            color: var(--secondary);
+            margin: 0;
+            font-size: 2.2rem;
+            text-transform: uppercase;
+        }
+
+        .author {
+            font-size: 1.2rem;
+            color: var(--primary);
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        h2 {
+            color: var(--primary);
+            border-left: 5px solid var(--accent);
+            padding-left: 15px;
+            margin-top: 35px;
+            font-size: 1.5rem;
+        }
+
+        .definition-box {
+            background-color: #eff6ff;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            border: 1px solid #dbeafe;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .card h3 {
+            margin-top: 0;
+            color: var(--secondary);
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .card h3::before {
+            content: "•";
+            color: var(--accent);
+            font-size: 2rem;
+            margin-right: 10px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .ebr-section {
+            background-color: #fffbeb;
+            border: 2px dashed var(--accent);
+            padding: 25px;
+            border-radius: 12px;
+            margin-top: 30px;
+        }
+
+        .footer-note {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.9rem;
+            color: #94a3b8;
+            font-style: italic;
+        }
+
+        @media (max-width: 600px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>TOTAL PHYSICAL RESPONSE (TPR)</h1>
+        <div class="author">Autor: James Asher</div>
+    </header>
+
+    <section>
+        <h2>Definición</h2>
+        <div class="definition-box">
+            <p>El método Total Physical Response (TPR) enseña el inglés mediante la relación entre el lenguaje y el movimiento físico. Los estudiantes responden a las instrucciones del docente realizando acciones corporales. Este método prioriza primero la comprensión auditiva antes de la producción oral.</p>
+        </div>
+    </section>
+
+    <section>
+        <h2>Características principales</h2>
+        <ul>
+            <li>Prioriza la comprensión auditiva antes de hablar.</li>
+            <li>Usa comandos o instrucciones.</li>
+            <li>Relaciona lenguaje y acción.</li>
+            <li>Reduce la ansiedad en el aprendizaje.</li>
+            <li>Promueve el aprendizaje activo y dinámico.</li>
+            <li>Favorece la memoria mediante movimientos físicos.</li>
+            <li>Hace las clases más motivadoras y participativas.</li>
+        </ul>
+    </section>
+
+    <div class="grid-container">
+        <section class="card">
+            <h3>Rol del docente</h3>
+            <ul>
+                <li>Da instrucciones en inglés.</li>
+                <li>Modela acciones.</li>
+                <li>Dirige actividades físicas.</li>
+                <li>Guía la participación.</li>
+                <li>Motiva constantemente a los estudiantes.</li>
+                <li>Crea un ambiente dinámico y participativo.</li>
+            </ul>
+            <p><em>El docente actúa como facilitador del aprendizaje y ayuda a que los estudiantes comprendan mediante acciones.</em></p>
+        </section>
+
+        <section class="card">
+            <h3>Rol del estudiante</h3>
+            <ul>
+                <li>Escucha atentamente.</li>
+                <li>Observa las acciones del docente.</li>
+                <li>Responde mediante movimientos físicos.</li>
+                <li>Participa activamente.</li>
+                <li>Aprende haciendo.</li>
+                <li>Desarrolla comprensión antes de hablar.</li>
+            </ul>
+            <p><em>El estudiante tiene un rol activo durante toda la clase.</em></p>
+        </section>
+    </div>
+
+    <section class="ebr-section">
+        <h2>Aplicación en Educación Básica Regular (EBR)</h2>
+        <p>TPR puede aplicarse fácilmente en primaria y secundaria mediante:</p>
+        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 15px;">
+            <span style="background:#fff; padding: 5px 12px; border-radius: 20px; border: 1px solid #fcd34d;">Juegos de acción</span>
+            <span style="background:#fff; padding: 5px 12px; border-radius: 20px; border: 1px solid #fcd34d;">Dramatizaciones</span>
+            <span style="background:#fff; padding: 5px 12px; border-radius: 20px; border: 1px solid #fcd34d;">Rutinas diarias</span>
+            <span style="background:#fff; padding: 5px 12px; border-radius: 20px; border: 1px solid #fcd34d;">Simon Says</span>
+            <span style="background:#fff; padding: 5px 12px; border-radius: 20px; border: 1px solid #fcd34d;">Dinámicas corporales</span>
+        </div>
+        
+        <p><strong>Es especialmente útil porque:</strong></p>
+        <ul>
+            <li>Reduce el miedo a participar.</li>
+            <li>Aumenta la motivación.</li>
+            <li>Mejora la atención.</li>
+            <li>Favorece la participación de todos los estudiantes.</li>
+            <li>Hace las clases más dinámicas y significativas.</li>
+        </ul>
+    </section>
+
+    <div class="footer-note">
+        Información estructurada para el debate sobre métodos de enseñanza de inglés.
+    </div>
+</div>
+
+</body>
+</html>
