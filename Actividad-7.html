@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TA2 - Portafolio Digital ESL - UTP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;700;800&family=Plus+Jakarta+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --utp-blue: #003366;
+            --utp-red: #d92328;
+            --accent-gold: #ffcc00;
+            --glass: rgba(255, 255, 255, 0.95);
+            --kids-green: #2ecc71;
+            --kids-purple: #9b59b6;
+            --kids-orange: #e67e22;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f4f7f9;
+            color: #1a202c;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--utp-blue) 0%, #001f3f 100%);
+            color: white;
+            padding: 60px 20px 80px;
+            text-align: center;
+            clip-path: ellipse(150% 100% at 50% 0%);
+            border-bottom: 5px solid var(--accent-gold);
+        }
+
+        .logo-utp {
+            width: 220px;
+            margin-bottom: 20px;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+        }
+
+        .uni-info {
+            font-family: 'Outfit', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            opacity: 0.95;
+        }
+
+        .course-info {
+            background: rgba(255, 255, 255, 0.1);
+            display: inline-block;
+            padding: 8px 25px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+        }
+
+        header h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 3.2rem;
+            margin: 0 0 20px 0;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+            color: white;
+        }
+
+        .author-box {
+            margin-top: 10px;
+            background: rgba(255,255,255,0.1);
+            padding: 12px 30px;
+            border-radius: 50px;
+            display: inline-block;
+            border: 1px solid rgba(255,255,255,0.2);
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: -50px auto 60px;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: var(--glass);
+            border-radius: 25px;
+            padding: 40px;
+            margin-bottom: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+        }
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            color: var(--utp-blue);
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            text-transform: uppercase;
+        }
+
+        h2::before {
+            content: '';
+            width: 35px;
+            height: 5px;
+            background: var(--utp-red);
+            margin-right: 15px;
+            border-radius: 10px;
+        }
+
+        .table-scroll { overflow-x: auto; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            min-width: 1000px;
+        }
+
+        th {
+            background: #2d3748;
+            padding: 20px;
+            color: white;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+        }
+
+        td {
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            font-size: 0.9rem;
+            vertical-align: top;
+        }
+
+        .method-col {
+            background: var(--utp-red);
+            color: white;
+            font-weight: 800;
+            text-align: center;
+            vertical-align: middle;
+            text-transform: uppercase;
+            width: 150px;
+        }
+
+        .header-cell {
+            background: #edf2f7;
+            font-weight: 800;
+            color: var(--utp-blue);
+            text-align: center;
+        }
+
+        .academic-note {
+            font-size: 0.85rem;
+            color: #4a5568;
+            font-style: italic;
+            margin-top: 10px;
+            display: block;
+            border-top: 1px solid #cbd5e0;
+            padding-top: 5px;
+        }
+
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .analysis-item {
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 20px;
+            border-left: 6px solid var(--utp-red);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.03);
+            transition: transform 0.3s ease;
+        }
+
+        .analysis-item h3 {
+            color: var(--utp-blue);
+            margin-top: 0;
+            font-size: 1.1rem;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .reflection-text {
+            font-size: 0.95rem;
+            color: #2d3748;
+            margin-bottom: 15px;
+        }
+
+        .theory-support {
+            font-size: 0.85rem;
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 10px;
+            color: #4a5568;
+            border: 1px dashed #cbd5e0;
+        }
+
+        .app-dashboard {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            padding: 40px;
+            border-radius: 35px;
+            color: white;
+        }
+
+        .app-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .app-header h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.2rem;
+            margin: 0;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .context-pills {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .pill {
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(5px);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .digital-lesson-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 30px;
+        }
+
+        .game-screen {
+            background: white;
+            border-radius: 25px;
+            padding: 30px;
+            color: #333;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .game-title {
+            color: var(--utp-blue);
+            font-weight: 800;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .fruit-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+
+        .fruit-card {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            border: 3px solid transparent;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .fruit-card:hover {
+            border-color: var(--kids-orange);
+            transform: scale(1.05);
+            background: #fff8f0;
+        }
+
+        .fruit-card.correct { border-color: #2ecc71; background: #e8f8f0; }
+        .fruit-card.wrong { border-color: #e74c3c; background: #fdeaea; }
+
+        .fruit-emoji { font-size: 3rem; display: block; margin-bottom: 5px; }
+        .fruit-label { font-weight: 700; color: #666; font-size: 0.8rem; text-transform: uppercase; }
+
+        .audio-controls {
+            margin-top: 25px;
+            background: #eef2f7;
+            padding: 15px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .play-btn {
+            background: var(--utp-red);
+            color: white;
+            border: none;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: 0.3s;
+        }
+
+        .lesson-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .step-card {
+            background: rgba(255,255,255,0.15);
+            padding: 20px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .step-num {
+            background: var(--accent-gold);
+            color: #000;
+            width: 30px;
+            height: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: 800;
+            margin-right: 10px;
+        }
+
+        .step-title { font-weight: 700; color: white; display: block; margin-bottom: 5px; }
+        .step-desc { font-size: 0.85rem; color: #eee; margin: 0; }
+
+        .justification-tag {
+            margin-top: 30px;
+            background: #fff;
+            color: var(--utp-blue);
+            padding: 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            border-left: 8px solid var(--accent-gold);
+        }
+
+        .ref-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .ref-list li {
+            margin-bottom: 15px;
+            padding-left: 20px;
+            text-indent: -20px;
+            font-size: 0.9rem;
+            color: #2d3748;
+        }
+
+        footer {
+            background: #001529;
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        @media (max-width: 900px) {
+            .digital-lesson-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="https://proveedoresutp.utp.edu.pe/img/logo-utp.d277c146.png" alt="UTP Logo" class="logo-utp">
+    <div class="uni-info">Universidad Tecnológica del Perú</div>
+    <div class="course-info">
+        Curso: <strong>Enseñanza de una Segunda Lengua</strong>
+    </div><br>
+    <div class="course-info">
+        Profesora: <strong>Pacheco Altamirano Amancia María</strong>
+    </div>
+    <h1>Tarea Académica 2</h1>
+    <div class="author-box">
+        Callupe Llallico, Aaron Sixto 
+    </div>
+    <div class="author-box">
+        Huamán Cajachagua, Giuliana Patricia
+    </div>
+</header>
+
+<div class="container">
+
+    <section class="card">
+        <h2>1. Introducción</h2>
+        <p>
+            Actualmente, aprender una segunda lengua como el inglés es muy importante para los estudiantes, ya que les permite comunicarse mejor y tener más oportunidades en el futuro. Por esta razón, el <strong>Ministerio de Educación del Perú</strong> promueve la enseñanza del inglés desde los primeros años de estudio, buscando que los niños aprendan de una manera práctica y dinámica.
+        </p>
+        <p>
+            Para enseñar una segunda lengua existen diferentes métodos de enseñanza, cada uno con distintas formas de ayudar a los estudiantes. Algunos se enfocan en la gramática y otros en la lectura o repetición. Según autores como <strong>Richards y Rodgers (2014)</strong>, la elección del método es crucial para definir la interacción en el aula. 
+        </p>
+        <p>
+            En este trabajo se utilizará el <strong>Direct Method</strong>, porque es uno de los métodos más adecuados para niños. Este método enseña el inglés de forma natural, usando imágenes, preguntas, juegos y conversaciones sencillas, permitiendo que los estudiantes aprendan escuchando y hablando el idioma. El propósito es presentar una mini actividad que demuestre cómo este método facilita un aprendizaje participativo y divertido.
+        </p>
+    </section>
+
+    <section class="card">
+        <h2>2. Cuadro Comparativo</h2>
+        <div class="table-scroll">
+            <table>
+                <thead>
+                    <tr>
+                        <th style="background: transparent;"></th>
+                        <th class="header-cell">CARACTERÍSTICAS</th>
+                        <th class="header-cell">ROL DEL DOCENTE</th>
+                        <th class="header-cell">ROL DEL ESTUDIANTE</th>
+                        <th class="header-cell">VENTAJAS Y DESVENTAJAS</th>
+                        <th class="header-cell">APLICACIONES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="method-col">Grammar Translation</td>
+                        <td>Se enfoca en aprender reglas gramaticales y traducir textos entre la lengua materna y la segunda lengua.</td>
+                        <td>Explica reglas gramaticales, corrige errores y dirige la clase. 
+                            <span class="academic-note">Richards y Rodgers (2014) definen este rol como la autoridad central del conocimiento.</span>
+                        </td>
+                        <td>Memoriza vocabulario y reglas, traduce textos y realiza ejercicios escritos.</td>
+                        <td><strong>Ventajas:</strong> ayuda a comprender la gramática y ampliar vocabulario. <br><strong>Desventajas:</strong> poca práctica oral y comunicación real.</td>
+                        <td>Útil para aprender lectura, escritura y análisis gramatical de un idioma.</td>
+                    </tr>
+                    <tr>
+                        <td class="method-col" style="background: #2b6cb0;">Direct Method</td>
+                        <td>Enseña usando solo la segunda lengua y relaciona palabras con objetos o acciones.</td>
+                        <td>Guía conversaciones, hace preguntas y presenta vocabulario de manera oral.</td>
+                        <td>Participa hablando, escuchando y respondiendo directamente en la segunda lengua.</td>
+                        <td><strong>Ventajas:</strong> mejora la pronunciación y la comunicación oral. <br><strong>Desventajas:</strong> puede ser difícil para principiantes.
+                            <span class="academic-note">Se sustenta en la teoría de adquisición natural y el input comprensible de Krashen (1985).</span>
+                        </td>
+                        <td>Se aplica en clases de conversación y aprendizaje comunicativo.</td>
+                    </tr>
+                    <tr>
+                        <td class="method-col">Reading Method</td>
+                        <td>Da mayor importancia a la lectura y comprensión de textos para aprender vocabulario.</td>
+                        <td>Selecciona lecturas y ayuda a comprender el significado de textos.</td>
+                        <td>Lee, analiza textos y aprende vocabulario nuevo.</td>
+                        <td><strong>Ventajas:</strong> fortalece la comprensión lectora y el vocabulario. <br><strong>Desventajas:</strong> poca práctica de habla y escucha.</td>
+                        <td>Útil para estudiantes que necesitan leer textos académicos o científicos.</td>
+                    </tr>
+                    <tr>
+                        <td class="method-col">Lingual Audio</td>
+                        <td>Se basa en repetir diálogos y practicar estructuras orales constantemente.</td>
+                        <td>Presenta modelos de pronunciación y dirige repeticiones y ejercicios.</td>
+                        <td>Repite, memoriza y practica estructuras orales.</td>
+                        <td><strong>Ventajas:</strong> mejora pronunciación y fluidez básica. <br><strong>Desventajas:</strong> aprendizaje mecánico y poca creatividad.</td>
+                        <td>Se usa en cursos de pronunciación y formación oral intensiva.</td>
+                    </tr>
+                    <tr>
+                        <td class="method-col">The Silent Way</td>
+                        <td>Promueve que el estudiante descubra el idioma por sí mismo con poca ayuda del docente.</td>
+                        <td>Observa, guía y corrige de manera mínima.</td>
+                        <td>Participa activamente, descubre reglas y resuelve problemas lingüísticos.</td>
+                        <td><strong>Ventajas:</strong> desarrolla autonomía y pensamiento crítico. <br><strong>Desventajas:</strong> puede generar inseguridad en algunos estudiantes.</td>
+                        <td>Aplicado en clases que buscan aprendizaje independiente y participación activa.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>3. Análisis Crítico (Reflexión)</h2>
+        <div class="analysis-grid">
+            <div class="analysis-item">
+                <h3>¿Qué enfoque es más efectivo?</h3>
+                <p class="reflection-text">
+                    El enfoque más efectivo no es universal, sino que depende de la edad y necesidad de los estudiantes. En el caso de los niños, el <strong>Direct Method</strong> suele ser más efectivo porque les ayuda a aprender inglés de manera natural, priorizando el habla y la escucha constante antes que la teoría.
+                </p>
+                <div class="theory-support">
+                    Esta efectividad se explica mediante la <strong>Hipótesis del Filtro Afectivo de Krashen (1985)</strong>, la cual sugiere que un ambiente dinámico reduce el estrés y facilita la adquisición inconsciente del lenguaje.
+                </div>
+            </div>
+
+            <div class="analysis-item">
+                <h3>¿En qué contexto se aplica mejor cada uno?</h3>
+                <p class="reflection-text">
+                    Cada método se aplica según el objetivo pedagógico. Mientras que el Método de Gramática-Traducción es útil para el análisis literario, el <strong>Direct Method</strong> funciona mejor en contextos de educación básica y primaria, donde el objetivo principal es la competencia comunicativa inmediata.
+                </p>
+                <div class="theory-support">
+                    Como afirman <strong>Richards y Rodgers (2014)</strong>, el éxito de un método depende de su coherencia con el diseño curricular y las metas específicas del programa educativo.
+                </div>
+            </div>
+
+            <div class="analysis-item">
+                <h3>¿Por qué no existe un método único ideal?</h3>
+                <p class="reflection-text">
+                    No existe un método único porque cada estudiante posee un estilo de aprendizaje distinto y cada aula presenta una realidad sociocultural única. La rigidez de un solo método limitaría la capacidad de respuesta del docente ante las dificultades individuales.
+                </p>
+                <div class="theory-support">
+                    Esta visión es respaldada por <strong>Kumaravadivelu (2001)</strong>, quien propone la era del <em>Post-método</em>, donde el docente debe ser reflexivo y capaz de adaptar diversas estrategias para lograr un aprendizaje significativo.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>4. Aplicación Práctica</h2>
+        
+        <div class="app-dashboard">
+            <div class="app-header">
+                <h3>The Magic Supermarket Challenge 🍎</h3>
+                <div class="context-pills">
+                    <div class="pill">📍 3er Grado de Primaria (8-9 años)</div>
+                    <div class="pill">⭐ Nivel: A1 (Inicial)</div>
+                    <div class="pill">🛠️ Método: Direct Method</div>
+                </div>
+            </div>
+
+            <div class="digital-lesson-grid">
+                <div class="game-screen">
+                    <div class="game-title">
+                        <span>🎮 IN-CLASS INTERACTIVE MATERIAL</span>
+                        <div style="margin-left:auto; display:flex; gap:5px;">
+                            <div style="width:12px;height:12px;background:#ff5f56;border-radius:50%;"></div>
+                            <div style="width:12px;height:12px;background:#ffbd2e;border-radius:50%;"></div>
+                            <div style="width:12px;height:12px;background:#27c93f;border-radius:50%;"></div>
+                        </div>
+                    </div>
+                    
+                    <p style="text-align:center; font-weight:700; margin-bottom:20px; color: var(--utp-blue);" id="game-instruction">Click "PLAY" to hear the order!</p>
+                    
+                    <div class="fruit-cards-grid">
+                        <div class="fruit-card" onclick="checkFruit('Apple', this)"><span class="fruit-emoji">🍎</span><span class="fruit-label">Apple</span></div>
+                        <div class="fruit-card" onclick="checkFruit('Banana', this)"><span class="fruit-emoji">🍌</span><span class="fruit-label">Banana</span></div>
+                        <div class="fruit-card" onclick="checkFruit('Orange', this)"><span class="fruit-emoji">🍊</span><span class="fruit-label">Orange</span></div>
+                        <div class="fruit-card" onclick="checkFruit('Grapes', this)"><span class="fruit-emoji">🍇</span><span class="fruit-label">Grapes</span></div>
+                        <div class="fruit-card" onclick="checkFruit('Pineapple', this)"><span class="fruit-emoji">🍍</span><span class="fruit-label">Pineapple</span></div>
+                        <div class="fruit-card" onclick="checkFruit('Watermelon', this)"><span class="fruit-emoji">🍉</span><span class="fruit-label">Watermelon</span></div>
+                    </div>
+
+                    <div class="audio-controls">
+                        <button class="play-btn" onclick="playAudio()">▶️</button>
+                        <div style="flex-grow:1; height:8px; background:#ddd; border-radius:10px; position: relative; overflow: hidden;">
+                            <div id="progress-bar" style="width:0%; height:100%; background:var(--utp-red); border-radius:10px; transition: width 1s;"></div>
+                        </div>
+                        <span id="audio-text" style="font-weight:700; font-size:0.8rem; color: #555;">Ready?</span>
+                    </div>
+                </div>
+
+                <div class="lesson-steps">
+                    <div class="step-card">
+                        <span class="step-title"><span class="step-num">1</span> Contexto Real</span>
+                        <p class="step-desc">Estudiantes de zonas urbanas/rurales en Perú. Se aprovecha el conocimiento previo de "ir al mercado" para anclar el nuevo idioma a una experiencia cotidiana.</p>
+                    </div>
+                    <div class="step-card">
+                        <span class="step-title"><span class="step-num">2</span> Actividad: "The Buyer"</span>
+                        <p class="step-desc">El material digital actúa como el "cliente". El niño debe decodificar el comando auditivo y seleccionar el objeto visual sin traducción intermedia.</p>
+                    </div>
+                    <div class="step-card">
+                        <span class="step-title"><span class="step-num">3</span> Feedback Inmediato</span>
+                        <p class="step-desc">Siguiendo el Método Directo, el error se corrige mediante la repetición del estímulo visual/auditivo correcto, fomentando la auto-corrección.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="justification-tag">
+                <strong>Justificación Pedagógica:</strong> Este material aplica el <strong>Direct Method</strong> al eliminar el uso del español. La funcionalidad interactiva permite el "Input Comprensible" (Krashen); el estudiante asocia el sonido directamente con la imagen (representación mental). Al ser un juego, baja el filtro afectivo, facilitando que el niño se arriesgue a participar en inglés sin miedo al error.
+            </div>
+        </div>
+
+        <script>
+            const fruits = ['Apple', 'Banana', 'Orange', 'Grapes', 'Pineapple', 'Watermelon'];
+            let currentTarget = "";
+
+            function playAudio() {
+                currentTarget = fruits[Math.floor(Math.random() * fruits.length)];
+                const msg = new SpeechSynthesisUtterance("I want a " + currentTarget);
+                msg.lang = 'en-US';
+                msg.rate = 0.8;
+                
+                document.getElementById('audio-text').innerText = "Listening...";
+                document.getElementById('progress-bar').style.width = "100%";
+                
+                window.speechSynthesis.speak(msg);
+                
+                msg.onend = function() {
+                    document.getElementById('audio-text').innerText = "Your turn!";
+                    document.getElementById('progress-bar').style.width = "0%";
+                };
+            }
+
+            function checkFruit(name, element) {
+                if (!currentTarget) {
+                    alert("Please click PLAY first!");
+                    return;
+                }
+                
+                if (name === currentTarget) {
+                    element.classList.add('correct');
+                    document.getElementById('game-instruction').innerText = "EXCELLENT! It's a " + name + "!";
+                    document.getElementById('game-instruction').style.color = "#2ecc71";
+                    setTimeout(() => {
+                        element.classList.remove('correct');
+                        document.getElementById('game-instruction').innerText = "Click PLAY for the next one!";
+                        document.getElementById('game-instruction').style.color = "var(--utp-blue)";
+                        currentTarget = "";
+                    }, 2000);
+                } else {
+                    element.classList.add('wrong');
+                    document.getElementById('game-instruction').innerText = "Try again! Listen closely...";
+                    document.getElementById('game-instruction').style.color = "#e74c3c";
+                    setTimeout(() => element.classList.remove('wrong'), 1000);
+                }
+            }
+        </script>
+    </section>
+
+    <section class="card">
+        <h2>5. Referencias</h2>
+        <ul class="ref-list">
+            <li>Krashen, S. D. (1985). <em>The Input Hypothesis: Issues and Implications</em>. Laredo Publishing Company.</li>
+            <li>Kumaravadivelu, B. (2001). Toward a Postmethod Pedagogy. <em>TESOL Quarterly, 35</em>(4), 537-560.</li>
+            <li>Ministerio de Educación del Perú. (2016). <em>Currículo Nacional de la Educación Básica</em>. Lima, Perú.</li>
+            <li>Richards, J. C., & Rodgers, T. S. (2014). <em>Approaches and Methods in Language Teaching</em> (3rd ed.). Cambridge University Press.</li>
+        </ul>
+    </section>
+
+</div>
+
+<footer>
+    <p><strong>©Callupe Llallico Aaron Sixto & Huaman Cajachagua Giuliana Patricia</strong></p>
+    <p>2026</p>
+</footer>
+
+</body>
+</html>
