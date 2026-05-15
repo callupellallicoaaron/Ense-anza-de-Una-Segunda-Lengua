@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis y Diseño de Solución: Inmersión en Inglés</title>
+    <!-- Tailwind CSS para Diseño Moderno -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- FontAwesome para Íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Animate.css para Animaciones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .tab-btn.active { border-bottom-color: #3b82f6; color: #3b82f6; font-weight: bold; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased text-base md:text-lg">
+
+    <!-- HERO / ENCABEZADO -->
+    <header class="bg-gradient-to-r from-blue-600 to-indigo-700 text-white py-14 px-6 text-center shadow-md relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+        <div class="max-w-4xl mx-auto animate__animated animate__fadeInDown relative z-10">
+            <!-- LOGO UTP -->
+            <img src="https://proveedoresutp.utp.edu.pe/img/logo-utp.d277c146.png" alt="Logo UTP" class="mx-auto h-20 md:h-24 mb-6 bg-white p-3 rounded-lg shadow-sm">
+            
+            
+            <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight mb-5">Propuesta de Intervención Inmersiva</h1>
+            
+            
+            <!-- INFORMACIÓN ACADÉMICA -->
+            <div class="bg-black/20 backdrop-blur-xs rounded-xl p-6 max-w-2xl mx-auto text-left grid grid-cols-1 sm:grid-cols-2 gap-6 border border-white/10">
+                <div>
+                    <h2 class="text-amber-300 font-bold uppercase tracking-wider text-xs md:text-sm mb-2"><i class="fa-solid fa-graduation-cap mr-1"></i> Curso</h2>
+                    <p class="text-lg md:text-xl font-semibold mb-4">Enseñanza de Una Segunda Lengua</p>
+                    
+                    <h2 class="text-amber-300 font-bold uppercase tracking-wider text-xs md:text-sm mb-2"><i class="fa-solid fa-layer-group mr-1"></i> Sección</h2>
+                    <p class="text-lg md:text-xl font-semibold">43823</p>
+                </div>
+                <div>
+                    <h2 class="text-amber-300 font-bold uppercase tracking-wider text-xs md:text-sm mb-2"><i class="fa-solid fa-users mr-1"></i> Estudiantes</h2>
+                    <ul class="text-base md:text-lg space-y-1 text-blue-50">
+                        <li>Callupe Llallico Aaron Sixto</li>
+                        <li>Huaman Cajachagua Giuliana Patricia</li>
+                        <li>Inga Moreno Estefany Geraldin</li>
+                        <li>Sanchez verastegui Ruth Ester</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- NAVEGACIÓN POR PESTAÑAS (DINÁMICO) -->
+    <div class="bg-white shadow-sm sticky top-0 z-50 border-b border-slate-200">
+        <div class="max-w-5xl mx-auto flex justify-center space-x-4 md:space-x-8 px-4">
+            <button onclick="switchTab('analisis')" id="btn-analisis" class="tab-btn active py-5 px-3 md:px-5 text-base md:text-xl font-medium border-b-2 border-transparent transition-all duration-300 flex items-center gap-2 cursor-pointer whitespace-nowrap">
+                <i class="fa-solid fa-magnifying-glass-chart"></i> <span class="hidden sm:inline">1. </span>Análisis del Problema
+            </button>
+            <button onclick="switchTab('diseno')" id="btn-diseno" class="tab-btn py-5 px-3 md:px-5 text-base md:text-xl font-medium border-b-2 border-transparent transition-all duration-300 flex items-center gap-2 cursor-pointer whitespace-nowrap">
+                <i class="fa-solid fa-lightbulb"></i> <span class="hidden sm:inline">2. </span>Diseño de Solución
+            </button>
+        </div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="max-w-6xl mx-auto px-4 py-10">
+        
+        <!-- ================= PESTAÑA 1: ANÁLISIS ================= -->
+        <section id="tab-analisis" class="tab-content active animate__animated animate__fadeIn">
+            
+            <!-- SITUACIÓN PROBLEMÁTICA -->
+            <div class="bg-red-50 border-l-4 border-red-500 p-6 md:p-8 rounded-r-xl shadow-xs mb-8">
+                <div class="flex flex-col sm:flex-row items-start gap-4 md:gap-6">
+                    <div class="bg-red-500 text-white p-4 rounded-lg shadow-sm shrink-0">
+                        <i class="fa-solid fa-triangle-exclamation text-2xl"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-2xl md:text-3xl font-bold text-red-800 mb-3">Situación Problemática</h2>
+                        <p class="text-red-950 leading-relaxed text-lg md:text-xl">
+                            Una institución educativa pública aplica clases de inglés con enfoque inmersivo, pero los estudiantes sienten frustración, no comprenden bien y rechazan el uso del inglés. Además, los docentes no usan recursos visuales ni estrategias de apoyo.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ¿POR qué FALLÓ LA INMERSIÓN? -->
+            <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 mb-8 items-stretch">
+                <div class="lg:col-span-2 bg-gradient-to-br from-slate-800 to-slate-900 text-white p-6 md:p-8 rounded-2xl shadow-sm flex flex-col justify-center">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-4 text-amber-400 flex items-center gap-2">
+                        <i class="fa-solid fa-circle-question"></i> ¿Por qué falló la inmersión?
+                    </h3>
+                    <p class="text-slate-300 leading-relaxed text-lg md:text-xl">
+                        La inmersión falló porque los estudiantes fueron expuestos al inglés <strong>sin suficiente ayuda</strong> para comprenderlo. En vez de motivar, el idioma generó estrés y rechazo.
+                    </p>
+                </div>
+                <div class="lg:col-span-3 bg-white p-6 md:p-8 rounded-2xl shadow-xs border border-slate-200">
+                    <h4 class="font-bold text-slate-700 mb-4 uppercase tracking-wider text-sm">Causas Detectadas:</h4>
+                    <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <li class="flex items-start gap-2.5 text-base md:text-lg text-slate-600 bg-slate-50 p-4 rounded-lg"><i class="fa-solid fa-circle-xmark text-red-500 mt-1.5 shrink-0"></i> El inglés se usó de manera muy difícil desde el inicio.</li>
+                        <li class="flex items-start gap-2.5 text-base md:text-lg text-slate-600 bg-slate-50 p-4 rounded-lg"><i class="fa-solid fa-circle-xmark text-red-500 mt-1.5 shrink-0"></i> Los estudiantes no entendían las instrucciones.</li>
+                        <li class="flex items-start gap-2.5 text-base md:text-lg text-slate-600 bg-slate-50 p-4 rounded-lg"><i class="fa-solid fa-circle-xmark text-red-500 mt-1.5 shrink-0"></i> No había imágenes, gestos ni ejemplos.</li>
+                        <li class="flex items-start gap-2.5 text-base md:text-lg text-slate-600 bg-slate-50 p-4 rounded-lg"><i class="fa-solid fa-circle-xmark text-red-500 mt-1.5 shrink-0"></i> Los alumnos sintieron miedo de equivocarse.</li>
+                        <li class="flex items-start gap-2.5 text-base md:text-lg text-slate-600 bg-slate-50 p-4 rounded-lg sm:col-span-2"><i class="fa-solid fa-circle-xmark text-red-500 mt-1.5 shrink-0"></i> Las clases eran poco dinámicas y aburridas.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- ERRORES PEDAGÓGICOS -->
+            <h3 class="text-2xl md:text-3xl font-bold text-slate-800 mb-5 flex items-center gap-2">
+                <i class="fa-solid fa-chalkboard-user text-indigo-600"></i> ¿Qué errores pedagógicos existen?
+            </h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <!-- Error 1 -->
+                <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition-all">
+                    <div class="text-xs md:text-sm font-bold text-red-500 uppercase tracking-wide mb-1.5">Error 1</div>
+                    <h4 class="font-bold text-slate-800 text-xl mb-3">No usar apoyo visual</h4>
+                    <p class="text-slate-600 text-base md:text-lg mb-4">Los docentes no utilizaron ningún soporte gráfico, dificultando drásticamente la comprensión:</p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="bg-slate-100 text-slate-700 text-sm md:text-base px-3 py-1.5 rounded-md border border-slate-200"><i class="fa-regular fa-image text-blue-500 mr-1"></i> Imágenes</span>
+                        <span class="bg-slate-100 text-slate-700 text-sm md:text-base px-3 py-1.5 rounded-md border border-slate-200"><i class="fa-solid fa-video text-red-500 mr-1"></i> Videos</span>
+                        <span class="bg-slate-100 text-slate-700 text-sm md:text-base px-3 py-1.5 rounded-md border border-slate-200"><i class="fa-solid fa-apple-whole text-green-500 mr-1"></i> Objetos reales</span>
+                        <span class="bg-slate-100 text-slate-700 text-sm md:text-base px-3 py-1.5 rounded-md border border-slate-200"><i class="fa-solid fa-file-invoice text-amber-500 mr-1"></i> Carteles</span>
+                        <span class="bg-slate-100 text-slate-700 text-sm md:text-base px-3 py-1.5 rounded-md border border-slate-200"><i class="fa-solid fa-sitemap text-purple-500 mr-1"></i> Org. visuales</span>
+                    </div>
+                </div>
+
+                <!-- Error 2 -->
+                <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition-all">
+                    <div class="text-xs md:text-sm font-bold text-red-500 uppercase tracking-wide mb-1.5">Error 2</div>
+                    <h4 class="font-bold text-slate-800 text-xl mb-3">Hablar solo inglés sin apoyo</h4>
+                    <p class="text-slate-600 text-base md:text-lg leading-relaxed">
+                        El profesor utilizaba únicamente inglés, incluso cuando los estudiantes no entendían nada. 
+                    </p>
+                    <blockquote class="mt-4 bg-blue-50 border-l-2 border-blue-500 p-3 text-sm md:text-base italic text-blue-800 rounded-r">
+                        "La inmersión no significa 'dejar solos' a los estudiantes."
+                    </blockquote>
+                </div>
+
+                <!-- Error 3 -->
+                <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition-all">
+                    <div class="text-xs md:text-sm font-bold text-red-500 uppercase tracking-wide mb-1.5">Error 3</div>
+                    <h4 class="font-bold text-slate-800 text-xl mb-3">Falta de contextualización</h4>
+                    <p class="text-slate-600 text-base md:text-lg leading-relaxed">
+                        Las actividades no estaban relacionadas con situaciones reales o cercanas a los alumnos. Por eso el aprendizaje carecía de un significado real.
+                    </p>
+                </div>
+
+                <!-- Error 4 -->
+                <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition-all">
+                    <div class="text-xs md:text-sm font-bold text-red-500 uppercase tracking-wide mb-1.5">Error 4</div>
+                    <h4 class="font-bold text-slate-800 text-xl mb-3">Poca participación estudiantil</h4>
+                    <p class="text-slate-600 text-base md:text-lg leading-relaxed">
+                        Metodología mayormente pasiva. Los estudiantes no jugaban, no interactuaban en el aula y no practicaban el idioma de forma divertida.
+                    </p>
+                </div>
+
+                <!-- Error 5 -->
+                <div class="bg-white rounded-xl border border-slate-200 p-6 shadow-xs hover:shadow-md transition-all md:col-span-2 lg:col-span-1">
+                    <div class="text-xs md:text-sm font-bold text-red-500 uppercase tracking-wide mb-1.5">Error 5</div>
+                    <h4 class="font-bold text-slate-800 text-xl mb-3">No respetar el nivel</h4>
+                    <p class="text-slate-600 text-base md:text-lg leading-relaxed">
+                        Falta de diagnóstico técnico. Las sesiones y explicaciones eran demasiado avanzadas y complejas para el nivel real de los estudiantes.
+                    </p>
+                </div>
+            </div>
+
+            <!-- QUÉ SE DEBERÍA CAMBIAR -->
+            <div class="bg-gradient-to-r from-emerald-600 to-teal-700 text-white p-6 md:p-8 rounded-2xl shadow-sm">
+                <h3 class="text-2xl md:text-3xl font-bold mb-5 flex items-center gap-2">
+                    <i class="fa-solid fa-arrows-rotate animate-spin" style="animation-duration: 4s;"></i> ¿Qué se debería cambiar?
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                    <div class="bg-white/10 p-4 rounded-xl backdrop-blur-xs flex gap-3 items-center"><i class="fa-solid fa-check text-emerald-300 text-lg shrink-0"></i> <span class="text-base md:text-lg">Usar imágenes y material visual</span></div>
+                    <div class="bg-white/10 p-4 rounded-xl backdrop-blur-xs flex gap-3 items-center"><i class="fa-solid fa-check text-emerald-300 text-lg shrink-0"></i> <span class="text-base md:text-lg">Hablar lento y con lenguaje simple</span></div>
+                    <div class="bg-white/10 p-4 rounded-xl backdrop-blur-xs flex gap-3 items-center"><i class="fa-solid fa-check text-emerald-300 text-lg shrink-0"></i> <span class="text-base md:text-lg">Combinar gestos y lenguaje corporal</span></div>
+                    <div class="bg-white/10 p-4 rounded-xl backdrop-blur-xs flex gap-3 items-center"><i class="fa-solid fa-check text-emerald-300 text-lg shrink-0"></i> <span class="text-base md:text-lg">Crear actividades dinámicas</span></div>
+                    <div class="bg-white/10 p-4 rounded-xl backdrop-blur-xs flex gap-3 items-center"><i class="fa-solid fa-check text-emerald-300 text-lg shrink-0"></i> <span class="text-base md:text-lg">Dar apoyo gradual al estudiante</span></div>
+                    <div class="bg-white/10 p-4 rounded-xl backdrop-blur-xs flex gap-3 items-center"><i class="fa-solid fa-check text-emerald-300 text-lg shrink-0"></i> <span class="text-base md:text-lg">Motivar y no corregir de forma negativa</span></div>
+                    <div class="bg-white/10 p-4 rounded-xl backdrop-blur-xs flex gap-3 items-center sm:col-span-2"><i class="fa-solid fa-check text-emerald-300 text-lg shrink-0"></i> <span class="text-base md:text-lg">Relacionar el inglés con situaciones reales</span></div>
+                </div>
+                <p class="text-center text-sm md:text-base mt-6 text-emerald-100 font-semibold uppercase tracking-wider">Meta central: Que el estudiante se sientan seguro y aprenda poco a poco.</p>
+            </div>
+
+        </section>
+
+
+        <!-- ================= PESTAÑA 2: DISEÑO DE SOLUCIÓN ================= -->
+        <section id="tab-diseno" class="tab-content animate__animated animate__fadeIn">
+            
+            <!-- OBJETIVO DE APRENDIZAJE -->
+            <div class="bg-gradient-to-r from-indigo-500 to-blue-600 text-white p-6 md:p-8 rounded-2xl shadow-md mb-8 text-center">
+                <i class="fa-solid fa-bullseye text-4xl text-amber-300 mb-3"></i>
+                <h3 class="text-xs md:text-sm uppercase tracking-widest font-bold text-indigo-100 mb-2">Objetivo General de Aprendizaje</h3>
+                <p class="text-xl md:text-3xl font-serif max-w-4xl mx-auto italic leading-relaxed">
+                    "Que los estudiantes comprendan y utilicen expresiones básicas en inglés de manera natural y participativa mediante actividades inmersivas y apoyo visual."
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <!-- ESTRATEGIAS INMERSIVAS -->
+                <div class="lg:col-span-2 space-y-6">
+                    <h3 class="text-2xl md:text-3xl font-bold text-slate-800 flex items-center gap-2">
+                        <i class="fa-solid fa-graduation-cap text-indigo-600"></i> Estrategias Inmersivas Principales
+                    </h3>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <!-- Card Uso de Imágenes -->
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-xs">
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="bg-blue-100 text-blue-600 p-3 rounded-lg text-lg"><i class="fa-solid fa-images"></i></span>
+                                <h4 class="font-bold text-slate-800 text-lg md:text-xl">Uso de Imágenes</h4>
+                            </div>
+                            <p class="text-slate-600 text-base md:text-lg mb-4">Para asociar directamente conceptos sin traducir:</p>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="bg-slate-50 text-sm md:text-base px-3 py-1.5 rounded text-slate-700 border border-slate-100">Flashcards</span>
+                                <span class="bg-slate-50 text-sm md:text-base px-3 py-1.5 rounded text-slate-700 border border-slate-100">Dibujos</span>
+                                <span class="bg-slate-50 text-sm md:text-base px-3 py-1.5 rounded text-slate-700 border border-slate-100">Fotografías</span>
+                                <span class="bg-slate-50 text-sm md:text-base px-3 py-1.5 rounded text-slate-700 border border-slate-100">Infografías</span>
+                            </div>
+                        </div>
+
+                        <!-- Card Lenguaje Corporal -->
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-xs">
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="bg-purple-100 text-purple-600 p-3 rounded-lg text-lg"><i class="fa-solid fa-child-reaching"></i></span>
+                                <h4 class="font-bold text-slate-800 text-lg md:text-xl">Lenguaje Corporal</h4>
+                            </div>
+                            <p class="text-slate-600 text-base md:text-lg mb-3">Acción docente: Hacer gestos, señalar objetos y representar acciones corporales.</p>
+                            <div class="bg-amber-50 border-l-2 border-amber-400 p-3 rounded text-sm md:text-base text-amber-900">
+                                <strong>Ejemplo:</strong> Si dice <em>“sit down”</em>, también debe sentarse o señalar de forma clara la silla.
+                            </div>
+                        </div>
+
+                        <!-- Card Rutinas Lingüísticas -->
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-xs">
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="bg-indigo-100 text-indigo-600 p-3 rounded-lg text-lg"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                                <h4 class="font-bold text-slate-800 text-lg md:text-xl">Rutinas Lingüísticas</h4>
+                            </div>
+                            <p class="text-slate-600 text-base md:text-lg mb-3">Frases cotidianas fijas por repetición natural:</p>
+                            <div class="grid grid-cols-2 gap-2 text-sm md:text-base font-mono text-indigo-900">
+                                <span class="bg-indigo-50/50 p-2 rounded text-center">Good morning</span>
+                                <span class="bg-indigo-50/50 p-2 rounded text-center">How are you?</span>
+                                <span class="bg-indigo-50/50 p-2 rounded text-center">Sit down</span>
+                                <span class="bg-indigo-50/50 p-2 rounded text-center">Open your notebook</span>
+                            </div>
+                        </div>
+
+                        <!-- Card Uso de Contexto Real -->
+                        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-xs">
+                            <div class="flex items-center gap-3 mb-4">
+                                <span class="bg-emerald-100 text-emerald-600 p-3 rounded-lg text-lg"><i class="fa-solid fa-earth-americas"></i></span>
+                                <h4 class="font-bold text-slate-800 text-lg md:text-xl">Uso de Contexto Real</h4>
+                            </div>
+                            <p class="text-slate-600 text-base md:text-lg mb-3">Conectar el idioma directamente con entornos e intereses del estudiante:</p>
+                            <div class="flex flex-wrap gap-2 text-sm md:text-base">
+                                <span class="px-3 py-1 bg-slate-100 rounded text-slate-600">La escuela</span>
+                                <span class="px-3 py-1 bg-slate-100 rounded text-slate-600">La familia</span>
+                                <span class="px-3 py-1 bg-slate-100 rounded text-slate-600">Los juegos</span>
+                                <span class="px-3 py-1 bg-slate-100 rounded text-slate-600">La comida</span>
+                                <span class="px-3 py-1 bg-slate-100 rounded text-slate-600">Los amigos</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RECURSOS PEDAGÓGICOS -->
+                <div class="bg-slate-900 text-slate-100 p-6 md:p-8 rounded-2xl shadow-sm flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold mb-5 text-emerald-400 flex items-center gap-2">
+                            <i class="fa-solid fa-box-open"></i> Caja de Recursos
+                        </h3>
+                        
+                        <!-- Reales -->
+                        <div class="mb-5">
+                            <span class="text-xs md:text-sm font-semibold text-slate-400 uppercase block mb-2 tracking-wider">Recursos Reales</span>
+                            <p class="text-sm md:text-base text-slate-300 flex flex-wrap gap-1.5">
+                                <span class="bg-slate-800 px-3 py-1 rounded">Frutas</span>
+                                <span class="bg-slate-800 px-3 py-1 rounded">Útiles escolares</span>
+                                <span class="bg-slate-800 px-3 py-1 rounded">Ropa</span>
+                                <span class="bg-slate-800 px-3 py-1 rounded">Juguetes</span>
+                            </p>
+                        </div>
+
+                        <!-- Visuales -->
+                        <div class="mb-5">
+                            <span class="text-xs md:text-sm font-semibold text-slate-400 uppercase block mb-2 tracking-wider">Recursos Visuales</span>
+                            <p class="text-sm md:text-base text-slate-300 flex flex-wrap gap-1.5">
+                                <span class="bg-slate-800 px-3 py-1 rounded">Flashcards</span>
+                                <span class="bg-slate-800 px-3 py-1 rounded">Posters</span>
+                                <span class="bg-slate-800 px-3 py-1 rounded">Imágenes</span>
+                                <span class="bg-slate-800 px-3 py-1 rounded">Pizarra visual</span>
+                            </p>
+                        </div>
+
+                        <!-- Digitales -->
+                        <div>
+                            <span class="text-xs md:text-sm font-semibold text-slate-400 uppercase block mb-2 tracking-wider">Recursos Digitales</span>
+                            <p class="text-sm md:text-base text-slate-300 flex flex-wrap gap-1.5">
+                                <span class="bg-slate-800 px-3 py-1 rounded">Videos</span>
+                                <span class="bg-slate-800 px-3 py-1 rounded">Apps educativas</span>
+                                <span class="bg-slate-800 px-3 py-1 rounded">YouTube (Canciones)</span>
+                                <span class="bg-slate-800 px-3 py-1 rounded">Juegos interactivos</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ACTIVIDADES PROPUESTAS -->
+            <h3 class="text-2xl md:text-3xl font-bold text-slate-800 mb-5 flex items-center gap-2">
+                <i class="fa-solid fa-gamepad text-indigo-600"></i> Actividades Didácticas Dinámicas
+            </h3>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+                <!-- Actividad 1 -->
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-between">
+                    <div>
+                        <div class="text-indigo-600 text-xl mb-3"><i class="fa-solid fa-people-arrows"></i></div>
+                        <h4 class="font-bold text-slate-800 text-base md:text-lg mb-1.5">Role play (Juego de roles)</h4>
+                        <p class="text-slate-600 text-sm md:text-base">Simulación de contexts reales comunicativos cotidianos:</p>
+                        <ul class="text-xs md:text-sm text-slate-500 mt-3 list-disc pl-5 space-y-1">
+                            <li>Comprar en una tienda</li>
+                            <li>Saludar a un amigo</li>
+                            <li>Presentarse formalmente</li>
+                        </ul>
+                    </div>
+                    <div class="mt-4 bg-slate-50 p-2.5 rounded text-xs md:text-sm text-slate-600 italic border border-slate-100">
+                        <strong>Ejemplo:</strong> “Hello, my name is Ana”.
+                    </div>
+                </div>
+
+                <!-- Actividad 2 -->
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
+                    <div class="text-emerald-600 text-xl mb-3"><i class="fa-solid fa-puzzle-piece"></i></div>
+                    <h4 class="font-bold text-slate-800 text-base md:text-lg mb-1.5">Juegos interactivos</h4>
+                    <p class="text-slate-600 text-sm md:text-base mb-3">Reduce sustancialmente el miedo al error e incrementa el engagement:</p>
+                    <div class="grid grid-cols-2 gap-2 text-xs md:text-sm text-center font-medium">
+                        <span class="bg-emerald-50 text-emerald-800 p-2 rounded">Bingo de vocabulario</span>
+                        <span class="bg-emerald-50 text-emerald-800 p-2 rounded">Memoria visual</span>
+                        <span class="bg-emerald-50 text-emerald-800 p-2 rounded">Retos por equipos</span>
+                        <span class="bg-emerald-50 text-emerald-800 p-2 rounded">Adivinanzas</span>
+                    </div>
+                </div>
+
+                <!-- Actividad 3 -->
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-xs">
+                    <div class="text-red-600 text-xl mb-3"><i class="fa-solid fa-music"></i></div>
+                    <h4 class="font-bold text-slate-800 text-base md:text-lg mb-1.5">Canciones y videos</h4>
+                    <p class="text-slate-600 text-sm md:text-base mb-3">Formatos audiovisuales sencillos de corta duración para potenciar:</p>
+                    <div class="space-y-1.5">
+                        <div class="flex items-center gap-2 text-sm md:text-base text-slate-600"><i class="fa-solid fa-circle-check text-red-500 text-xs"></i> Pronunciación</div>
+                        <div class="flex items-center gap-2 text-sm md:text-base text-slate-600"><i class="fa-solid fa-circle-check text-red-500 text-xs"></i> Comprensión auditiva</div>
+                        <div class="flex items-center gap-2 text-sm md:text-base text-slate-600"><i class="fa-solid fa-circle-check text-red-500 text-xs"></i> Participación grupal</div>
+                    </div>
+                </div>
+
+                <!-- Actividad 4 -->
+                <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-xs flex flex-col justify-center">
+                    <div class="text-amber-600 text-xl mb-3"><i class="fa-solid fa-user-group"></i></div>
+                    <h4 class="font-bold text-slate-800 text-base md:text-lg mb-1.5">Trabajo en parejas</h4>
+                    <p class="text-slate-600 text-sm md:text-base">
+                        Los estudiantes practican y ejecutan interacciones o conversations cortas y guiadas directamente entre compañeros de clase.
+                    </p>
+                </div>
+            </div>
+
+            <!-- ESTRATEGIAS DE APOYO PEDAGÓGICO -->
+            <div class="bg-slate-100 p-6 md:p-8 rounded-2xl border border-slate-200">
+                <h3 class="text-2xl md:text-3xl font-bold text-slate-800 mb-5 text-center flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-hands-holding text-blue-600"></i> Estrategias de Apoyo Pedagógico (Sustento Metodológico)
+                </h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <!-- Repetición -->
+                    <div class="bg-white p-5 rounded-xl shadow-xs border border-slate-200 text-center">
+                        <div class="text-blue-500 mb-2"><i class="fa-solid fa-rotate-left font-bold text-xl"></i></div>
+                        <h4 class="font-bold text-slate-800 text-sm uppercase mb-1.5">Repetición</h4>
+                        <p class="text-slate-600 text-xs md:text-sm">Reiterar frases clave varias veces para fijar comprensión de forma auditiva.</p>
+                    </div>
+                    <!-- Modelado -->
+                    <div class="bg-white p-5 rounded-xl shadow-xs border border-slate-200 text-center flex flex-col justify-between">
+                        <div>
+                            <div class="text-purple-500 mb-2"><i class="fa-solid fa-user-tie text-xl"></i></div>
+                            <h4 class="font-bold text-slate-800 text-sm uppercase mb-1.5">Modelado</h4>
+                            <p class="text-slate-600 text-xs md:text-sm">El docente demuestra físicamente la actividad antes.</p>
+                        </div>
+                        <div class="mt-3 text-xs bg-purple-50 text-purple-900 p-2 rounded font-sans italic">Profesor hace el diálogo primero.</div>
+                    </div>
+                    <!-- Contextualización -->
+                    <div class="bg-white p-5 rounded-xl shadow-xs border border-slate-200 text-center">
+                        <div class="text-emerald-500 mb-2"><i class="fa-solid fa-house-user text-xl"></i></div>
+                        <h4 class="font-bold text-slate-800 text-sm uppercase mb-1.5">Contextualización</h4>
+                        <p class="text-slate-600 text-xs md:text-sm">Relacionar los marcos idiomáticos con la vida cotidiana del estudiante.</p>
+                    </div>
+                    <!-- Andamiaje -->
+                    <div class="bg-white p-5 rounded-xl shadow-xs border border-slate-200 text-center">
+                        <div class="text-amber-500 mb-2"><i class="fa-solid fa-cubes text-xl"></i></div>
+                        <h4 class="font-bold text-slate-800 text-sm uppercase mb-1.5">Andamiaje</h4>
+                        <p class="text-slate-600 text-xs md:text-sm mb-2">Ayuda gradual:</p>
+                        <div class="text-xs text-left text-slate-500 space-y-1 bg-slate-50 p-2 rounded">
+                            <div>1. Imágenes</div>
+                            <div>2. Frases cortas</div>
+                            <div>3. Diálogos simples</div>
+                        </div>
+                    </div>
+                    <!-- Refuerzo Positivo -->
+                    <div class="bg-white p-5 rounded-xl shadow-xs border border-slate-200 text-center flex flex-col justify-between">
+                        <div>
+                            <div class="text-pink-500 mb-2"><i class="fa-solid fa-award text-xl"></i></div>
+                            <h4 class="font-bold text-slate-800 text-sm uppercase mb-1.5">Refuerzo Positivo</h4>
+                            <p class="text-slate-600 text-xs md:text-sm">Felicitar y motivar constantemente para construir la confianza del alumno.</p>
+                        </div>
+                        <div class="mt-3 text-xs font-mono bg-pink-50 text-pink-700 p-2 rounded font-bold">“Very good!”</div>
+                        <div class="mt-3 text-xs font-mono bg-pink-50 text-pink-700 p-2 rounded font-bold">“Excellent!”</div>
+                        <div class="mt-3 text-xs font-mono bg-pink-50 text-pink-700 p-2 rounded font-bold">“Good job!”</div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-800 text-slate-400 text-center py-8 mt-14 border-t border-slate-700 text-sm">
+        <p>© 2026 - Callupe L. Aaron S.</p>
+    </footer>
+
+    <!-- LOGICA SCRIPT DINÁMICA PARA CAMBIO DE PESTAÑAS -->
+    <script>
+        function switchTab(tabId) {
+            // Esconder todas las pestañas
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            // Quitar clase activa a botones
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Mostrar pestaña seleccionada
+            document.getElementById('tab-' + tabId).classList.add('active');
+            // Activar botón seleccionado
+            document.getElementById('btn-' + tabId).classList.add('active');
+        }
+    </script>
+</body>
+</html>
