@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Análisis Crítico: Ventajas y Desventajas del Modelo TPACK</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #003366; /* Azul UTP */
+            --success-color: #2ec4b6; /* Verde para Ventajas */
+            --danger-color: #e63946; /* Coral/Rojo para Desventajas */
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #2b2d42;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Encabezado */
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #001f4d 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            border-bottom: 5px solid var(--success-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        header h1 {
+            font-size: 2.6rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            font-weight: 300;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .badge-container {
+            margin-top: 20px;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: rgba(255, 255, 255, 0.15);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            margin: 5px;
+        }
+
+        /* Contenedor Principal */
+        .container {
+            max-width: 1200px;
+            margin: 5px auto 50px auto;
+            padding: 40px 20px;
+        }
+
+        /* Sección de Introducción de la Lectura */
+        .lecture-note {
+            background: var(--card-bg);
+            border-left: 5px solid var(--primary-color);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.03);
+            font-size: 0.95rem;
+        }
+
+        /* Estructura de Dos Columnas (Versus) */
+        .analysis-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .column-title {
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #ddd;
+        }
+
+        .advantages-col .column-title {
+            color: var(--success-color);
+            border-bottom-color: var(--success-color);
+        }
+
+        .disadvantages-col .column-title {
+            color: var(--danger-color);
+            border-bottom-color: var(--danger-color);
+        }
+
+        /* Estilo de las Tarjetas de Contenido */
+        .item-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.04);
+            transition: all 0.3s ease;
+            border-top: 4px solid #ccc;
+            position: relative;
+        }
+
+        .advantages-col .item-card {
+            border-top-color: var(--success-color);
+        }
+
+        .disadvantages-col .item-card {
+            border-top-color: var(--danger-color);
+        }
+
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
+
+        .card-header-inline {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .card-header-inline i {
+            font-size: 1.2rem;
+        }
+
+        .advantages-col .card-header-inline i { color: var(--success-color); }
+        .disadvantages-col .card-header-inline i { color: var(--danger-color); }
+
+        .item-card h3 {
+            font-size: 1.15rem;
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+
+        .item-card p {
+            font-size: 0.93rem;
+            color: #555;
+            text-align: justify;
+        }
+
+        /* Enfoque Idioma Inglés / Destacados internos */
+        .context-box {
+            margin-top: 12px;
+            padding: 10px 14px;
+            background-color: #f1f5f9;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-style: italic;
+            color: #475569;
+            border-left: 3px solid #cbd5e1;
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+
+        .context-box i {
+            margin-top: 3px;
+            color: var(--primary-color) !important;
+        }
+
+        /* Pie de página */
+        footer {
+            text-align: center;
+            padding: 35px;
+            background-color: var(--primary-color);
+            color: white;
+            font-size: 0.9rem;
+            margin-top: 60px;
+        }
+
+        footer i {
+            color: var(--danger-color);
+        }
+
+        /* Responsivo para Tablets y Celulares */
+        @media (max-width: 900px) {
+            .analysis-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            header h1 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1><i class="fa-solid fa-scale-balanced"></i> MODELO TPACK EN BALANCE</h1>
+
+        <strong>ESTUDIANTES:</strong>
+        <p>Callupe Llallico Aaron - Huaman Cajachagua Giuliana</p><br>
+
+        <p>Análisis crítico de sus alcances, ventajas pedagógicas y limitaciones en la formación docente y la enseñanza del inglés.</p>
+        <div class="badge-container">
+            <span class="badge"><i class="fa-solid fa-book"></i> Ref: Balladares & Valverde (2022)</span>
+            <span class="badge"><i class="fa-solid fa-layer-group"></i> CK + PK + TK</span>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <div class="lecture-note">
+            <p><i class="fa-solid fa-circle-info" style="color: var(--primary-color); margin-right: 5px;"></i> <strong>Nota conceptual:</strong> Basados en la revisión de la literatura científica, el modelo propuesto por Mishra y Koehler (2006) no es una receta mágica instrumental, sino un marco reflexivo. A continuación, se desglosan los argumentos normativos y prácticos extraídos de la evidencia.</p>
+        </div>
+
+        <div class="analysis-grid">
+            
+            <div class="advantages-col">
+                <h2 class="column-title"><i class="fa-solid fa-circle-check"></i> Ventajas Potenciales</h2>
+                
+                <div class="item-card">
+                    <div class="card-header-inline">
+                        <i class="fa-solid fa-brain"></i>
+                        <h3>Pensamiento Meta-conceptual</h3>
+                    </div>
+                    <p>Fomenta una sólida capacidad reflexiva en el profesorado. Evita que los docentes incorporen tecnología de manera puramente instrumental, obligándolos a conceptualizar el <strong>"por qué"</strong> y el <strong>"para qué"</strong> de cada recurso digital en función de sus objetivos formativos.</p>
+                    <div class="context-box">
+                        <i class="fa-solid fa-language"></i>
+                        <span><strong>En Inglés:</strong> Asegura que el uso de una app de podcasts tenga un fin comunicativo real y no sea un simple pasatiempo en el aula.</span>
+                    </div>
+                </div>
+
+                <div class="item-card">
+                    <div class="card-header-inline">
+                        <i class="fa-solid fa-sliders"></i>
+                        <h3>Flexibilidad y Adaptabilidad</h3>
+                    </div>
+                    <p>Es un modelo dinámico cuyas variantes se adaptan perfectamente a las nuevas modalidades educativas nacidas en la era pospandemia, tales como el <em>e-learning</em>, el aprendizaje híbrido (blended learning) y las aulas virtuales interactivas.</p>
+                </div>
+
+                <div class="item-card">
+                    <div class="card-header-inline">
+                        <i class="fa-solid fa-compass"></i>
+                        <h3>Brújula de Planificación</h3>
+                    </div>
+                    <p>Sirve como una guía estructurada para el codiseño de unidades didácticas y proyectos de innovación. Al articular armónicamente contenido (CK), pedagogía (PK) y tecnología (TK), blinda las sesiones de aprendizaje contra la improvisación.</p>
+                    <div class="context-box">
+                        <i class="fa-solid fa-language"></i>
+                        <span><strong>En Inglés:</strong> Facilita el diseño de tareas complejas como webquests o portafolios digitales evaluando competencias lingüísticas específicas de manera integral.</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="disadvantages-col">
+                <h2 class="column-title"><i class="fa-solid fa-circle-xmark"></i> Desventajas y Desafíos</h2>
+                
+                <div class="item-card">
+                    <div class="card-header-inline">
+                        <i class="fa-solid fa-puzzle-piece"></i>
+                        <h3>Complejidad en Fronteras Teóricas</h3>
+                    </div>
+                    <p>La delimitación conceptual de sus componentes intersecados (como el TPK o TCK) resulta en ocasiones ambigua y difícil de aislar o medir con precisión empírica en las investigaciones y en las observaciones de aula.</p>
+                </div>
+
+                <div class="item-card">
+                    <div class="card-header-inline">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <h3>Riesgo de Enfoque Tecnocéntrico</h3>
+                    </div>
+                    <p>Si la capacitación docente no está bien orientada, existe el peligro latente de que los participantes se saturen priorizando el componente técnico (TK) por encima de las estrategias metodológicas o del propio dominio disciplinar del idioma.</p>
+                    <div class="context-box">
+                        <i class="fa-solid fa-language"></i>
+                        <span><strong>En Inglés:</strong> Centrar el esfuerzo en aprender a usar herramientas complejas (como editores de video sofisticados) distrayendo el tiempo real que los alumnos necesitan para practicar el "speaking".</span>
+                    </div>
+                </div>
+
+                <div class="item-card">
+                    <div class="card-header-inline">
+                        <i class="fa-solid fa-network-wired"></i>
+                        <h3>Brecha Digital e Infraestructura</h3>
+                    </div>
+                    <p>El modelo asume un ecosistema óptimo. Su implementación genera frustración e inequidad cuando los entornos reales de práctica docente carecen de conectividad estable, soporte técnico o acceso equitativo a dispositivos tecnológicos.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <p>© Callupe Llallico Aaron Sixto - 2026</p>
+    </footer>
+
+</body>
+</html>
