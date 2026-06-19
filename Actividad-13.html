@@ -1,0 +1,510 @@
+<!doctype html>
+<html lang="es">
+ <head><script src="/_sdk/telemetry_sdk.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exposición Enseñanza de una Segunda Lengua</title>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.263.0/dist/umd/lucide.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&amp;family=Fraunces:opsz,wght@9..144,600;9..144,700&amp;display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --ink:#15382f;
+      --forest:#0f4c3a;
+      --sage:#dce8df;
+      --cream:#f7f2e8;
+      --sand:#eadfcf;
+      --gold:#cf9f45;
+      --muted:#6d7c74;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:'DM Sans',sans-serif;color:var(--ink);}
+    .serif{font-family:'Fraunces',serif}
+    .app-shell{min-height:calc(100 * min(var(--vh, 1vh), 1vh)); width:100%;}
+    .sidebar{
+      background:linear-gradient(180deg,#103f33 0%,#0b3028 100%);
+    }
+    .slide{display:none; animation:slideIn .45s ease both;}
+    .slide.active{display:block}
+    @keyframes slideIn{
+      from{opacity:0; transform:translateY(16px)}
+      to{opacity:1; transform:translateY(0)}
+    }
+    .nav-btn.active{
+      background:rgba(255,255,255,.14);
+      color:#fff;
+      border-color:rgba(255,255,255,.22);
+    }
+    .nav-btn.active .nav-dot{background:#e7bf67}
+    .soft-shadow{box-shadow:0 18px 50px rgba(25,54,45,.12)}
+    .paper-noise{
+      background-image:
+        radial-gradient(circle at 20% 10%, rgba(15,76,58,.06) 0 1px, transparent 1px),
+        radial-gradient(circle at 80% 40%, rgba(15,76,58,.05) 0 1px, transparent 1px);
+      background-size:28px 28px, 34px 34px;
+    }
+    .progress-fill{transition:width .35s ease}
+    .image-frame:after{
+      content:"";
+      position:absolute; inset:0;
+      background:linear-gradient(180deg,transparent 35%,rgba(8,32,26,.28));
+      pointer-events:none;
+    }
+    @media(max-width: 900px){
+      .desktop-layout{display:block}
+      .sidebar{
+        width:100% !important;
+        min-height:auto !important;
+        position:relative !important;
+      }
+      .side-inner{padding:18px !important}
+      .brand-row{display:flex;align-items:center;justify-content:space-between}
+      .nav-list{
+        display:flex !important;
+        overflow-x:auto;
+        gap:8px !important;
+        margin-top:16px !important;
+        padding-bottom:4px;
+      }
+      .nav-btn{
+        flex:0 0 auto;
+        min-width:max-content;
+      }
+      .main-area{padding:22px !important}
+      .cover-grid,.content-grid{grid-template-columns:1fr !important}
+      .cover-photo{min-height:280px !important}
+    }
+  </style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="/_sdk/resizing_sdk.js" type="text/javascript"></script>
+ </head>
+ <body data-template-id="__page-root" class="w-full">
+  <div class="app-shell desktop-layout flex w-full">
+   <aside data-template-id="sidebar-panel" class="canva-sidebar sidebar w-[280px] shrink-0 min-h-screen text-white relative">
+    <div class="side-inner h-full p-7 flex flex-col">
+     <div class="brand-row">
+      <div>
+       
+       <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Utplogonuevo.svg/1280px-Utplogonuevo.svg.png" 
+        alt="Logo UTP" 
+        width="300">
+       <p data-template-id="sidebar-eyebrow" class="canva-text mt-5 text-[11px] uppercase tracking-[.25em] text-emerald-100/70">Propuesta didáctica</p>
+       <h2 data-template-id="sidebar-title" class="canva-text serif mt-2 text-2xl leading-tight text-white">My First<br>
+         English World</h2>
+       <p data-template-id="sidebar-subtitle" class="canva-text mt-2 text-sm text-emerald-50/70">TOYS · 1º primaria</p>
+      </div>
+     </div>
+     <nav aria-label="Secciones de la presentación" class="mt-10">
+      <div class="nav-list space-y-2"><button class="nav-btn active w-full text-left px-3 py-2.5 rounded-xl border border-transparent text-sm flex items-center gap-3 transition" data-slide="0" type="button"> <span class="nav-dot w-2 h-2 rounded-full bg-white/40"></span><span data-template-id="nav-cover" class="canva-text">Portada</span> </button> <button class="nav-btn w-full text-left px-3 py-2.5 rounded-xl border border-transparent text-sm flex items-center gap-3 transition text-white/70" data-slide="1" type="button"> <span class="nav-dot w-2 h-2 rounded-full bg-white/30"></span><span data-template-id="nav-a" class="canva-text">A. Fundamento</span> </button> <button class="nav-btn w-full text-left px-3 py-2.5 rounded-xl border border-transparent text-sm flex items-center gap-3 transition text-white/70" data-slide="2" type="button"> <span class="nav-dot w-2 h-2 rounded-full bg-white/30"></span><span data-template-id="nav-b" class="canva-text">B. Propósito</span> </button> <button class="nav-btn w-full text-left px-3 py-2.5 rounded-xl border border-transparent text-sm flex items-center gap-3 transition text-white/70" data-slide="3" type="button"> <span class="nav-dot w-2 h-2 rounded-full bg-white/30"></span><span data-template-id="nav-c" class="canva-text">C. Contexto</span> </button> <button class="nav-btn w-full text-left px-3 py-2.5 rounded-xl border border-transparent text-sm flex items-center gap-3 transition text-white/70" data-slide="4" type="button"> <span class="nav-dot w-2 h-2 rounded-full bg-white/30"></span><span data-template-id="nav-d" class="canva-text">D. Herramienta</span> </button> <button class="nav-btn w-full text-left px-3 py-2.5 rounded-xl border border-transparent text-sm flex items-center gap-3 transition text-white/70" data-slide="5" type="button"> <span class="nav-dot w-2 h-2 rounded-full bg-white/30"></span><span data-template-id="nav-e" class="canva-text">E. Diseño</span> </button> <button class="nav-btn w-full text-left px-3 py-2.5 rounded-xl border border-transparent text-sm flex items-center gap-3 transition text-white/70" data-slide="6" type="button"> <span class="nav-dot w-2 h-2 rounded-full bg-white/30"></span><span data-template-id="nav-f" class="canva-text">F. Aplicaciones</span> </button> <button class="nav-btn w-full text-left px-3 py-2.5 rounded-xl border border-transparent text-sm flex items-center gap-3 transition text-white/70" data-slide="7" type="button"> <span class="nav-dot w-2 h-2 rounded-full bg-white/30"></span><span data-template-id="nav-g" class="canva-text">G. Evaluación</span> </button> <button class="nav-btn w-full text-left px-3 py-2.5 rounded-xl border border-transparent text-sm flex items-center gap-3 transition text-white/70" data-slide="8" type="button"> <span class="nav-dot w-2 h-2 rounded-full bg-white/30"></span><span data-template-id="nav-h" class="canva-text">H. Viabilidad</span> </button> <button class="nav-btn w-full text-left px-3 py-2.5 rounded-xl border border-transparent text-sm flex items-center gap-3 transition text-white/70" data-slide="9" type="button"> <span class="nav-dot w-2 h-2 rounded-full bg-white/30"></span><span data-template-id="nav-i" class="canva-text">I. Innovación</span> </button>
+      </div>
+     </nav>
+     <div class="mt-auto pt-8 hidden lg:block">
+      <div class="h-px bg-white/15 mb-4"></div>
+      <p data-template-id="sidebar-footer" class="canva-text text-[11px] uppercase tracking-[.18em] text-emerald-100/50">Educación · Innovación · Inglés</p>
+     </div>
+    </div>
+   </aside>
+   <main class="main-area flex-1 paper-noise bg-[#f7f2e8] min-h-screen p-8 lg:p-10">
+    <div class="max-w-[1180px] mx-auto"><!-- Slide 0 -->
+     <section class="slide active" data-index="0">
+      <div class="cover-grid grid grid-cols-[1.08fr_.92fr] gap-8 min-h-[720px]">
+       <div class="flex flex-col justify-between py-4">
+        <div>
+         <div data-template-id="cover-kicker" class="canva-text inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#dce8df] text-[#0f4c3a] text-xs font-semibold uppercase tracking-[.2em]">
+          Exposición académica
+         </div>
+         <h1 data-template-id="cover-title" class="canva-text serif mt-8 text-6xl lg:text-7xl leading-[.96] text-[#14382f] max-w-3xl">Enseñanza de Una Segunda Lengua</h1>
+         <p data-template-id="cover-subtitle" class="canva-text mt-6 text-xl leading-relaxed text-[#5e7168] max-w-2xl">Propuesta didáctica mediada por tecnología para el aprendizaje inicial del inglés en estudiantes de 1º de primaria.</p>
+        </div>
+        <div class="grid md:grid-cols-2 gap-5 mt-10">
+         <div data-template-id="cover-project-card" class="canva-card rounded-[24px] bg-white/80 border border-[#e5dccf] p-5 soft-shadow">
+          <p data-template-id="cover-project-label" class="canva-text text-xs uppercase tracking-[.18em] text-[#7b8a82]">Proyecto</p>
+          <h3 data-template-id="cover-project-title" class="canva-text serif mt-2 text-2xl text-[#14382f]">My First English World: TOYS</h3>
+         </div>
+         <div data-template-id="cover-course-card" class="canva-card rounded-[24px] bg-[#123f33] p-5 text-white soft-shadow">
+          <p data-template-id="cover-course-label" class="canva-text text-xs uppercase tracking-[.18em] text-emerald-100/60">Curso</p>
+          <h3 data-template-id="cover-course-title" class="canva-text mt-2 text-lg font-semibold leading-snug">Enseñanza de Una Segunda Lengua</h3>
+         </div>
+        </div>
+        <div class="mt-8 grid lg:grid-cols-[1fr_.8fr] gap-5">
+         <div>
+          <p data-template-id="integrantes-label" class="canva-text text-xs uppercase tracking-[.2em] text-[#7b8a82] mb-2">Integrantes</p>
+          <p data-template-id="integrantes-text" class="canva-text text-sm leading-7 text-[#40584f]">Callupe Llallico Aaron Sixto</p>
+          <p data-template-id="integrantes-text" class="canva-text text-sm leading-7 text-[#40584f]">Huaman Cajachagua Giualiana Patricia</p>
+          <p data-template-id="integrantes-text" class="canva-text text-sm leading-7 text-[#40584f]">Inga Moreno Estefany Yeraldin</p>
+          <p data-template-id="integrantes-text" class="canva-text text-sm leading-7 text-[#40584f]">Sanchez Verastegui Ruth Ester</p>
+         </div>
+         <div>
+          <p data-template-id="docente-label" class="canva-text text-xs uppercase tracking-[.2em] text-[#7b8a82] mb-2">Docente</p>
+          <p data-template-id="docente-text" class="canva-text text-sm leading-7 text-[#40584f]">Pacheco Aaltamirano Amancia Maria</p><br>
+          <p data-template-id="docente-label" class="canva-text text-xs uppercase tracking-[.2em] text-[#7b8a82] mb-2">Sección</p>
+          <p data-template-id="docente-text" class="canva-text text-sm leading-7 text-[#40584f]">43823</p>
+         </div>
+        </div>
+       </div>
+       <div class="relative">
+        <div class="absolute -top-4 -left-4 w-28 h-28 rounded-full bg-[#e6c36d]/30"></div>
+        <div class="absolute -bottom-5 -right-3 w-36 h-36 rounded-full border-[16px] border-[#d5e4da]"></div>
+        <div class="image-frame relative h-full min-h-[680px] rounded-[34px] overflow-hidden soft-shadow"><img data-template-id="cover-image" class="canva-image w-full h-full object-cover" loading="lazy" src="https://images.pexels.com/photos/5427998/pexels-photo-5427998.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1280" alt="A diverse group of students in an English class with a smiling teacher at the whiteboard.">
+         <div class="absolute inset-x-0 bottom-0 p-7 z-10 text-white">
+          <p data-template-id="cover-image-caption" class="canva-text text-sm uppercase tracking-[.22em] text-white/80">Aprender jugando</p>
+          <h2 data-template-id="cover-image-title" class="canva-text serif text-4xl mt-2">Tecnología que acerca el inglés al niño.</h2>
+         </div>
+        </div>
+       </div>
+      </div>
+     </section><!-- Slide 1 -->
+     <section class="slide" data-index="1">
+      <div class="mb-8">
+       <p data-template-id="a-letter" class="canva-text serif text-6xl text-[#c59b4f]">A</p>
+       <h1 data-template-id="a-title" class="canva-text serif text-5xl mt-1">Fundamento pedagógico</h1>
+       <p data-template-id="a-lead" class="canva-text mt-4 max-w-3xl text-lg text-[#65756d]">La propuesta se apoya en un aprendizaje activo, comunicativo y significativo para la adquisición temprana del inglés.</p>
+      </div>
+      <div class="content-grid grid grid-cols-[1fr_.85fr] gap-7">
+       <div class="space-y-5">
+        <article data-template-id="a-card-1" class="canva-card bg-white rounded-[24px] p-6 border border-[#eadfce] soft-shadow">
+         <div class="flex gap-4">
+          <div class="w-11 h-11 rounded-2xl bg-[#dce8df] flex items-center justify-center text-[#0f4c3a]">
+           <i data-lucide="messages-square"></i>
+          </div>
+          <div>
+           <h3 data-template-id="a-card-1-title" class="canva-text font-bold text-lg">Enfoque</h3>
+           <p data-template-id="a-card-1-text" class="canva-text mt-2 leading-7 text-[#52665c]">Se aplica el Enfoque Comunicativo, centrado en la competencia comunicativa donde el lenguaje se usa para interactuar.</p>
+          </div>
+         </div>
+        </article>
+        <article data-template-id="a-card-2" class="canva-card bg-white rounded-[24px] p-6 border border-[#eadfce] soft-shadow">
+         <div class="flex gap-4">
+          <div class="w-11 h-11 rounded-2xl bg-[#f2e5c8] flex items-center justify-center text-[#a27420]">
+           <i data-lucide="tablet"></i>
+          </div>
+          <div>
+           <h3 data-template-id="a-card-2-title" class="canva-text font-bold text-lg">Tecnología y Aprendizaje Significativo</h3>
+           <p data-template-id="a-card-2-text" class="canva-text mt-2 leading-7 text-[#52665c]">La tecnología actúa como un mediador que convierte conceptos abstractos (vocabulario en L2) en experiencias concretas (audio/imagen), facilitando el anclaje del conocimiento en la memoria a largo plazo.</p>
+          </div>
+         </div>
+        </article>
+        <article data-template-id="a-card-3" class="canva-card bg-white rounded-[24px] p-6 border border-[#eadfce] soft-shadow">
+         <div class="flex gap-4">
+          <div class="w-11 h-11 rounded-2xl bg-[#dce8df] flex items-center justify-center text-[#0f4c3a]">
+           <i data-lucide="users"></i>
+          </div>
+          <div>
+           <h3 data-template-id="a-card-3-title" class="canva-text font-bold text-lg">Rol del estudiante y docente</h3>
+           <p data-template-id="a-card-3-text" class="canva-text mt-2 leading-7 text-[#52665c]">El estudiante asume un rol activo al interactuar con el software, mientras que el docente actúa como mediador que guía el proceso, monitorea el progreso y resuelve dudas lingüísticas.</p>
+          </div>
+         </div>
+        </article>
+       </div>
+       <div class="relative rounded-[28px] overflow-hidden min-h-[560px] soft-shadow"><img data-template-id="a-image" class="canva-image w-full h-full object-cover" loading="lazy" src="https://images.pexels.com/photos/5306431/pexels-photo-5306431.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1280" alt="Students engaged in learning with a teacher using a digital tablet in a classroom setting.">
+        <div class="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-[#0d3028]/80 to-transparent">
+         <p data-template-id="a-image-caption" class="canva-text text-white text-sm uppercase tracking-[.2em]">Aprendizaje activo</p>
+        </div>
+       </div>
+      </div>
+     </section><!-- Slide 2 -->
+     <section class="slide" data-index="2">
+      <div class="mb-8">
+       <p data-template-id="b-letter" class="canva-text serif text-6xl text-[#c59b4f]">B</p>
+       <h1 data-template-id="b-title" class="canva-text serif text-5xl mt-1">Propósito de aprendizaje</h1>
+      </div>
+      <div class="grid lg:grid-cols-3 gap-6">
+       <article data-template-id="b-card-1" class="canva-card bg-[#123f33] text-white rounded-[28px] p-7 min-h-[250px]"><i data-lucide="mic-2" class="w-9 h-9 text-[#e9ca7f]"></i>
+        <p data-template-id="b-card-1-label" class="canva-text mt-6 text-xs uppercase tracking-[.2em] text-emerald-100/60">Competencia</p>
+        <h3 data-template-id="b-card-1-text" class="canva-text mt-3 text-xl font-semibold leading-relaxed">“Se comunica oralmente en inglés como lengua extranjera”.</h3>
+       </article>
+       <article data-template-id="b-card-2" class="canva-card bg-white rounded-[28px] p-7 min-h-[250px] border border-[#eadfce] soft-shadow"><i data-lucide="headphones" class="w-9 h-9 text-[#0f4c3a]"></i>
+        <p data-template-id="b-card-2-label" class="canva-text mt-6 text-xs uppercase tracking-[.2em] text-[#7b8a82]">Habilidad lingüística</p>
+        <h3 data-template-id="b-card-2-text" class="canva-text mt-3 text-xl font-semibold leading-relaxed text-[#193d33]">Comprensión auditiva y producción oral básica.</h3>
+       </article>
+       <article data-template-id="b-card-3" class="canva-card bg-[#efe3d2] rounded-[28px] p-7 min-h-[250px]"><i data-lucide="book-open-check" class="w-9 h-9 text-[#a57624]"></i>
+        <p data-template-id="b-card-3-label" class="canva-text mt-6 text-xs uppercase tracking-[.2em] text-[#8c7650]">Relación con el CNEB</p>
+        <h3 data-template-id="b-card-3-text" class="canva-text mt-3 text-lg font-medium leading-relaxed text-[#3f4d45]">Se alinea con los desempeños de 1º de primaria, donde el estudiante recupera información explícita de textos orales sencillos, identificando vocabulario de objetos de su entorno.</h3>
+       </article>
+      </div>
+      <div data-template-id="b-quote-panel" class="canva-panel mt-8 rounded-[28px] bg-[#dce8df] p-8">
+       <p data-template-id="b-quote" class="canva-text serif text-3xl leading-snug text-[#173d33]">Aprender inglés desde la escucha, la imagen y la interacción.</p>
+      </div>
+     </section><!-- Slide 3 -->
+     <section class="slide" data-index="3">
+      <div class="mb-8">
+       <p data-template-id="c-letter" class="canva-text serif text-6xl text-[#c59b4f]">C</p>
+       <h1 data-template-id="c-title" class="canva-text serif text-5xl mt-1">Características del contexto y de los estudiantes</h1>
+      </div>
+      <div class="content-grid grid grid-cols-[.85fr_1fr] gap-7">
+       <div class="relative rounded-[28px] overflow-hidden min-h-[560px] soft-shadow"><img data-template-id="c-image" class="canva-image w-full h-full object-cover" loading="lazy" src="https://images.pexels.com/photos/17061221/pexels-photo-17061221.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1280" alt="A young girl in a school classroom in Yungay, Perú, appears thoughtful and introspective.">
+       </div>
+       <div class="grid gap-4">
+        <article data-template-id="c-card-1" class="canva-card bg-white rounded-[22px] p-5 border border-[#eadfce]">
+         <p data-template-id="c-card-1-title" class="canva-text text-xs uppercase tracking-[.2em] text-[#7d8a84]">Nivel educativo</p>
+         <h3 data-template-id="c-card-1-text" class="canva-text mt-2 text-xl font-semibold">1º grado de Educación Básica Regular.</h3>
+        </article>
+        <article data-template-id="c-card-2" class="canva-card bg-white rounded-[22px] p-5 border border-[#eadfce]">
+         <p data-template-id="c-card-2-title" class="canva-text text-xs uppercase tracking-[.2em] text-[#7d8a84]">Dominio del idioma</p>
+         <h3 data-template-id="c-card-2-text" class="canva-text mt-2 text-xl font-semibold">Nivel básico (introductorio).</h3>
+        </article>
+        <article data-template-id="c-card-3" class="canva-card bg-[#123f33] rounded-[22px] p-5 text-white">
+         <p data-template-id="c-card-3-title" class="canva-text text-xs uppercase tracking-[.2em] text-emerald-100/60">Acceso tecnológico</p>
+         <h3 data-template-id="c-card-3-text" class="canva-text mt-2 text-lg font-medium leading-relaxed">Aulas con dispositivos (tablets/laptops). La herramienta se diseña para funcionar sin conexión, salvaguardando la equidad educativa.</h3>
+        </article>
+        <article data-template-id="c-card-4" class="canva-card bg-[#efe3d2] rounded-[22px] p-5">
+         <p data-template-id="c-card-4-title" class="canva-text text-xs uppercase tracking-[.2em] text-[#8f7a56]">Contexto sociocultural</p>
+         <h3 data-template-id="c-card-4-text" class="canva-text mt-2 text-lg font-medium leading-relaxed">Estudiantes en contextos urbanos, donde el inglés es una L2 necesaria para la futura integración global.</h3>
+        </article>
+       </div>
+      </div>
+     </section><!-- Slide 4 -->
+     <section class="slide" data-index="4">
+      <div class="mb-8">
+       <p data-template-id="d-letter" class="canva-text serif text-6xl text-[#c59b4f]">D</p>
+       <h1 data-template-id="d-title" class="canva-text serif text-5xl mt-1">Selección de la herramienta tecnológica</h1>
+      </div>
+      <div class="content-grid grid grid-cols-[1fr_.9fr] gap-7">
+       <div>
+        <div data-template-id="d-main-panel" class="canva-panel rounded-[30px] bg-[#123f33] text-white p-8">
+         <p data-template-id="d-type-label" class="canva-text text-xs uppercase tracking-[.22em] text-emerald-100/60">Tipo de herramienta</p>
+         <h2 data-template-id="d-type-title" class="canva-text serif text-4xl mt-4 leading-tight">Aplicación web interactiva</h2>
+         <p data-template-id="d-type-subtitle" class="canva-text mt-3 text-lg text-emerald-50/80">Single Page Application — HTML5, CSS3 y JavaScript</p>
+        </div>
+        <div data-template-id="d-criteria-card" class="canva-card mt-6 bg-white rounded-[26px] p-6 border border-[#eadfce] soft-shadow">
+         <h3 data-template-id="d-criteria-title" class="canva-text text-lg font-bold">Criterios de selección</h3>
+         <p data-template-id="d-criteria-text" class="canva-text mt-3 leading-7 text-[#52665c]">Se seleccionó por ser altamente interactiva, de fácil navegación para niños de 6 años, accesible (no requiere instalación pesada) y poseer una alta pertinencia pedagógica al integrar estímulos multimodales (visuales y auditivos).</p><a href="16 - Toys.html" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 mt-5 px-4 py-2.5 rounded-lg bg-[#0f4c3a] text-white hover:bg-[#0d3a2f] transition font-semibold text-sm"> <i data-lucide="download" class="w-4 h-4"></i> <span data-template-id="d-access-button" class="canva-text">Acceder al Material</span> </a>
+        </div>
+       </div>
+       <div class="relative rounded-[28px] overflow-hidden min-h-[520px] soft-shadow"><img data-template-id="d-image" class="canva-image w-full h-full object-cover" loading="lazy" src="https://images.pexels.com/photos/4145074/pexels-photo-4145074.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1280" alt="Cheerful child enjoying distance learning with tablet indoors.">
+        <div class="absolute bottom-0 inset-x-0 p-5 bg-gradient-to-t from-[#0e342a]/80 to-transparent">
+         <p data-template-id="d-image-caption" class="canva-text text-white text-sm uppercase tracking-[.18em]">Tecnología al servicio del aprendizaje</p>
+        </div>
+       </div>
+      </div>
+     </section><!-- Slide 5 -->
+     <section class="slide" data-index="5">
+      <div class="mb-8">
+       <p data-template-id="e-letter" class="canva-text serif text-6xl text-[#c59b4f]">E</p>
+       <h1 data-template-id="e-title" class="canva-text serif text-5xl mt-1">Diseño de la herramienta didáctica</h1>
+      </div>
+      <div class="grid lg:grid-cols-[1fr_.8fr] gap-7">
+       <div>
+        <div data-template-id="e-name-panel" class="canva-panel bg-[#dce8df] rounded-[28px] p-7">
+         <p data-template-id="e-name-label" class="canva-text text-xs uppercase tracking-[.22em] text-[#62806e]">Nombre</p>
+         <h2 data-template-id="e-name-title" class="canva-text serif text-4xl mt-2">“My First English World: TOYS”</h2>
+         <p data-template-id="e-name-text" class="canva-text mt-4 leading-7 text-[#52665c]">Interfaz lúdica con navegación intuitiva que permite al estudiante moverse entre flashcards, juegos de memoria y ejercicios de asociación.</p>
+        </div>
+        <div class="grid md:grid-cols-3 gap-4 mt-6">
+         <article data-template-id="e-activity-1" class="canva-card bg-white rounded-[22px] p-5 border border-[#eadfce]">
+          <div class="w-10 h-10 rounded-xl bg-[#ecf3ee] flex items-center justify-center text-[#0f4c3a]">
+           <i data-lucide="image"></i>
+          </div>
+          <h3 data-template-id="e-activity-1-title" class="canva-text mt-4 font-bold">1. Flashcards</h3>
+          <p data-template-id="e-activity-1-text" class="canva-text mt-2 text-sm leading-6 text-[#65756d]">Reconocimiento visual.</p>
+         </article>
+         <article data-template-id="e-activity-2" class="canva-card bg-white rounded-[22px] p-5 border border-[#eadfce]">
+          <div class="w-10 h-10 rounded-xl bg-[#f3ead8] flex items-center justify-center text-[#a1721f]">
+           <i data-lucide="copy"></i>
+          </div>
+          <h3 data-template-id="e-activity-2-title" class="canva-text mt-4 font-bold">2. Memorice</h3>
+          <p data-template-id="e-activity-2-text" class="canva-text mt-2 text-sm leading-6 text-[#65756d]">Asociación auditiva-visual.</p>
+         </article>
+         <article data-template-id="e-activity-3" class="canva-card bg-white rounded-[22px] p-5 border border-[#eadfce]">
+          <div class="w-10 h-10 rounded-xl bg-[#ecf3ee] flex items-center justify-center text-[#0f4c3a]">
+           <i data-lucide="git-branch"></i>
+          </div>
+          <h3 data-template-id="e-activity-3-title" class="canva-text mt-4 font-bold">3. Unir líneas</h3>
+          <p data-template-id="e-activity-3-text" class="canva-text mt-2 text-sm leading-6 text-[#65756d]">Aplicación práctica.</p>
+         </article>
+        </div>
+        <div data-template-id="e-bottom-card" class="canva-card mt-6 bg-[#123f33] rounded-[24px] p-6 text-white">
+         <p data-template-id="e-bottom-text" class="canva-text leading-7">Recursos: imágenes de alta calidad, síntesis de voz nativa (Web Speech API) y lógica de juego en JavaScript. Tiempo de aplicación: 20 a 30 minutos por sesión, permitiendo breves periodos de concentración adecuados a la edad.</p>
+         <p data-template-id="e-demo-text" class="canva-text mt-4 text-sm text-emerald-50/75">Integración de la herramienta (Demo Técnica): Puedes ver y descargar el material completo en el archivo Toys.html, el cual integra toda la lógica pedagógica descrita.</p>
+        </div>
+       </div>
+       <div class="relative rounded-[28px] overflow-hidden h-[600px] soft-shadow"><img data-template-id="e-image" class="canva-image w-full h-full object-cover" loading="lazy" src="https://images.pexels.com/photos/6743235/pexels-photo-6743235.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1280" alt="A collection of colorful children's toys including a xylophone and disco ball on a white surface.">
+        <div class="absolute inset-x-0 bottom-0 p-5 bg-gradient-to-t from-[#14362e]/80 to-transparent">
+         <p data-template-id="e-image-caption" class="canva-text text-white text-sm uppercase tracking-[.18em]">Explorar · Escuchar · Jugar</p>
+        </div>
+       </div>
+      </div>
+     </section><!-- Slide 6 -->
+     <section class="slide" data-index="6">
+      <div class="mb-8">
+       <p data-template-id="f-letter" class="canva-text serif text-6xl text-[#c59b4f]">F</p>
+       <h1 data-template-id="f-title" class="canva-text serif text-5xl mt-1">Aplicaciones pedagógicas</h1>
+      </div>
+      <div class="grid lg:grid-cols-[.85fr_1fr] gap-7">
+       <div class="relative rounded-[28px] overflow-hidden h-[460px] soft-shadow"><img data-template-id="f-image" class="canva-image w-full h-full object-cover" loading="lazy" src="https://images.pexels.com/photos/5306457/pexels-photo-5306457.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1280" alt="A teacher and students engaged in a collaborative learning activity in a classroom.">
+       </div>
+       <div class="space-y-5">
+        <article data-template-id="f-card-1" class="canva-card bg-white rounded-[24px] p-6 border border-[#eadfce]">
+         <p data-template-id="f-card-1-label" class="canva-text text-xs uppercase tracking-[.2em] text-[#7e8c84]">Integración</p>
+         <p data-template-id="f-card-1-text" class="canva-text mt-3 leading-7 text-[#4f635a]">Se utiliza en la parte central de la sesión (“Gestión y Acompañamiento”) para el modelado y práctica guiada.</p>
+        </article>
+        <article data-template-id="f-card-2" class="canva-card bg-[#123f33] rounded-[24px] p-6 text-white">
+         <p data-template-id="f-card-2-label" class="canva-text text-xs uppercase tracking-[.2em] text-emerald-100/60">Roles</p>
+         <p data-template-id="f-card-2-text" class="canva-text mt-3 leading-7 text-emerald-50/90">El docente modela el uso de la herramienta y luego los estudiantes, de forma individual o en parejas, ejecutan los ejercicios. El docente recorre el aula brindando feedback correctivo.</p>
+        </article>
+        <div data-template-id="f-quote-panel" class="canva-panel bg-[#efe3d2] rounded-[24px] p-6">
+         <p data-template-id="f-quote-text" class="canva-text serif text-3xl leading-snug text-[#17382f]">La herramienta no reemplaza al docente: amplifica su mediación.</p>
+        </div>
+       </div>
+      </div>
+     </section><!-- Slide 7 -->
+     <section class="slide" data-index="7">
+      <div class="mb-8">
+       <p data-template-id="g-letter" class="canva-text serif text-6xl text-[#c59b4f]">G</p>
+       <h1 data-template-id="g-title" class="canva-text serif text-5xl mt-1">Evaluación del aprendizaje</h1>
+      </div>
+      <div class="grid lg:grid-cols-2 gap-7">
+       <article data-template-id="g-card-1" class="canva-card bg-[#123f33] rounded-[28px] p-8 text-white">
+        <div class="w-14 h-14 rounded-2xl bg-white/10 flex items-center justify-center">
+         <i data-lucide="badge-check" class="w-7 h-7 text-[#e8ca80]"></i>
+        </div>
+        <p data-template-id="g-card-1-label" class="canva-text mt-8 text-xs uppercase tracking-[.22em] text-emerald-100/60">Evidencia</p>
+        <h3 data-template-id="g-card-1-text" class="canva-text mt-3 text-2xl font-semibold leading-relaxed">El nivel de éxito del estudiante al completar las actividades (parejas del Memorice y líneas unidas correctamente).</h3>
+       </article>
+       <article data-template-id="g-card-2" class="canva-card bg-white rounded-[28px] p-8 border border-[#eadfce] soft-shadow">
+        <div class="w-14 h-14 rounded-2xl bg-[#e5eee8] flex items-center justify-center">
+         <i data-lucide="clipboard-list" class="w-7 h-7 text-[#0f4c3a]"></i>
+        </div>
+        <p data-template-id="g-card-2-label" class="canva-text mt-8 text-xs uppercase tracking-[.22em] text-[#7a8a82]">Instrumento</p>
+        <h3 data-template-id="g-card-2-text" class="canva-text mt-3 text-2xl font-semibold leading-relaxed text-[#17382f]">Lista de cotejo basada en el CNEB, que mide el reconocimiento léxico y la precisión al identificar los objetos en inglés.</h3>
+       </article>
+      </div>
+      <div data-template-id="g-bottom-panel" class="canva-panel mt-7 rounded-[26px] bg-[#dce8df] p-7">
+       <p data-template-id="g-bottom-text" class="canva-text text-lg leading-7 text-[#39574a]">Evaluar desde la acción: observar cómo el estudiante escucha, identifica, relaciona y responde.</p>
+      </div>
+     </section><!-- Slide 8 -->
+     <section class="slide" data-index="8">
+      <div class="mb-8">
+       <p data-template-id="h-letter" class="canva-text serif text-6xl text-[#c59b4f]">H</p>
+       <h1 data-template-id="h-title" class="canva-text serif text-5xl mt-1">Viabilidad en el contexto peruano</h1>
+      </div>
+      <div class="grid lg:grid-cols-3 gap-6">
+       <article data-template-id="h-card-1" class="canva-card bg-white rounded-[26px] p-6 border border-[#eadfce] soft-shadow"><i data-lucide="wifi-off" class="w-9 h-9 text-[#0f4c3a]"></i>
+        <h3 data-template-id="h-card-1-title" class="canva-text mt-6 text-xl font-bold">Acceso y brecha</h3>
+        <p data-template-id="h-card-1-text" class="canva-text mt-3 leading-7 text-[#53685f]">Al ser una aplicación offline, es 100% viable en escuelas sin internet constante.</p>
+       </article>
+       <article data-template-id="h-card-2" class="canva-card bg-[#efe3d2] rounded-[26px] p-6"><i data-lucide="graduation-cap" class="w-9 h-9 text-[#a17423]"></i>
+        <h3 data-template-id="h-card-2-title" class="canva-text mt-6 text-xl font-bold">Capacitación docente</h3>
+        <p data-template-id="h-card-2-text" class="canva-text mt-3 leading-7 text-[#5e5d4f]">Su interfaz es tan simple que requiere capacitación mínima.</p>
+       </article>
+       <article data-template-id="h-card-3" class="canva-card bg-[#123f33] rounded-[26px] p-6 text-white"><i data-lucide="monitor-smartphone" class="w-9 h-9 text-[#e9ca7f]"></i>
+        <h3 data-template-id="h-card-3-title" class="canva-text mt-6 text-xl font-bold">Adaptaciones</h3>
+        <p data-template-id="h-card-3-text" class="canva-text mt-3 leading-7 text-emerald-50/85">Puede usarse en proyector (gran grupo) o tablets individuales.</p>
+       </article>
+      </div>
+      <div data-template-id="h-highlight-panel" class="canva-panel mt-8 rounded-[28px] bg-[#dce8df] p-8">
+       <p data-template-id="h-highlight-text" class="canva-text serif text-3xl leading-snug text-[#17382f]">Una propuesta accesible, flexible y pertinente para la realidad educativa peruana.</p>
+      </div>
+     </section><!-- Slide 9 -->
+     <section class="slide" data-index="9">
+      <div class="mb-8">
+       <p data-template-id="i-letter" class="canva-text serif text-6xl text-[#c59b4f]">I</p>
+       <h1 data-template-id="i-title" class="canva-text serif text-5xl mt-1">Innovaciones y valor agregado</h1>
+      </div>
+      <div class="grid lg:grid-cols-[1fr_.8fr] gap-7">
+       <div class="space-y-5">
+        <article data-template-id="i-card-1" class="canva-card bg-[#123f33] rounded-[26px] p-7 text-white">
+         <div class="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center">
+          <i data-lucide="volume-2" class="w-6 h-6 text-[#e7c777]"></i>
+         </div>
+         <p data-template-id="i-card-1-label" class="canva-text mt-5 text-xs uppercase tracking-[.2em] text-emerald-100/60">Valor diferencial</p>
+         <p data-template-id="i-card-1-text" class="canva-text mt-3 text-xl leading-relaxed">Implementación de audio nativo (sintetizador de voz), lo que asegura que el estudiante escuche una pronunciación estandarizada y clara.</p>
+        </article>
+        <article data-template-id="i-card-2" class="canva-card bg-white rounded-[26px] p-7 border border-[#eadfce] soft-shadow">
+         <div class="w-12 h-12 rounded-2xl bg-[#e6eee8] flex items-center justify-center">
+          <i data-lucide="blocks" class="w-6 h-6 text-[#0f4c3a]"></i>
+         </div>
+         <p data-template-id="i-card-2-label" class="canva-text mt-5 text-xs uppercase tracking-[.2em] text-[#798981]">Replicabilidad</p>
+         <p data-template-id="i-card-2-text" class="canva-text mt-3 text-xl leading-relaxed text-[#355247]">El sistema está diseñado modularmente; cualquier docente puede agregar nuevos temas educativos cambiando solo el contenido del arreglo mainSportsDatabase en el código.</p>
+        </article>
+       </div>
+       <div data-template-id="i-final-panel" class="canva-panel rounded-[30px] bg-[#efe3d2] p-8 flex flex-col justify-between min-h-[520px]">
+        <div>
+         <p data-template-id="i-final-kicker" class="canva-text text-xs uppercase tracking-[.22em] text-[#977a47]">Cierre</p>
+         <h2 data-template-id="i-final-title" class="canva-text serif text-5xl mt-4 leading-tight text-[#17382f]">Aprender inglés puede ser simple, visual y memorable.</h2>
+        </div>
+        <p data-template-id="i-final-text" class="canva-text text-lg leading-8 text-[#5b6259]">Una propuesta que articula pedagogía, tecnología y juego para favorecer aprendizajes significativos desde los primeros años escolares.</p>
+       </div>
+      </div>
+     </section>
+     <footer class="mt-8 flex items-center justify-between gap-4"><button id="prevBtn" type="button" class="inline-flex items-center gap-2 px-4 py-3 rounded-full border border-[#d8cdbb] bg-white text-[#17382f] hover:bg-[#f3eee6] transition focus:outline-none focus:ring-2 focus:ring-[#0f4c3a]"> <i data-lucide="arrow-left" class="w-4 h-4"></i> <span data-template-id="prev-button" class="canva-text text-sm font-semibold">Anterior</span> </button>
+      <div class="flex-1 max-w-sm">
+       <div class="flex justify-between mb-2"><span data-template-id="progress-label" class="canva-text text-xs uppercase tracking-[.18em] text-[#74837b]">Progreso</span> <span id="progressText" class="text-xs font-semibold text-[#17382f]">1 / 10</span>
+       </div>
+       <div class="h-2 rounded-full bg-[#e7ddce] overflow-hidden">
+        <div id="progressFill" class="progress-fill h-full rounded-full bg-[#0f4c3a]" style="width:10%"></div>
+       </div>
+      </div><button id="nextBtn" type="button" class="inline-flex items-center gap-2 px-4 py-3 rounded-full bg-[#123f33] text-white hover:bg-[#0d3429] transition focus:outline-none focus:ring-2 focus:ring-[#0f4c3a]"> <span data-template-id="next-button" class="canva-text text-sm font-semibold">Siguiente</span> <i data-lucide="arrow-right" class="w-4 h-4"></i> </button>
+     </footer>
+    </div>
+   </main>
+  </div>
+  <script src="/_sdk/editing_sdk.js"></script>
+  <script>
+    // Load config.json and apply images and initialize app
+    async function loadAndInitialize() {
+      try {
+        const response = await fetch('config.json');
+        const config = await response.json();
+        window.__canvaConfig = config;
+        
+        // Apply images to all img elements
+        document.querySelectorAll('img[data-template-id]').forEach(img => {
+          const templateId = img.getAttribute('data-template-id');
+          if (config[templateId] && config[templateId].imageSrc) {
+            img.src = config[templateId].imageSrc;
+          }
+        });
+      } catch (e) {
+        console.log('Config.json not available, will use SDK config');
+      }
+      
+      initializeSlideshow();
+    }
+
+    function initializeSlideshow() {
+      const slides = Array.from(document.querySelectorAll('.slide'));
+      const navButtons = Array.from(document.querySelectorAll('.nav-btn'));
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const progressText = document.getElementById('progressText');
+      const progressFill = document.getElementById('progressFill');
+      let current = 0;
+
+      function showSlide(index){
+        current = Math.max(0, Math.min(index, slides.length - 1));
+        slides.forEach((slide, i) => slide.classList.toggle('active', i === current));
+        navButtons.forEach((btn, i) => {
+          btn.classList.toggle('active', i === current);
+          btn.classList.toggle('text-white/70', i !== current);
+        });
+        progressText.textContent = `${current + 1} / ${slides.length}`;
+        progressFill.style.width = `${((current + 1) / slides.length) * 100}%`;
+        prevBtn.disabled = current === 0;
+        nextBtn.disabled = current === slides.length - 1;
+        prevBtn.classList.toggle('opacity-40', current === 0);
+        nextBtn.classList.toggle('opacity-40', current === slides.length - 1);
+      }
+
+      navButtons.forEach(btn => {
+        btn.addEventListener('click', () => showSlide(Number(btn.dataset.slide)));
+      });
+      prevBtn.addEventListener('click', () => showSlide(current - 1));
+      nextBtn.addEventListener('click', () => showSlide(current + 1));
+      document.addEventListener('keydown', (e) => {
+        if(e.key === 'ArrowRight') showSlide(current + 1);
+        if(e.key === 'ArrowLeft') showSlide(current - 1);
+      });
+
+      lucide.createIcons();
+      showSlide(0);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', loadAndInitialize);
+    } else {
+      loadAndInitialize();
+    }
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a0df2f610546c2c2',t:'MTc4MTgzNjk5NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>

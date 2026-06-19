@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My First English World: TOYS</title>
+    <style>
+        /* ESTILOS BASE CON PREVENCIÓN DE DESPLAZAMIENTO POR ZOOM */
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            user-select: none; 
+        }
+        
+        body {
+            /* Fondo mágico infantil con nubes y colores pasteles */
+            background: #e0f2fe;
+            background-image: radial-gradient(#bae6fd 20%, transparent 20%), radial-gradient(#fef08a 20%, transparent 20%);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            width: 100vw;
+            font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', sans-serif;
+            /* SOLUCIÓN AL ZOOM: Permite scroll si la pantalla o el zoom desbordan los 1280x720px */
+            overflow: auto; 
+            padding: 20px;
+        }
+
+        /* CONTENEDOR PRINCIPAL: Pizarra mágica de juguete */
+        .slide-canvas {
+            width: 1280px;
+            height: 720px;
+            background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+            border: 12px solid #ff7aa2; /* Borde rosa chicle */
+            border-radius: 50px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 30px 0 #db2777, 0 40px 50px rgba(0,0,0,0.3); /* Súper efecto 3D */
+            transform-origin: center center; 
+            flex-shrink: 0;
+        }
+
+        /* NAVEGACIÓN INFERIOR ESTILO INFANTIL */
+        .nav-bar {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 95px;
+            padding: 0 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.95);
+            border-top: 5px dashed #ff7aa2;
+            z-index: 100;
+        }
+
+        .btn-nav {
+            padding: 14px 35px;
+            font-size: 26px;
+            font-weight: bold;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            font-family: 'Comic Sans MS', sans-serif;
+        }
+
+        /* Botones estilo gominola con relieve inferior */
+        .btn-prev { background: #ff477e; box-shadow: 0 6px 0 #be185d; } 
+        .btn-next { background: #00bacf; box-shadow: 0 6px 0 #0369a1; } 
+        .btn-home { background: #a855f7; box-shadow: 0 6px 0 #6b21a8; font-size: 32px; padding: 6px 25px; } 
+
+        .btn-nav:active { 
+            transform: translateY(4px); 
+            box-shadow: 0 2px 0 rgba(0,0,0,0.2); 
+        }
+
+        /* DIAPOSITIVAS */
+        .slide {
+            width: 100%;
+            height: 610px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            padding: 25px;
+        }
+
+        .active { display: flex; }
+
+        /* PORTADA BONITA */
+
+        .title-main { 
+            font-size: 100px; 
+            color: #ff477e; 
+            text-shadow: 5px 5px 0 #fbcfe8, 8px 8px 0 #db2777; 
+            margin-top: -15px;
+            letter-spacing: 2px;
+        }
+        .data-box {
+            background: #fff;
+            border: 5px solid #facc15;
+            border-radius: 30px;
+            padding: 25px 50px;
+            margin-top: 10px;
+            text-align: left;
+            font-size: 26px;
+            line-height: 1.6;
+            color: #1e293b;
+            box-shadow: 0 10px 0 #ca8a04;
+        }
+        .data-box strong { color: #ff477e; }
+
+        /* FLASHCARDS */
+        .fc-header { color: #00bacf; font-size: 36px; margin-bottom: 15px; text-shadow: 2px 2px 0 #e0f2fe; }
+        .flashcard-card {
+            width: 680px;
+            height: 420px;
+            background: white;
+            border: 6px solid #facc15;
+            border-radius: 45px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            position: relative;
+            box-shadow: 0 15px 0 #ca8a04, 0 20px 30px rgba(0,0,0,0.1);
+        }
+
+        /* Contador de Páginas 1/11 Tipo Medalla */
+        .fc-counter-badge {
+            position: absolute;
+            top: -20px;
+            right: 40px;
+            background: #ff477e;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 8px 22px;
+            border-radius: 30px;
+            box-shadow: 0 6px 0 #be185d;
+            border: 3px solid white;
+            z-index: 10;
+        }
+
+        .fc-image-container {
+            width: 520px;
+            height: 240px;
+            border: 5px dashed #00bacf;
+            border-radius: 25px;
+            overflow: hidden;
+            background: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
+
+        .fc-image-container img { max-height: 85%; max-width: 85%; object-fit: contain; }
+
+        .result-display {
+            margin-top: 15px;
+            font-size: 42px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            min-height: 65px;
+        }
+
+        .reveal-btn {
+            background: #4ade80;
+            color: white;
+            border: none;
+            padding: 15px 45px;
+            font-size: 28px;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 15px;
+            font-family: inherit;
+            box-shadow: 0 6px 0 #16a34a;
+        }
+
+        .reveal-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #16a34a; }
+
+        .fc-nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: #38bdf8;
+            color: white;
+            border: 4px solid white;
+            font-size: 32px;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #0284c7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .fc-prev { left: -95px; }
+        .fc-next { right: -95px; background: #ff477e; box-shadow: 0 6px 0 #be185d; }
+        .fc-nav-btn:active { transform: translateY(-40%); box-shadow: none; }
+
+        /* JUEGO MEMORICE */
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 185px);
+            grid-template-rows: repeat(3, 145px);
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .m-card {
+            background: #00bacf;
+            border-radius: 25px;
+            cursor: pointer;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.4s;
+            border: 5px solid white;
+            box-shadow: 0 6px 0 #0369a1;
+        }
+        .m-card.flipped { transform: rotateY(180deg); background: white; box-shadow: 0 6px 0 #cbd5e1; }
+        .m-front, .m-back {
+            position: absolute; width: 100%; height: 100%;
+            backface-visibility: hidden; display: flex; align-items: center; justify-content: center;
+        }
+        .m-front { transform: rotateY(180deg); padding: 12px; }
+        .m-front img { max-width: 95%; max-height: 95%; object-fit: contain; }
+        .m-front span { font-size: 24px; text-align: center; color: #0369a1; font-weight: bold; word-break: break-word; }
+        .m-back::after { content: "⭐"; font-size: 55px; filter: drop-shadow(0 3px 0 rgba(0,0,0,0.2)); }
+
+        /* UNIR LÍNEAS */
+        .matching-area {
+            display: flex;
+            justify-content: space-between;
+            width: 1000px;
+            height: 480px;
+            margin-top: 15px;
+            position: relative;
+        }
+        canvas#matchCanvas {
+            position: absolute; top: 0; left: 0; pointer-events: none;
+            z-index: 5;
+        }
+        .match-col { display: flex; flex-direction: column; justify-content: space-between; width: 240px; z-index: 10; }
+        .match-item {
+            background: white; border: 4px solid #ffb7b2; border-radius: 25px;
+            height: 85px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; position: relative; padding: 10px; box-shadow: 0 5px 0 #f87171;
+            transition: all 0.1s;
+        }
+        .match-item img { max-height: 90%; object-fit: contain; }
+        .match-item span { font-size: 24px; font-weight: bold; color: #334155; }
+        .match-dot { width: 22px; height: 22px; background: #ff477e; border-radius: 50%; position: absolute; top: 50%; transform: translateY(-50%); border: 3px solid white; }
+        .left-col .match-dot { right: -11px; }
+        .right-col .match-dot { left: -11px; background: #00bacf; }
+        
+        .match-item.selected { border-color: #4ade80; background: #f0fdf4; transform: scale(1.05); box-shadow: 0 5px 0 #22c55e; }
+
+        .audio-icon { cursor: pointer; display: inline-block; transition: transform 0.1s; font-size: 38px; }
+        .audio-icon:active { transform: scale(1.3); }
+        
+        h1.game-title { font-size: 44px; text-shadow: 2px 2px 0 #f3e8ff; text-align: center; }
+    </style>
+</head>
+<body>
+
+    <div class="slide-canvas" id="canvas-container">
+
+        <!-- DIAPOSITIVA 1: PORTADA -->
+        <div class="slide active" id="slide-1">
+            <br><br>
+            <h1 class="title-main">My First English World</h1>
+            <br>
+            <h1 class="title-main">TOYS 🧸</h1>
+            <div class="data-box">
+                <!--<p><strong>COLEGIO:</strong> I.E.P. CRISTO TE AMA</p>-->
+                <p><strong>GRADO:</strong> 1º PRIMARIA 🎈</p>
+                <p><strong>PROFESORES:</strong> AARON - GIULIANA - ESTEFANY - RUTH</p>
+            </div>
+        </div>
+
+        <!-- DIAPOSITIVA 2: FLASHCARDS -->
+        <div class="slide" id="slide-2">
+            <h2 class="fc-header">Look at the toy and learn its name! ✨</h2>
+            <div class="flashcard-card">
+                <!-- Contador Rediseñado estilo medalla brillante -->
+                <div class="fc-counter-badge" id="fc-counter">1 / 11</div>
+                
+                <div class="fc-image-container">
+                    <img id="fc-img" src="" alt="Toy">
+                </div>
+
+                <div class="result-display" id="fc-result" style="display: none;">
+                    <span id="txt-es" style="color: #22c55e;">Tren</span>
+                    <span style="color: #facc15;">➔</span>
+                    <span id="txt-en" style="color: #00bacf;">Train</span>
+                    <span class="audio-icon" onclick="speakCurrent()">🔊</span>
+                </div>
+
+                <button class="reveal-btn" id="fc-reveal-btn">What toy is this? 🤔</button>
+
+                <button class="fc-nav-btn fc-prev" onclick="changeFC(-1)">◀</button>
+                <button class="fc-nav-btn fc-next" onclick="changeFC(1)">▶</button>
+            </div>
+        </div>
+
+        <!-- DIAPOSITIVA 3: MEMORICE -->
+        <div class="slide" id="slide-3">
+            <h1 class="game-title" style="color: #a855f7;">Find the pairs! 🧠⭐</h1>
+            <div class="memory-grid" id="mem-grid"></div>
+        </div>
+
+        <!-- DIAPOSITIVA 4: UNIR LÍNEAS -->
+        <div class="slide" id="slide-4">
+            <h1 class="game-title" style="color: #00bacf;">Connect with a line! 🎨✏️</h1>
+            <div class="matching-area" id="match-area">
+                <canvas id="matchCanvas"></canvas>
+                <div class="match-col left-col" id="m-left"></div>
+                <div class="match-col right-col" id="m-right"></div>
+            </div>
+        </div>
+
+        <!-- NAV BAR GLOBAL -->
+        <div class="nav-bar">
+            <button class="btn-nav btn-prev" onclick="nav(-1)">⬅ Back</button>
+            <button class="btn-nav btn-home" onclick="navTo(1)">🏠</button>
+            <button class="btn-nav btn-next" id="main-next-btn" onclick="nav(1)">Start vocabulary! ➡</button>
+        </div>
+
+    </div>
+
+    <script>
+        // BASE DE DATOS CENTRALIZADA
+        const mainSportsDatabase = [
+            { id: 1, es: "Tren", en: "Train", img: "https://blogger.googleusercontent.com/img/a/AVvXsEhoPisKfsPi5yeZiZwfv3OYekNhvFG1_QFQbM1lB5_GRZXsat0AXZLFwPesDwq_3W-38xsUfdM1SOUFoX4Nekoqf5JzZh-l8rza2M4oTSjKf7q1iQDwie3Bn8PjQRFf_x6lVrlRem4OWmX7i7Rm74gV5otegKrd-eYTzFKgqoYV2Knzg94bBBsIb7z5B9Q" },
+            { id: 2, es: "Carro", en: "Car", img: "https://blogger.googleusercontent.com/img/a/AVvXsEjsksbkxi6k06ofUpa0RudvNGw_NXyVlYGrSiZwwooHFfT82mx-QuhwLjyx22uq02b_IyI2F-9HQFvflPv3UiRb_2U90i4F8U8pGvExs5k3RnG6CU3N2Ixj4ehe1n_mtO-2j2YUezrceEpm0n6zrtECnK0vGVA49TB_3gN9hgbJ9fuDsym3N8TvhgskQjM" },
+            { id: 3, es: "Trompo", en: "Spinning Top", img: "https://blogger.googleusercontent.com/img/a/AVvXsEgusBHl4wnabEghy3OnDuw36VmJxNPlWniqTkJ0doNu06Dt-IRLMavu1dwTNDFANE1kKHWYu4hyl_etLwP0097PidpypgQZpNjYOlcit9Gg32e_OqhH-_rU9-t8zY6K5Nn3dthLw4eRH3ETLWn7QkjFB_-BWhp1rNHVJcPbzXdsMy8I8SSoj8y7zB19_z8" },
+            { id: 4, es: "Peluche", en: "Teddy bear", img: "https://blogger.googleusercontent.com/img/a/AVvXsEhV2mz1Sr0y56EV7Di_IAc3B5pyq8vudCy-fv9lIJntGDL01y5N_yMJSXOCeeHcbBR436n5LwF71nH4rlW8A9SeixTMlV72pvaNz7Rcm7ytw_F2o_L4ZIiKd429CMPBdrjD6kD3hAevdTySNaBlsD1gH6XpQ5mEZSNqVdzO2F4QwHyA80tS2K84sIQ8SUs" },
+            { id: 5, es: "Robot", en: "Robot", img: "https://blogger.googleusercontent.com/img/a/AVvXsEjAMK53lV5R3Bsb55fEBZmtxtdZGqNfOElHzDsmTIIL3DBh-kzwA28IYk49TQsJVG-XLqE8hQHe_SN5_2BerdnjXBflQX-Ew_DkWdzqAgCeqVFDYcfPM7GU-Vbh14mXLXuLevr1IDXa-n4PjpxkPR-iCCCORM0MIVXzT_6Kv7vKAvAQI-5F8QYzI7yMqfM" },
+            { id: 6, es: "Triciclo", en: "Tricycle", img: "https://blogger.googleusercontent.com/img/a/AVvXsEiXaxvPohMDNRBrNZmdMkcweceL8uliAhRsifXemcDXXmstNBVi5qCEVmqo8w1Nkms3cPhVe_IZHJ7b_j3VEklPouRKKonR7_AJPLKXzSpBdNKX68WzuGc8fW4wkW7qT2KxNSJP5iv5WdYplO6SS_00CJTBffTETi5qGoOWWKLQrS4YrUzgH2WuPZeoL-Y" },
+            { id: 7, es: "Bicicleta", en: "Bicycle", img: "https://blogger.googleusercontent.com/img/a/AVvXsEixzm7Y_LzltIS28M1MR1Z7iSmrc0lpoxf-mKfprwvGUtj7H1gjku0tBmON1vmHYiVxkMu9qdpmYBUPNBKOTAPOuhj3jw0uNeQ7JgjsgKO57oMxg_cf0Pte6_LamdmFJ3m_AbbWgAmjdDBtIhaLh3ldq0EG39pIxlXHD0k2CnhMhbPPaIFBQnRRAWbv2ug" },
+            { id: 8, es: "Avión", en: "Aeroplane", img: "https://blogger.googleusercontent.com/img/a/AVvXsEiKIzsMIdjk-hsYN4EPjJfQS46fqly7bIOVX_AmZUFg4IGOMLKFZx8fxujfGHwgqwQNpK01iVIHfeItgX0qY9-lSVvOHt4PTxBgOddX8myjkpg1_10Bo5e6ZjDpiaSpKP6RbmxUVHf4ZpSO9tUPqUjuvZqPjGMNsGQBoN2N0zYGdU_PSEf7HBgOsnt5O4Q" },
+            { id: 9, es: "Muñeca", en: "Doll", img: "https://blogger.googleusercontent.com/img/a/AVvXsEi8TAbApLQ2otEeu6Rr47WhXwUfGppfUNG34SndWZxN-8YKywZUhybSeFhE8Ko2qImCInneTFyH40JL-WJ4iWxbyLbs8IGubC6MXO742XRZzkiyG71iw6h3dsZVDqNgeVfIyExtoowWC5Z1pH-iX4NesGdZ_F7VLNlp2TWgHfSb7H6eOKiqdOrX9_rr6os" },
+            { id: 10, es: "Cometa", en: "Kite", img: "https://blogger.googleusercontent.com/img/a/AVvXsEjh6NHJlgK3XMILXdRk6W_F3pC8oZizvoCzqprmkWQjeTMqkb_XfiV1wn40VMp1Uhe9HZKI-aIO1V1ykzKHZ7ugWtaXCoGknquFa4epF0C9CarRrbqE3Nxl96VjzxdyM21tCuAzQSWXJSUjuRfAT0Nkx0yRYF67bEIgvrYNhMvtyD8IEMYe7cNyrOwSEIw" },
+            { id: 11, es: "Caballo", en: "Rocking horse", img: "https://blogger.googleusercontent.com/img/a/AVvXsEjvyfQxwBAft72aeAJfg2cgXNM8_apmJFS80gu0HVJa7bQnZ5pyYcSzdrCGL6uOdqqyEOCgPCiMzvV_2v7w5ozSgKy_b76aJNYLjgrRw7kHzFpzrEruKA869jOqv-jkhPqgpLBQoAlO-uz3qJijz8uOb0e8BuikRfRkcGfB7b04sxvY2MzcGXw8wj9XhuE" }
+        ];
+
+        let currentSlide = 1;
+        let scale = 1;
+
+        // MOTOR DE ESCALADO AUTOMÁTICO REVOLUCIONARIO CONTRA EL ZOOM
+        function handleResponsiveScale() {
+            const container = document.getElementById('canvas-container');
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            
+            const scaleX = windowWidth / 1280;
+            const scaleY = windowHeight / 720;
+            scale = Math.min(scaleX, scaleY);
+            
+            if (scale < 0.5) scale = 0.5;
+
+            container.style.transform = `scale(${scale})`;
+        }
+
+        window.addEventListener('resize', () => {
+            handleResponsiveScale();
+            if(currentSlide === 4) draw(); 
+        });
+        window.addEventListener('load', handleResponsiveScale);
+
+        // NAVEGACIÓN GENERAL
+        function nav(dir) {
+            let next = currentSlide + dir;
+            if(next >= 1 && next <= 4) navTo(next);
+        }
+
+        function navTo(num) {
+            document.querySelectorAll('.slide').forEach(s => s.classList.remove('active'));
+            document.getElementById(`slide-${num}`).classList.add('active');
+            currentSlide = num;
+            
+            const nextBtn = document.getElementById('main-next-btn');
+            if(num === 1) nextBtn.innerText = "Start vocabulary! ➡";
+            if(num === 2) nextBtn.innerText = "Memory game!! ➡";
+            if(num === 3) nextBtn.innerText = "Join pairs! ➡";
+            if(num === 4) nextBtn.innerText = "Finish! 🎉";
+
+            if(num === 2) initFC();
+            if(num === 3) initMemorice();
+            if(num === 4) initMatching();
+            
+            window.scrollTo(0,0);
+        }
+
+        // CONTROL DE VOZ (SÍNTESIS NATIVA NATIVA)
+        function speak(text) {
+            window.speechSynthesis.cancel();
+            let msg = new SpeechSynthesisUtterance(text);
+            msg.lang = 'en-US';
+            msg.rate = 0.7;
+            window.speechSynthesis.speak(msg);
+        }
+
+        // --- DINÁMICA FLASHCARDS ---
+        let fcIndex = 0;
+        function initFC() {
+            fcIndex = 0;
+            showFC();
+        }
+
+        function showFC() {
+            const item = mainSportsDatabase[fcIndex];
+            document.getElementById('fc-img').src = item.img;
+            document.getElementById('txt-es').innerText = item.es;
+            document.getElementById('txt-en').innerText = item.en;
+            
+            document.getElementById('fc-counter').innerText = `${fcIndex + 1} / ${mainSportsDatabase.length}`;
+            
+            document.getElementById('fc-result').style.display = 'none';
+            document.getElementById('fc-reveal-btn').style.display = 'block';
+        }
+
+        document.getElementById('fc-reveal-btn').onclick = function() {
+            this.style.display = 'none';
+            document.getElementById('fc-result').style.display = 'flex';
+            speak(mainSportsDatabase[fcIndex].en);
+        };
+
+        function speakCurrent() { speak(mainSportsDatabase[fcIndex].en); }
+
+        function changeFC(dir) {
+            fcIndex += dir;
+            if(fcIndex < 0) fcIndex = mainSportsDatabase.length - 1;
+            if(fcIndex >= mainSportsDatabase.length) fcIndex = 0;
+            showFC();
+        }
+
+        // --- JUEGO DE MEMORICE PARLANTE ---
+        function initMemorice() {
+            const grid = document.getElementById('mem-grid');
+            grid.innerHTML = "";
+            let items = [...mainSportsDatabase].slice(0, 6);
+            let cards = [];
+            items.forEach(i => {
+                cards.push({ id: i.id, type: 'img', content: i.img, en: i.en });
+                cards.push({ id: i.id, type: 'txt', content: i.en, en: i.en });
+            });
+            cards.sort(() => Math.random() - 0.5);
+
+            cards.forEach(c => {
+                const div = document.createElement('div');
+                div.className = 'm-card';
+                div.innerHTML = `
+                    <div class="m-front">${c.type==='img'?`<img src="${c.content}">`:`<span>${c.content}</span>`}</div>
+                    <div class="m-back"></div>
+                `;
+                div.onclick = function() { flipCard(this, c); };
+                grid.appendChild(div);
+            });
+        }
+
+        let first = null, second = null, lock = false;
+        function flipCard(el, data) {
+            if(lock || el.classList.contains('flipped')) return;
+            el.classList.add('flipped');
+            speak(data.en);
+            if(!first) { first = {el, data}; return; }
+            second = {el, data};
+            lock = true;
+            if(first.data.id === second.data.id) { first = null; second = null; lock = false; }
+            else {
+                setTimeout(() => {
+                    first.el.classList.remove('flipped');
+                    second.el.classList.remove('flipped');
+                    first = null; second = null; lock = false;
+                }, 1000);
+            }
+        }
+
+        // --- JUEGO DE UNIR LÍNEAS MÁGICAS ---
+        let selectedNode = null;
+        let connections = [];
+
+        function initMatching() {
+            const left = document.getElementById('m-left');
+            const right = document.getElementById('m-right');
+            left.innerHTML = ""; right.innerHTML = "";
+            connections = [];
+            
+            let pool = [...mainSportsDatabase].sort(() => Math.random() - 0.5).slice(0, 5);
+            let L = [...pool].sort(() => Math.random() - 0.5);
+            let R = [...pool].sort(() => Math.random() - 0.5);
+
+            L.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'match-item';
+                div.innerHTML = `<img src="${item.img}"><div class="match-dot"></div>`;
+                div.onclick = () => selectNode(div, item, 'L');
+                left.appendChild(div);
+            });
+
+            R.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'match-item';
+                div.innerHTML = `<span>${item.en}</span><div class="match-dot"></div>`;
+                div.onclick = () => selectNode(div, item, 'R');
+                right.appendChild(div);
+            });
+
+            draw();
+        }
+
+        function selectNode(el, item, side) {
+            if(selectedNode && selectedNode.side !== side) {
+                if(selectedNode.item.id === item.id) {
+                    connections.push({from: selectedNode.el, to: el});
+                    speak(item.en);
+                }
+                selectedNode.el.classList.remove('selected');
+                selectedNode = null;
+            } else {
+                if(selectedNode) selectedNode.el.classList.remove('selected');
+                selectedNode = {el, item, side};
+                el.classList.add('selected');
+                if(side === 'L') speak(item.en);
+            }
+            draw();
+        }
+
+        function draw() {
+            const canvas = document.getElementById('matchCanvas');
+            const area = document.getElementById('match-area');
+            canvas.width = area.offsetWidth;
+            canvas.height = area.offsetHeight;
+            const ctx = canvas.getContext('2d');
+            ctx.strokeStyle = "#4ade80"; ctx.lineWidth = 8; ctx.lineCap = "round";
+
+            connections.forEach(c => {
+                const dotA = c.from.querySelector('.match-dot').getBoundingClientRect();
+                const dotB = c.to.querySelector('.match-dot').getBoundingClientRect();
+                const container = area.getBoundingClientRect();
+                
+                const xStart = (dotA.left + dotA.width / 2 - container.left) / scale;
+                const yStart = (dotA.top + dotA.height / 2 - container.top) / scale;
+                const xEnd = (dotB.left + dotB.width / 2 - container.left) / scale;
+                const yEnd = (dotB.top + dotB.height / 2 - container.top) / scale;
+
+                ctx.beginPath();
+                ctx.moveTo(xStart, yStart);
+                ctx.lineTo(xEnd, yEnd);
+                ctx.stroke();
+            });
+        }
+    </script>
+</body>
+</html>
